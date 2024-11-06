@@ -94,6 +94,9 @@ class StringConverter {
                             if (!isBr(codePoint)) {
                                 appendNumCharRef(codePoint, number)
                             }
+                            else {
+                                appendCodePoint(codePoint)
+                            }
                         }
                         else -> appendCodePoint(codePoint)
                     }
