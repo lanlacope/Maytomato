@@ -22,6 +22,7 @@ import androidx.compose.ui.window.Dialog
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.clazz.ConvertMode
 import io.github.lanlacope.maytomato.clazz.ConvertNumber
+import io.github.lanlacope.maytomato.clazz.propaty.Simeji
 import io.github.lanlacope.maytomato.clazz.rememberStringConverter
 import kotlinx.collections.immutable.persistentListOf
 
@@ -111,7 +112,7 @@ fun ConvertDialog() {
                     val output =
                         stringConverter.convert(text.value, selectedMode, selectedNumber.toInt())
                     val intent = Intent().apply {
-                        putExtra("replace_key", output)
+                        putExtra(Simeji.REPLACE_KEY, output)
                     }
                     activity.setResult(Activity.RESULT_OK, intent)
                     activity.finish()
