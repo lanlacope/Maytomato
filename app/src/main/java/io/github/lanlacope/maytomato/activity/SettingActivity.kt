@@ -1,21 +1,18 @@
 package io.github.lanlacope.maytomato.activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import io.github.lanlacope.maytomato.ui.theme.MaytomatoTheme
 
 class SettingActivity : ComponentActivity() {
@@ -24,23 +21,20 @@ class SettingActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MaytomatoTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) { Greeting() }
             }
         }
     }
 }
 
 @Composable
-private fun Greeting(name: String, modifier: Modifier = Modifier) {
+private fun Greeting() {
     Column {
         Text(
-            text = "Hello $name!",
-            modifier = modifier
+            text = "後で設定画面になる"
         )
 
         val context = LocalContext.current
@@ -50,8 +44,7 @@ private fun Greeting(name: String, modifier: Modifier = Modifier) {
             context.startActivity(intent)
         }) {
             Text(
-                text = "test!",
-                modifier = modifier
+                text = "TEST"
             )
         }
     }

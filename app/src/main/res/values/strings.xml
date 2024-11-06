@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">Maytomato</string>
 
-    <string name="manu_text_mode_selector">異体字セレクタを置換</string>
-    <string name="manu_text_mode_all">全て置換</string>
+    <string name="manu_text_mode_all">全て変換</string>
+    <string name="manu_text_mode_slip_br">改行以外変換</string>
+    <string name="manu_text_mode_selector_high">異体字セレクタを変換(強)</string>
+    <string name="manu_text_mode_selector_low">異体字セレクタを変換(弱)</string>
     <string name="manu_text_mode_remove">異体字セレクタを削除</string>
     <string name="manu_text_number_decimal">10進数に変換</string>
     <string name="manu_text_number_hexadecima">16進数に変換</string>

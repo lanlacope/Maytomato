@@ -47,20 +47,24 @@ fun ConvertDialog() {
         ) {
 
             val text = remember { mutableStateOf("") }
-            var selectedMode by remember { mutableStateOf(ConvertMode.SELECTOR) }
+            var selectedMode by remember { mutableStateOf(ConvertMode.SELECTOR_HIGH) }
             var selectedNumber by remember { mutableStateOf(ConvertNumber.DEC.toString()) }
 
             DialogTitle(text = "変換する")
 
             val modes = persistentListOf(
-                ConvertMode.SELECTOR,
                 ConvertMode.ALL,
-                ConvertMode.REMOVE
+                ConvertMode.SKIP_BR,
+                ConvertMode.SELECTOR_HIGH,
+                ConvertMode.SELECTOR_LOW,
+                ConvertMode.REMOVE,
             )
             val modeText: (String) -> String = { selectedText ->
                 when (selectedText) {
-                    ConvertMode.SELECTOR -> context.getString(R.string.manu_text_mode_selector)
                     ConvertMode.ALL -> context.getString(R.string.manu_text_mode_all)
+                    ConvertMode.SKIP_BR -> context.getString(R.string.manu_text_mode_slip_br)
+                    ConvertMode.SELECTOR_HIGH -> context.getString(R.string.manu_text_mode_selector_high)
+                    ConvertMode.SELECTOR_LOW -> context.getString(R.string.manu_text_mode_selector_low)
                     ConvertMode.REMOVE -> context.getString(R.string.manu_text_mode_remove)
                     else -> throw Exception()
                 }
