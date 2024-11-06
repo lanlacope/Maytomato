@@ -17,6 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.Dialog
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.clazz.ConvertMode
@@ -50,7 +51,7 @@ fun ConvertDialog() {
             var selectedMode by remember { mutableStateOf(ConvertMode.SELECTOR_HIGH) }
             var selectedNumber by remember { mutableStateOf(ConvertNumber.DEC.toString()) }
 
-            DialogTitle(text = "変換する")
+            DialogTitle(text = stringResource(id = R.string.dialog_title_convert))
 
             val modes = persistentListOf(
                 ConvertMode.ALL,
@@ -100,10 +101,9 @@ fun ConvertDialog() {
                 refrection = refrectionNumberManu
             )
 
-
             DialogTextField(
                 text = text,
-                hint = "テキストを入力"
+                hint = stringResource(id = R.string.dialog_hint_convert)
             )
 
             TextButton(
@@ -119,7 +119,7 @@ fun ConvertDialog() {
                 modifier = Modifier
                     .align(Alignment.End)
             ) {
-                Text(text = "完了")
+                Text(text = stringResource(id = R.string.dialog_positive_convert))
             }
         }
     }
