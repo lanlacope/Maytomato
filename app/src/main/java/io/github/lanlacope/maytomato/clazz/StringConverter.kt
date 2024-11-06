@@ -75,12 +75,19 @@ class StringConverter {
                     when (mode) {
                         ConvertMode.SELECTOR_HIGH -> {
                             appendNumCharRef(codePoint, number)
-                            // 次の文字がゼロ幅結合子の場合はそれも変換
-                            val nextPoint = rawText.codePointAt(index + 1)
-                            if (isZwj(nextPoint)) {
-                                appendNumCharRef(nextPoint, number)
-                                // ゼロ幅結合子の分進める
-                                index += 1
+
+                            try {
+                                // 次の文字がゼロ幅結合子の場合はそれも変換
+                                val nextPoint = rawText.codePointAt(index + 1)
+
+                                if (isZwj(nextPoint)) {
+                                    appendNumCharRef(nextPoint, number)
+                                    // ゼロ幅結合子の分進める
+                                    index += 1
+                                }
+                            }
+                            catch (e: Exception) {
+                                /* do nothing */
                             }
                         }
                         ConvertMode.REMOVE -> { /* do nothing */ }
