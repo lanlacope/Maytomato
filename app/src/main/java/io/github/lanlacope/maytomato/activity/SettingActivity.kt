@@ -3,7 +3,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
@@ -18,7 +17,6 @@ import io.github.lanlacope.maytomato.ui.theme.MaytomatoTheme
 class SettingActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             MaytomatoTheme {
                 Surface(
@@ -32,7 +30,9 @@ class SettingActivity : ComponentActivity() {
 
 @Composable
 private fun Greeting() {
-    Column {
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
         Text(
             text = "後で設定画面になる"
         )

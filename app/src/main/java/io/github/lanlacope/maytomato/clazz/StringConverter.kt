@@ -1,9 +1,9 @@
 package io.github.lanlacope.maytomato.clazz
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
-import io.github.lanlacope.maytomato.wigit.appendNumCharRef
 
 @Suppress("unused")
 @Composable
@@ -54,6 +54,18 @@ class StringConverter {
     private val isBr: (Int) -> Boolean = { codePoint ->
         codePoint == 0xA
     }
+
+    private fun StringBuilder.appendNumCharRef(
+        codePoint: Int,
+        num: Int
+    ) {
+        when (num) {
+            10 -> append("&#").append(codePoint.toString(10)).append(";")
+            16 -> append("&#x").append(codePoint.toString(16)).append(";")
+            else -> Log.w("StringBuilder", "$num is not supported number!")
+        }
+    }
+
 
     fun convert(
         rawText: String,
