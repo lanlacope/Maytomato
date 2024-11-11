@@ -16,8 +16,7 @@ fun rememberStringConverter(): StringConverter {
 object ConvertMode {
     const val ALL = "All"
     const val SKIP_BR = "SlipBreak"
-    const val SELECTOR_HIGH = "SelectorHigh"
-    const val SELECTOR_LOW = "SelectorLow"
+    const val MOJIBAKE = "SelectorHigh"
     const val REMOVE = "Remove"
 }
 
@@ -39,6 +38,20 @@ class StringConverter {
      */
     private val isSelector: (Int) -> Boolean = { codePoint ->
         codePoint in 0xFE00..0xFE0F || codePoint in 0xE0100..0xE01EF
+    }
+
+    /*
+     * ゼロ幅空白を判定
+     */
+    private val isZws: (Int) -> Boolean = { codePoint ->
+        codePoint == 0x200B
+    }
+
+    /*
+     * ゼロ幅非結合子を判定
+     */
+    private val isZwnj: (Int) -> Boolean = { codePoint ->
+        codePoint == 0x200C
     }
 
     /*
@@ -69,7 +82,7 @@ class StringConverter {
 
     fun convert(
         rawText: String,
-        mode: String = ConvertMode.SELECTOR_HIGH,
+        mode: String = ConvertMode.MOJIBAKE,
         number: Int = ConvertNumber.DEC
     ): String {
         return buildString {
@@ -85,7 +98,7 @@ class StringConverter {
 
                 if (isSelector(codePoint)) {
                     when (mode) {
-                        ConvertMode.SELECTOR_HIGH -> {
+                        ConvertMode.MOJIBAKE -> {
                             appendNumCharRef(codePoint, number)
 
                             if (index + 1 < rawText.length) {
@@ -100,6 +113,19 @@ class StringConverter {
                             }
                         }
                         ConvertMode.REMOVE -> { /* do nothing */ }
+                        else -> appendNumCharRef(codePoint, number)
+                    }
+                }
+                else if(isZws(codePoint) || isZwnj(codePoint)) {
+                    when (mode) {
+                        ConvertMode.MOJIBAKE -> {
+                            appendNumCharRef(codePoint, number)
+
+                        }
+
+                        ConvertMode.REMOVE -> { /* do nothing */
+                        }
+
                         else -> appendNumCharRef(codePoint, number)
                     }
                 }

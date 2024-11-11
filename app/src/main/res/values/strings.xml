@@ -7,9 +7,8 @@
 
     <string name="manu_text_mode_all">全て変換</string>
     <string name="manu_text_mode_slip_br">改行以外変換</string>
-    <string name="manu_text_mode_selector_high">異体字セレクタを変換(強)</string>
-    <string name="manu_text_mode_selector_low">異体字セレクタを変換(弱)</string>
-    <string name="manu_text_mode_remove">異体字セレクタを削除</string>
+    <string name="manu_text_mode_mojibake">文字化け対策で変換</string>
+    <string name="manu_text_mode_remove">文字化け対策で削除</string>
     <string name="manu_text_number_decimal">10進数に変換</string>
     <string name="manu_text_number_hexadecima">16進数に変換</string>
 </resources>

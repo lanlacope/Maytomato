@@ -49,7 +49,7 @@ fun ConvertDialog() {
         ) {
 
             val text = remember { mutableStateOf("") }
-            var selectedMode by remember { mutableStateOf(ConvertMode.SELECTOR_HIGH) }
+            var selectedMode by remember { mutableStateOf(ConvertMode.MOJIBAKE) }
             var selectedNumber by remember { mutableStateOf(ConvertNumber.DEC.toString()) }
 
             DialogTitle(text = stringResource(id = R.string.dialog_title_convert))
@@ -57,7 +57,7 @@ fun ConvertDialog() {
             val modes = persistentListOf(
                 ConvertMode.ALL,
                 ConvertMode.SKIP_BR,
-                ConvertMode.SELECTOR_HIGH,
+                ConvertMode.MOJIBAKE,
                 ConvertMode.SELECTOR_LOW,
                 ConvertMode.REMOVE,
             )
@@ -65,8 +65,7 @@ fun ConvertDialog() {
                 when (selectedText) {
                     ConvertMode.ALL -> context.getString(R.string.manu_text_mode_all)
                     ConvertMode.SKIP_BR -> context.getString(R.string.manu_text_mode_slip_br)
-                    ConvertMode.SELECTOR_HIGH -> context.getString(R.string.manu_text_mode_selector_high)
-                    ConvertMode.SELECTOR_LOW -> context.getString(R.string.manu_text_mode_selector_low)
+                    ConvertMode.MOJIBAKE -> context.getString(R.string.manu_text_mode_mojibake)
                     ConvertMode.REMOVE -> context.getString(R.string.manu_text_mode_remove)
                     else -> throw Exception()
                 }
