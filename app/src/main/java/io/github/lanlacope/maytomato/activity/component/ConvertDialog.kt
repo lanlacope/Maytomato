@@ -58,7 +58,6 @@ fun ConvertDialog() {
                 ConvertMode.ALL,
                 ConvertMode.SKIP_BR,
                 ConvertMode.MOJIBAKE,
-                ConvertMode.SELECTOR_LOW,
                 ConvertMode.REMOVE,
             )
             val modeText: (String) -> String = { selectedText ->
