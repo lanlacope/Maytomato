@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -18,13 +19,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.clazz.ConvertMode
 import io.github.lanlacope.maytomato.clazz.ConvertNumber
 import io.github.lanlacope.maytomato.clazz.propaty.Simeji
 import io.github.lanlacope.maytomato.clazz.rememberStringConverter
-import kotlinx.collections.immutable.persistentListOf
+import io.github.lanlacope.rewheel.composeable.ui.busy.manu.BusyManu
+import io.github.lanlacope.rewheel.composeable.ui.busy.option.text
+import io.github.lanlacope.rewheel.composeable.ui.button.layout.ManuButton
+import io.github.lanlacope.rewheel.composeable.ui.dialog.SimpleDialog
 
 @Composable
 fun ConvertDialog() {
@@ -33,10 +37,10 @@ fun ConvertDialog() {
     val activity = context as Activity
     val stringConverter = rememberStringConverter()
 
-    Dialog(
-        onDismissRequest = {
-           activity.finish()
-        },
+    SimpleDialog(
+        expanded = true,
+        onDismissRequest = { activity.finish() },
+        properties = DialogProperties()
     ) {
         Column(
             modifier = Modifier
@@ -48,57 +52,61 @@ fun ConvertDialog() {
 
         ) {
 
-            val text = remember { mutableStateOf("") }
-            var selectedMode by remember { mutableStateOf(ConvertMode.MOJIBAKE) }
-            var selectedNumber by remember { mutableStateOf(ConvertNumber.DEC.toString()) }
-
             DialogTitle(text = stringResource(id = R.string.dialog_title_convert))
 
-            val modes = persistentListOf(
-                ConvertMode.ALL,
-                ConvertMode.SKIP_BR,
-                ConvertMode.MOJIBAKE,
-                ConvertMode.REMOVE,
-            )
-            val modeText: (String) -> String = { selectedText ->
-                when (selectedText) {
-                    ConvertMode.ALL -> context.getString(R.string.manu_text_mode_all)
-                    ConvertMode.SKIP_BR -> context.getString(R.string.manu_text_mode_slip_br)
-                    ConvertMode.MOJIBAKE -> context.getString(R.string.manu_text_mode_mojibake)
-                    ConvertMode.REMOVE -> context.getString(R.string.manu_text_mode_remove)
-                    else -> throw Exception()
-                }
-            }
-            val refrectionModeManu: (String) -> Unit = { newMode ->
-                selectedMode = newMode
-            }
-            OptionManu(
-                selectedText = selectedMode,
-                options = modes,
-                optionText = modeText,
-                refrection = refrectionModeManu
-            )
+            var modeManuShown by remember { mutableStateOf(false) }
+            val modes = remember { mutableStateMapOf(
+                    ConvertMode.ALL to context.getString(R.string.manu_text_mode_all),
+                    ConvertMode.SKIP_BR to context.getString(R.string.manu_text_mode_slip_br),
+                    ConvertMode.MOJIBAKE to context.getString(R.string.manu_text_mode_mojibake),
+                    ConvertMode.REMOVE to context.getString(R.string.manu_text_mode_remove)
+            )}
+            var selectedMode by remember { mutableStateOf(ConvertMode.MOJIBAKE) }
 
-            val numbers = persistentListOf(
-                ConvertNumber.DEC.toString(),
-                ConvertNumber.HEX.toString()
-            )
-            val numberText: (String) -> String = { selectedText ->
-                when (selectedText) {
-                    ConvertNumber.DEC.toString() -> context.getString(R.string.manu_text_number_decimal)
-                    ConvertNumber.HEX.toString() -> context.getString(R.string.manu_text_number_hexadecima)
-                    else -> throw Exception()
+            ManuButton(
+                text = modes[selectedMode]!!,
+                onClick = { modeManuShown = true }
+            ) {
+                BusyManu(
+                    expanded = modeManuShown,
+                    onDismissRequest = { modeManuShown = false }
+                ) {
+                    text(
+                        options = modes,
+                        onClick = {
+                            selectedMode = it
+                            modeManuShown = false
+                        }
+                    )
                 }
             }
-            val refrectionNumberManu: (String) -> Unit = { newNumber ->
-                selectedNumber = newNumber
+
+            var numberManuShown by remember { mutableStateOf(false) }
+            val numbers = remember { mutableStateMapOf(
+                ConvertNumber.DEC to  context.getString(R.string.manu_text_number_decimal),
+                ConvertNumber.HEX to  context.getString(R.string.manu_text_number_hexadecima)
+            )}
+            var selectedNumber by remember { mutableStateOf(ConvertNumber.DEC) }
+
+            ManuButton(
+                text = numbers[selectedNumber]!!,
+                onClick = { numberManuShown = true }
+            ) {
+                BusyManu(
+                    expanded = numberManuShown,
+                    onDismissRequest = { numberManuShown = false }
+                ) {
+                    text(
+                        options = numbers,
+                        onClick = {
+                            selectedNumber = it
+                            numberManuShown = false
+                        }
+                    )
+                }
             }
-            OptionManu(
-                selectedText = selectedNumber,
-                options = numbers,
-                optionText = numberText,
-                refrection = refrectionNumberManu
-            )
+
+            val text = remember { mutableStateOf("") }
 
             DialogTextField(
                 text = text,

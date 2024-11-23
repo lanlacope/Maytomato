@@ -16,6 +16,12 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url = uri("https://maven.pkg.github.com/lanlacope/android-rewheel")
+            credentials {
+                username = "lanlacope"
+            }
+        }
     }
 }
 

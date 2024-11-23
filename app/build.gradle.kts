@@ -70,4 +70,6 @@ dependencies {
 
     implementation(libs.coroutines.core)
     implementation(libs.collections.immutable)
+
+    implementation(libs.lanlacope.rewheel.basic)
 }
