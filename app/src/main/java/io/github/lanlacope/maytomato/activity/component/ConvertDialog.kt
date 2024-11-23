@@ -3,7 +3,9 @@ package io.github.lanlacope.maytomato.activity.component
 import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
@@ -11,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,12 +26,15 @@ import androidx.compose.ui.window.DialogProperties
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.clazz.ConvertMode
 import io.github.lanlacope.maytomato.clazz.ConvertNumber
+import io.github.lanlacope.maytomato.clazz.ConvertOption
 import io.github.lanlacope.maytomato.clazz.propaty.Simeji
 import io.github.lanlacope.maytomato.clazz.rememberStringConverter
+import io.github.lanlacope.rewheel.composeable.ui.action.option.OptionCheckBox
 import io.github.lanlacope.rewheel.composeable.ui.busy.manu.BusyManu
 import io.github.lanlacope.rewheel.composeable.ui.busy.option.text
 import io.github.lanlacope.rewheel.composeable.ui.button.layout.ManuButton
 import io.github.lanlacope.rewheel.composeable.ui.dialog.SimpleDialog
+import io.github.lanlacope.rewheel.function.toggle
 
 @Composable
 fun ConvertDialog() {
@@ -53,6 +59,8 @@ fun ConvertDialog() {
         ) {
 
             DialogTitle(text = stringResource(id = R.string.dialog_title_convert))
+
+            val selectedOptions = remember { mutableStateListOf<String>() }
 
             var modeManuShown by remember { mutableStateOf(false) }
             val modes = remember { mutableStateMapOf(
@@ -88,22 +96,35 @@ fun ConvertDialog() {
             )}
             var selectedNumber by remember { mutableStateOf(ConvertNumber.DEC) }
 
-            ManuButton(
-                text = numbers[selectedNumber]!!,
-                onClick = { numberManuShown = true }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                BusyManu(
-                    expanded = numberManuShown,
-                    onDismissRequest = { numberManuShown = false }
+                ManuButton(
+                    text = numbers[selectedNumber]!!,
+                    onClick = { numberManuShown = true }
                 ) {
-                    text(
-                        options = numbers,
-                        onClick = {
-                            selectedNumber = it
-                            numberManuShown = false
-                        }
-                    )
+                    BusyManu(
+                        expanded = numberManuShown,
+                        onDismissRequest = { numberManuShown = false }
+                    ) {
+                        text(
+                            options = numbers,
+                            onClick = {
+                                selectedNumber = it
+                                numberManuShown = false
+                            }
+                        )
+                    }
                 }
+
+                OptionCheckBox(
+                    text = stringResource(id = R.string.manu_text_option_entity),
+                    checked = selectedOptions.contains(ConvertOption.ENTITY),
+                    onClick = {
+                        selectedOptions.toggle(ConvertOption.ENTITY)
+                    }
+                )
             }
 
             val text = remember { mutableStateOf("") }
@@ -116,7 +137,12 @@ fun ConvertDialog() {
             TextButton(
                 onClick = {
                     val output =
-                        stringConverter.convert(text.value, selectedMode, selectedNumber.toInt())
+                        stringConverter.startConvert(
+                            rawText = text.value,
+                            mode = selectedMode,
+                            number = selectedNumber,
+                            options = selectedOptions
+                        )
                     val intent = Intent().apply {
                         putExtra(Simeji.REPLACE_KEY, output)
                     }

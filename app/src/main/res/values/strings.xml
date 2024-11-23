@@ -11,4 +11,5 @@
     <string name="manu_text_mode_remove">文字化け対策で削除</string>
     <string name="manu_text_number_decimal">10進数に変換</string>
     <string name="manu_text_number_hexadecima">16進数に変換</string>
+    <string name="manu_text_option_entity">実体参照に変換</string>
 </resources>
