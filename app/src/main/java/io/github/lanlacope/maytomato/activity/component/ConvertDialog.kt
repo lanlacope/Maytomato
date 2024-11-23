@@ -3,9 +3,8 @@ package io.github.lanlacope.maytomato.activity.component
 import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
@@ -22,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.window.DialogProperties
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.clazz.ConvertMode
@@ -60,15 +60,15 @@ fun ConvertDialog() {
 
             DialogTitle(text = stringResource(id = R.string.dialog_title_convert))
 
-            val selectedOptions = remember { mutableStateListOf<String>() }
-
             var modeManuShown by remember { mutableStateOf(false) }
-            val modes = remember { mutableStateMapOf(
+            val modes = remember {
+                mutableStateMapOf(
                     ConvertMode.ALL to context.getString(R.string.manu_text_mode_all),
                     ConvertMode.SKIP_BR to context.getString(R.string.manu_text_mode_slip_br),
                     ConvertMode.MOJIBAKE to context.getString(R.string.manu_text_mode_mojibake),
                     ConvertMode.REMOVE to context.getString(R.string.manu_text_mode_remove)
-            )}
+                )
+            }
             var selectedMode by remember { mutableStateOf(ConvertMode.MOJIBAKE) }
 
             ManuButton(
@@ -90,42 +90,44 @@ fun ConvertDialog() {
             }
 
             var numberManuShown by remember { mutableStateOf(false) }
-            val numbers = remember { mutableStateMapOf(
-                ConvertNumber.DEC to  context.getString(R.string.manu_text_number_decimal),
-                ConvertNumber.HEX to  context.getString(R.string.manu_text_number_hexadecima)
-            )}
-            var selectedNumber by remember { mutableStateOf(ConvertNumber.DEC) }
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                ManuButton(
-                    text = numbers[selectedNumber]!!,
-                    onClick = { numberManuShown = true }
-                ) {
-                    BusyManu(
-                        expanded = numberManuShown,
-                        onDismissRequest = { numberManuShown = false }
-                    ) {
-                        text(
-                            options = numbers,
-                            onClick = {
-                                selectedNumber = it
-                                numberManuShown = false
-                            }
-                        )
-                    }
-                }
-
-                OptionCheckBox(
-                    text = stringResource(id = R.string.manu_text_option_entity),
-                    checked = selectedOptions.contains(ConvertOption.ENTITY),
-                    onClick = {
-                        selectedOptions.toggle(ConvertOption.ENTITY)
-                    }
+            val numbers = remember {
+                mutableStateMapOf(
+                    ConvertNumber.DEC to context.getString(R.string.manu_text_number_decimal),
+                    ConvertNumber.HEX to context.getString(R.string.manu_text_number_hexadecima)
                 )
             }
+            var selectedNumber by remember { mutableStateOf(ConvertNumber.DEC) }
+
+            ManuButton(
+                text = numbers[selectedNumber]!!,
+                onClick = { numberManuShown = true }
+            ) {
+                BusyManu(
+                    expanded = numberManuShown,
+                    onDismissRequest = { numberManuShown = false }
+                ) {
+                    text(
+                        options = numbers,
+                        onClick = {
+                            selectedNumber = it
+                            numberManuShown = false
+                        }
+                    )
+                }
+            }
+
+            val selectedOptions = remember { mutableStateListOf<String>() }
+
+            OptionCheckBox(
+                text = stringResource(id = R.string.manu_text_option_entity),
+                textStyle = TextStyle(),
+                innerPadding = PaddingValues(),
+                checked = selectedOptions.contains(ConvertOption.ENTITY),
+                onClick = {
+                    selectedOptions.toggle(ConvertOption.ENTITY)
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
 
             val text = remember { mutableStateOf("") }
 
