@@ -6,6 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -52,9 +54,8 @@ fun ConvertDialog() {
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .background(
-                    MaterialTheme.colorScheme.background
-                )
+                .imePadding()
+                .systemBarsPadding()
 
         ) {
 
