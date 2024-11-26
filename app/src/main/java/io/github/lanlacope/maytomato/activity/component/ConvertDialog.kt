@@ -3,10 +3,7 @@ package io.github.lanlacope.maytomato.activity.component
 import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -21,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.window.DialogProperties
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.clazz.ConvertMode
@@ -29,7 +25,7 @@ import io.github.lanlacope.maytomato.clazz.ConvertNumber
 import io.github.lanlacope.maytomato.clazz.ConvertOption
 import io.github.lanlacope.maytomato.clazz.propaty.Simeji
 import io.github.lanlacope.maytomato.clazz.rememberStringConverter
-import io.github.lanlacope.rewheel.composeable.ui.action.option.OptionCheckBox
+import io.github.lanlacope.rewheel.composeable.ui.action.option.CompactOptionCheckBox
 import io.github.lanlacope.rewheel.composeable.ui.busy.manu.BusyManu
 import io.github.lanlacope.rewheel.composeable.ui.busy.option.text
 import io.github.lanlacope.rewheel.composeable.ui.button.layout.ManuButton
@@ -52,8 +48,6 @@ fun ConvertDialog() {
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .imePadding()
-                .systemBarsPadding()
 
         ) {
 
@@ -117,10 +111,8 @@ fun ConvertDialog() {
 
             val selectedOptions = remember { mutableStateListOf<String>() }
 
-            OptionCheckBox(
+            CompactOptionCheckBox(
                 text = stringResource(id = R.string.manu_text_option_entity),
-                textStyle = TextStyle(),
-                innerPadding = PaddingValues(),
                 checked = selectedOptions.contains(ConvertOption.ENTITY),
                 onClick = {
                     selectedOptions.toggle(ConvertOption.ENTITY)

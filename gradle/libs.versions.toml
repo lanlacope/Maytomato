@@ -12,7 +12,7 @@ composeBom = "2024.11.00"
 coroutinesCore = "1.6.4"
 collectionsImmutable = "0.3.5"
 
-lanlacope = "1.0.0"
+lanlacope = "1.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
