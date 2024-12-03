@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.window.DialogProperties
 import io.github.lanlacope.collection.collection.toggle
 import io.github.lanlacope.compose.ui.action.option.CompactOptionCheckBox
 import io.github.lanlacope.compose.ui.busy.manu.BusyManu
