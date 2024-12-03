@@ -19,18 +19,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
+import io.github.lanlacope.collection.collection.toggle
+import io.github.lanlacope.compose.ui.action.option.CompactOptionCheckBox
+import io.github.lanlacope.compose.ui.busy.manu.BusyManu
+import io.github.lanlacope.compose.ui.busy.option.text
+import io.github.lanlacope.compose.ui.button.layout.ManuButton
+import io.github.lanlacope.compose.ui.dialog.GrowDialog
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.clazz.ConvertMode
 import io.github.lanlacope.maytomato.clazz.ConvertNumber
 import io.github.lanlacope.maytomato.clazz.ConvertOption
 import io.github.lanlacope.maytomato.clazz.propaty.Simeji
 import io.github.lanlacope.maytomato.clazz.rememberStringConverter
-import io.github.lanlacope.rewheel.composeable.ui.action.option.CompactOptionCheckBox
-import io.github.lanlacope.rewheel.composeable.ui.busy.manu.BusyManu
-import io.github.lanlacope.rewheel.composeable.ui.busy.option.text
-import io.github.lanlacope.rewheel.composeable.ui.button.layout.ManuButton
-import io.github.lanlacope.rewheel.composeable.ui.dialog.SimpleDialog
-import io.github.lanlacope.rewheel.function.toggle
 
 @Composable
 fun ConvertDialog() {
@@ -39,10 +39,9 @@ fun ConvertDialog() {
     val activity = context as Activity
     val stringConverter = rememberStringConverter()
 
-    SimpleDialog(
+    GrowDialog(
         expanded = true,
-        onDismissRequest = { activity.finish() },
-        properties = DialogProperties()
+        onDismissRequest = { activity.finish() }
     ) {
         Column(
             modifier = Modifier
