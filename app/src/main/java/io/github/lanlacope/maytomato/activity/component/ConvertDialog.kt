@@ -143,9 +143,9 @@ fun ConvertDialog() {
                 },
                 minLines = 3,
                 modifier = Modifier
-                    .padding(all = 8.dp)
                     .fillMaxWidth()
                     .weight(weight = 1f, fill = false)
+                    .padding(all = 8.dp)
             )
 
             TextButton(
