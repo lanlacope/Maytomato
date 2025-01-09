@@ -54,7 +54,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.activity.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -62,6 +61,10 @@ dependencies {
 
     implementation(libs.coroutines.core)
     implementation(libs.collections.immutable)
+
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.navigation.compose)
+
 
     implementation(libs.lanlacope.rewheel.compose)
 }

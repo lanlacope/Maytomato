@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import io.github.lanlacope.collection.collection.toggle
 import io.github.lanlacope.compose.ui.action.option.CompactOptionCheckBox
 import io.github.lanlacope.compose.ui.busy.manu.BusyManu
-import io.github.lanlacope.compose.ui.busy.option.text
+import io.github.lanlacope.compose.ui.busy.option.texts
 import io.github.lanlacope.compose.ui.button.layout.ManuButton
 import io.github.lanlacope.compose.ui.dialog.GrowDialog
 import io.github.lanlacope.maytomato.R
@@ -78,7 +78,7 @@ fun ConvertDialog() {
                     expanded = modeManuShown,
                     onDismissRequest = { modeManuShown = false }
                 ) {
-                    text(
+                    texts(
                         options = modes,
                         onClick = {
                             selectedMode = it
@@ -105,7 +105,7 @@ fun ConvertDialog() {
                     expanded = numberManuShown,
                     onDismissRequest = { numberManuShown = false }
                 ) {
-                    text(
+                    texts(
                         options = numbers,
                         onClick = {
                             selectedNumber = it
