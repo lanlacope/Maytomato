@@ -18,9 +18,6 @@ import androidx.compose.ui.res.stringResource
 import io.github.lanlacope.compose.ui.action.setting.SettingTextButton
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.SETTING_MINHEIGHT
-import io.github.lanlacope.maytomato.clazz.propaty.AppGitHost
-import io.github.lanlacope.maytomato.clazz.propaty.getLatestVersion
-import io.github.lanlacope.maytomato.clazz.propaty.versionName
 
 /*
  * このアプリの情報を表示

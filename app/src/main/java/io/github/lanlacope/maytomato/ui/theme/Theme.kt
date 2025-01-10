@@ -12,8 +12,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import io.github.lanlacope.maytomato.clazz.AppTheme
 import io.github.lanlacope.maytomato.clazz.ThemeManager
-import io.github.lanlacope.maytomato.clazz.propaty.ThemeJsonPropaty
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -50,22 +50,20 @@ fun MaytomatoTheme(
 ) {
     val themeManager = ThemeManager(LocalContext.current)
 
-    var theme by remember { mutableStateOf(ThemeJsonPropaty.THEME_SYSTEM) }
+    var theme by remember { mutableStateOf(AppTheme.SYSTEM) }
 
     LaunchedEffect(Unit) {
         theme = themeManager.getAppTheme()
     }
 
-
     LaunchedEffect(updateThemeKey.value) {
         theme = themeManager.getAppTheme()
     }
 
-
     val colorScheme = when (theme) {
-        ThemeJsonPropaty.THEME_LIGHT -> LightColorScheme
-        ThemeJsonPropaty.THEME_DARK -> DarkColorScheme
-        else -> if (darkTheme) DarkColorScheme else LightColorScheme
+        AppTheme.LIGHT -> LightColorScheme
+        AppTheme.DARK -> DarkColorScheme
+        AppTheme.SYSTEM -> if (darkTheme) DarkColorScheme else LightColorScheme
     }
 
     /*

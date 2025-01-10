@@ -36,7 +36,6 @@ import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.clazz.ConvertMode
 import io.github.lanlacope.maytomato.clazz.ConvertNumber
 import io.github.lanlacope.maytomato.clazz.ConvertOption
-import io.github.lanlacope.maytomato.clazz.propaty.Simeji
 import io.github.lanlacope.maytomato.clazz.rememberStringConverter
 
 @Composable
@@ -173,4 +172,8 @@ fun ConvertDialog() {
             }
         }
     }
+}
+
+object Simeji {
+    const val REPLACE_KEY = "replace_key"
 }

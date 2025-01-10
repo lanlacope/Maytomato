@@ -1,5 +1,7 @@
 package io.github.lanlacope.maytomato.activity.component
 
+import android.app.Activity
+import android.content.pm.PackageManager
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,10 +22,14 @@ import io.github.lanlacope.compose.ui.action.setting.SettingTextButton
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.SETTING_MINHEIGHT
 import io.github.lanlacope.maytomato.activity.SettingNavi
-import io.github.lanlacope.maytomato.clazz.propaty.ThemeJsonPropaty
+import io.github.lanlacope.maytomato.clazz.AppTheme
 import io.github.lanlacope.maytomato.clazz.rememberThemeManager
 import io.github.lanlacope.maytomato.ui.theme.updateTheme
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
+import java.net.URL
 
 /*
  * 設定の一覧を
@@ -38,22 +44,18 @@ fun SettingRoot(navController: NavHostController) {
     Column(modifier = Modifier.fillMaxSize()) {
 
         val scope = rememberCoroutineScope()
-        val settingManager = rememberThemeManager()
+        val themeManager = rememberThemeManager()
 
         var themeSelectDialogShown by remember { mutableStateOf(false) }
-        var selectedTheme by remember { mutableStateOf(ThemeJsonPropaty.THEME_SYSTEM) }
+        var selectedTheme by remember { mutableStateOf(AppTheme.SYSTEM) }
 
         LaunchedEffect(Unit) {
-            selectedTheme = settingManager.getAppTheme()
+            selectedTheme = themeManager.getAppTheme()
         }
 
         val themes = remember {
-            ThemeJsonPropaty.APP_THEME_LIST.associateWith { theme ->
-                when (theme) {
-                    ThemeJsonPropaty.THEME_LIGHT -> context.getString(R.string.setting_theme_value_light)
-                    ThemeJsonPropaty.THEME_DARK -> context.getString(R.string.setting_theme_value_dark)
-                    else -> context.getString(R.string.setting_theme_value_system)
-                }
+            AppTheme.entries.associateWith { theme ->
+                theme.getStringResource(context)
             }.toMutableStateMap()
         }
 
@@ -73,7 +75,7 @@ fun SettingRoot(navController: NavHostController) {
             onConfirm = { newTheme ->
                 scope.launch {
                     selectedTheme = newTheme
-                    settingManager.changeAppTheme(newTheme)
+                    themeManager.changeAppTheme(newTheme)
                     updateTheme()
                     themeSelectDialogShown = false
                 }
@@ -88,5 +90,36 @@ fun SettingRoot(navController: NavHostController) {
                 .fillMaxWidth()
                 .heightIn(min = SETTING_MINHEIGHT)
         )
+    }
+}
+
+object AppGitHost {
+    const val SOURCE: String = "https://github.com/lanlacope/Maytomato"
+    const val LICENSE: String = "https://github.com/lanlacope/Maytomato/blob/master/README.MD#license"
+    const val LATEST: String = "https://github.com/lanlacope/Maytomato/releases/latest"
+    const val LATEST_API: String = "https://api.github.com/repos/Maytomato/NXShare/releases/latest"
+    const val LATEST_TAG: String = "tag_name"
+}
+
+@Composable
+fun versionName(): String? {
+    val activity = LocalContext.current as Activity
+    val name = activity.getPackageName()
+
+    val pm: PackageManager = activity.getPackageManager()
+
+    val info = pm.getPackageInfo(name, PackageManager.GET_META_DATA)
+
+    return info.versionName
+}
+
+suspend fun getLatestVersion(): String? = withContext(Dispatchers.Default) {
+    try {
+        val response = URL(AppGitHost.LATEST_API).readText()
+        println(response)
+        val jsonObject = JSONObject(response)
+        return@withContext jsonObject.getString(AppGitHost.LATEST_TAG)
+    } catch (e: Exception) {
+        null
     }
 }

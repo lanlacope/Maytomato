@@ -4,13 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import io.github.lanlacope.compose.ui.dialog.option.RadioButtonDialog
 import io.github.lanlacope.maytomato.R
+import io.github.lanlacope.maytomato.clazz.AppTheme
 
 @Composable
 fun ThemeSelectDialog(
     expanded: Boolean,
-    selectedTheme: String,
-    themes: Map<String, String>,
-    onConfirm: (theme: String) -> Unit,
+    selectedTheme: AppTheme,
+    themes: Map<AppTheme, String>,
+    onConfirm: (theme: AppTheme) -> Unit,
     onCancel: () -> Unit,
 ) {
     RadioButtonDialog(
