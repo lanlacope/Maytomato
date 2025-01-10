@@ -1,17 +1,18 @@
 package io.github.lanlacope.maytomato.activity
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import io.github.lanlacope.maytomato.activity.component.SettingAbout
+import io.github.lanlacope.maytomato.activity.component.SettingRoot
 import io.github.lanlacope.maytomato.ui.theme.MaytomatoTheme
 
 class SettingActivity : ComponentActivity() {
@@ -22,30 +23,31 @@ class SettingActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
-                ) { Greeting() }
+                ) {
+                    SettingView()
+                }
             }
         }
     }
 }
 
+object SettingNavi {
+    const val ROOT = "Root"
+
+    const val ABOUT = "About"
+}
+
+val SETTING_MINHEIGHT = 80.dp
+
 @Composable
-private fun Greeting() {
-    Column(
-        modifier = Modifier.fillMaxSize()
+fun SettingView() {
+    val navController = rememberNavController()
+    NavHost(
+        navController = navController,
+        startDestination = SettingNavi.ROOT
     ) {
-        Text(
-            text = "後で設定画面になる"
-        )
+        composable(SettingNavi.ROOT) { SettingRoot(navController) }
 
-        val context = LocalContext.current
-
-        Button(onClick = {
-            val intent = Intent(context, MainActivity::class.java)
-            context.startActivity(intent)
-        }) {
-            Text(
-                text = "TEST"
-            )
-        }
+        composable(SettingNavi.ABOUT) { SettingAbout() }
     }
 }

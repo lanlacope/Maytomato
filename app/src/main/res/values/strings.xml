@@ -12,4 +12,22 @@
     <string name="manu_text_number_decimal">10進数に変換</string>
     <string name="manu_text_number_hexadecima">16進数に変換</string>
     <string name="manu_text_option_entity">実体参照に変換</string>
+
+
+    <!-- Dialog Message -->
+    <string name="dialog_positive_apply">適用</string>
+    <string name="dialog_negative_cancel">キャンセル</string>
+    <string name="dialog_title_theme">アプリテーマ選択</string>
+
+    <!-- Setting -->
+    <string name="setting_theme">アプリテーマ</string>
+    <string name="setting_theme_value_system">システムのテーマに従う</string>
+    <string name="setting_theme_value_light">ライトテーマ</string>
+    <string name="setting_theme_value_dark">ダークテーマ</string>
+
+    <string name="setting_about">このアプリについて</string>
+    <string name="setting_about_licence">ライセンス</string>
+    <string name="setting_about_source">オープンソースプロジェクト</string>
+    <string name="setting_about_version">バージョン</string>
+    <string name="setting_about_version_update">アップデートがあります。</string>
 </resources>
