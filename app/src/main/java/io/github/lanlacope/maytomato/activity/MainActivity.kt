@@ -4,12 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import io.github.lanlacope.maytomato.activity.component.ConvertDialog
-import io.github.lanlacope.maytomato.ui.theme.Clear
 import io.github.lanlacope.maytomato.ui.theme.MaytomatoTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,7 +19,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier
                         .fillMaxSize(),
-                    color = Clear
+                    color = Color.Transparent
                 ) {
                     ConvertDialog()
                 }

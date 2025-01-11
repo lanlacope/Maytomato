@@ -3,6 +3,7 @@ package io.github.lanlacope.maytomato.activity.component
 import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -69,24 +70,6 @@ fun ConvertDialog() {
                 )
             }
 
-            ManuButton(
-                text = modes[selectedMode]!!,
-                onClick = { modeManuShown = true }
-            ) {
-                BusyManu(
-                    expanded = modeManuShown,
-                    onDismissRequest = { modeManuShown = false }
-                ) {
-                    texts(
-                        options = modes,
-                        onClick = {
-                            selectedMode = it
-                            modeManuShown = false
-                        }
-                    )
-                }
-            }
-
             var selectedNumber by remember { mutableIntStateOf(ConvertNumber.DEC) }
             var numberManuShown by remember { mutableStateOf(false) }
             val numbers = remember {
@@ -96,21 +79,41 @@ fun ConvertDialog() {
                 )
             }
 
-            ManuButton(
-                text = numbers[selectedNumber]!!,
-                onClick = { numberManuShown = true }
-            ) {
-                BusyManu(
-                    expanded = numberManuShown,
-                    onDismissRequest = { numberManuShown = false }
+            Row {
+                ManuButton(
+                    text = modes[selectedMode]!!,
+                    onClick = { modeManuShown = true }
                 ) {
-                    texts(
-                        options = numbers,
-                        onClick = {
-                            selectedNumber = it
-                            numberManuShown = false
-                        }
-                    )
+                    BusyManu(
+                        expanded = modeManuShown,
+                        onDismissRequest = { modeManuShown = false }
+                    ) {
+                        texts(
+                            options = modes,
+                            onClick = {
+                                selectedMode = it
+                                modeManuShown = false
+                            }
+                        )
+                    }
+                }
+
+                ManuButton(
+                    text = numbers[selectedNumber]!!,
+                    onClick = { numberManuShown = true }
+                ) {
+                    BusyManu(
+                        expanded = numberManuShown,
+                        onDismissRequest = { numberManuShown = false }
+                    ) {
+                        texts(
+                            options = numbers,
+                            onClick = {
+                                selectedNumber = it
+                                numberManuShown = false
+                            }
+                        )
+                    }
                 }
             }
 

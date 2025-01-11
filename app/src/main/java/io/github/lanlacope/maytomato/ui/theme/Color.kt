@@ -12,6 +12,5 @@ val PaupleLight = Color(0xFFD1D1FF)
 val BlueDark = Color(0xFF7FBFFF)
 val BlueLight = Color(0xFFA8D3FF)
 
-val Gray = Color(0xFFC4C4C4)
 val White = Color(0xFFF9F9F9)
 val Black = Color(0xFF7F7F7F)
