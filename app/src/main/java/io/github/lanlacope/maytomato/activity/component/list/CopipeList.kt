@@ -1,4 +1,4 @@
-package io.github.lanlacope.maytomato.activity.component
+package io.github.lanlacope.maytomato.activity.component.list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,6 +31,7 @@ import io.github.lanlacope.compose.ui.animation.DrawUpAnimated
 import io.github.lanlacope.compose.ui.animation.FadeInAnimated
 import io.github.lanlacope.compose.ui.button.combined.CombinedColumnButton
 import io.github.lanlacope.compose.ui.lazy.animatedItems
+import io.github.lanlacope.maytomato.activity.component.DisplayPadding
 import io.github.lanlacope.maytomato.activity.component.dialog.CopipeAddDialog
 import io.github.lanlacope.maytomato.activity.component.dialog.CopipeEditDialog
 import io.github.lanlacope.maytomato.activity.component.dialog.CopipeRemoveDialog

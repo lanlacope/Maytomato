@@ -72,8 +72,8 @@ class CopipeManager(context: Context) {
             return@withContext Result.failure(Exception())
         }
 
-        copipeObject.put(title, text)
         copipeObject.remove(lastTitle)
+        copipeObject.put(title, text)
         copopeFile.writeText(copipeObject.toString())
 
         return@withContext Result.success(CopipeData(title, text))
@@ -127,6 +127,27 @@ class CopipeManager(context: Context) {
         return@withContext Result.success(CopipeData(title, text))
     }
 
+    suspend fun editAa(title: String, text: String, lastTitle: String): Result<CopipeData>  = withContext(Dispatchers.IO) {
+
+        val aaFile = appContext.getAaListFile()
+
+        val aaObject = try {
+            JSONObject(aaFile.readText())
+        } catch (e: JSONException) {
+            JSONObject()
+        }
+
+        if (aaObject.keyList().contains(title)) {
+            return@withContext Result.failure(Exception())
+        }
+
+        aaObject.remove(lastTitle)
+        aaObject.put(title, text)
+        aaFile.writeText(aaObject.toString())
+
+        return@withContext Result.success(CopipeData(title, text))
+    }
+
     suspend fun removeAa(title: String) = withContext(Dispatchers.IO) {
         val aaFile = appContext.getAaListFile()
 
@@ -140,7 +161,7 @@ class CopipeManager(context: Context) {
         aaFile.writeText(aaObject.toString())
     }
 
-    suspend fun getCommand(): List<CopipeData> = withContext(Dispatchers.IO) {
+    suspend fun getCommandList(): List<CopipeData> = withContext(Dispatchers.IO) {
         val commandObject = try {
             JSONObject(appContext.getCommandListFile().readText())
         } catch (e: JSONException) {
@@ -169,6 +190,27 @@ class CopipeManager(context: Context) {
             return@withContext Result.failure(Exception())
         }
 
+        commandObject.put(title, text)
+        commandFile.writeText(commandObject.toString())
+
+        return@withContext Result.success(CopipeData(title, text))
+    }
+
+    suspend fun editCommand(title: String, text: String, lastTitle: String): Result<CopipeData>  = withContext(Dispatchers.IO) {
+
+        val commandFile = appContext.getCommandListFile()
+
+        val commandObject = try {
+            JSONObject(commandFile.readText())
+        } catch (e: JSONException) {
+            JSONObject()
+        }
+
+        if (commandObject.keyList().contains(title)) {
+            return@withContext Result.failure(Exception())
+        }
+
+        commandObject.remove(lastTitle)
         commandObject.put(title, text)
         commandFile.writeText(commandObject.toString())
 
