@@ -99,7 +99,7 @@ fun CommandEditDialog(
             OutlinedInputTextField(
                 text = dText,
                 onTextChange = { dText = it },
-                hintText = stringResource(id = R.string.hint_aa_text),
+                hintText = stringResource(id = R.string.hint_command_text),
                 useLabel = true,
                 modifier = Modifier
                     .fillMaxWidth()

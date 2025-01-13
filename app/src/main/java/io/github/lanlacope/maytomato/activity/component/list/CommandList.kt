@@ -34,6 +34,7 @@ import io.github.lanlacope.compose.ui.lazy.animatedItems
 import io.github.lanlacope.maytomato.activity.component.DisplayPadding
 import io.github.lanlacope.maytomato.activity.component.dialog.CommandAddDialog
 import io.github.lanlacope.maytomato.activity.component.dialog.CommandEditDialog
+import io.github.lanlacope.maytomato.activity.component.dialog.CommandRemoveDialog
 import io.github.lanlacope.maytomato.activity.component.dialog.CopipeRemoveDialog
 import io.github.lanlacope.maytomato.clazz.CopipeData
 import io.github.lanlacope.maytomato.clazz.rememberCopipeManager
@@ -182,7 +183,7 @@ private fun CommandItem(copipeData: CopipeData) {
                 onCancel = { editDialogShown = false }
             )
 
-            CopipeRemoveDialog(
+            CommandRemoveDialog(
                 expanded = removeDialogShown,
                 title = title,
                 onConfirm = { removedTitle ->

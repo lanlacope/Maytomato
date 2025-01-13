@@ -1,8 +1,10 @@
 package io.github.lanlacope.maytomato.activity.component.dialog
 
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -11,6 +13,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.lanlacope.compose.ui.dialog.GrowDialog
@@ -55,10 +60,15 @@ fun AAAddDialog(
                 onTextChange = { text = it },
                 hintText = stringResource(id = R.string.hint_aa_text),
                 useLabel = true,
+                textStyle = TextStyle.Default.copy(
+                    fontFamily = FontFamily(Font(resId = R.font.mona))
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(weight = 1f, fill = false)
                     .padding(all = 8.dp)
+                    .horizontalScroll(rememberScrollState())
+
             )
         }
     }
@@ -101,10 +111,15 @@ fun AAEditDialog(
                 onTextChange = { dText = it },
                 hintText = stringResource(id = R.string.hint_aa_text),
                 useLabel = true,
+                textStyle = TextStyle.Default.copy(
+                    fontFamily = FontFamily(Font(resId = R.font.mona))
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(weight = 1f, fill = false)
                     .padding(all = 8.dp)
+                    .horizontalScroll(rememberScrollState())
+
             )
         }
     }

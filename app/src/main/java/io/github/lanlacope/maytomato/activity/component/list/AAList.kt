@@ -1,5 +1,7 @@
 package io.github.lanlacope.maytomato.activity.component.list
 
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
@@ -159,12 +163,14 @@ private fun AAItem(copipeData: CopipeData) {
                     text = text,
                     fontSize = 8.sp,
                     fontFamily = FontFamily((Font(resId = R.font.mona))),
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(
-                        start = DisplayPadding.START,
-                        end = DisplayPadding.END,
-                        bottom = 8.dp
-                    )
+                    lineHeight = 8.sp,
+                    modifier = Modifier
+                        .padding(
+                            start = DisplayPadding.START,
+                            end = DisplayPadding.END,
+                            bottom = 8.dp
+                        )
+                        .horizontalScroll(rememberScrollState())
                 )
             }
 
