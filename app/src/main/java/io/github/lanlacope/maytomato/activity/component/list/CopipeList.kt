@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -134,10 +135,12 @@ private fun CopipeItem(copipeData: CopipeData) {
         var removeDialogShown by rememberSaveable { mutableStateOf(false) }
 
         CombinedColumnButton(
-            modifier = Modifier.fillMaxWidth(),
             onClick = { editDialogShown = true },
             onLongClick = { removeDialogShown = true },
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 60.dp),
         ) {
             Text(
                 text = title,
