@@ -14,16 +14,45 @@
     <string name="manu_text_option_entity">実体参照に変換</string>
 
 
-    <!-- Dialog Message -->
+    <!-- Dialog -->
+    <string name="dialog_positive_add">追加</string>
+    <string name="dialog_positive_import">インポート</string>
+    <string name="dialog_positive_remove">削除</string>
     <string name="dialog_positive_apply">適用</string>
     <string name="dialog_negative_cancel">キャンセル</string>
+
+
+    <string name="dialog_title_comfirm">確認</string>
     <string name="dialog_title_theme">アプリテーマ選択</string>
+
+    <string name="dialog_title_copipe_add">コピペ追加</string>
+    <string name="dialog_title_copipe_edit">コピペ編集</string>
+    <string name="dialog_title_aa_add">AA追加</string>
+    <string name="dialog_title_aa_edit">AA編集</string>
+    <string name="dialog_title_command_add">コマンド追加</string>
+    <string name="dialog_title_command_edit">コマンド編集</string>
+
+    <!-- TextField Message -->
+    <string name="hint_copipe_title">コピペ名</string>
+    <string name="hint_copipe_text">コピペ</string>
+    <string name="hint_aa_title">AA名</string>
+    <string name="hint_aa_text">AA</string>
+    <string name="hint_command_title">コマンド名</string>
+    <string name="hint_command_text">コマンド</string>
+
+    <string name="confirm_text_copipe_remove">このコピペを削除しますか？</string>
+    <string name="confirm_text_aa_remove">このAAを削除しますか？</string>
+    <string name="confirm_text_command_remove">このコマンドを削除しますか？</string>
+
+    <string name="dialog_input_warning_exists">既に存在しています！</string>
 
     <!-- Setting -->
     <string name="setting_theme">アプリテーマ</string>
     <string name="setting_theme_value_system">システムのテーマに従う</string>
     <string name="setting_theme_value_light">ライトテーマ</string>
     <string name="setting_theme_value_dark">ダークテーマ</string>
+
+    <string name="setting_copipe">コピペ</string>
 
     <string name="setting_about">このアプリについて</string>
     <string name="setting_about_licence">ライセンス</string>

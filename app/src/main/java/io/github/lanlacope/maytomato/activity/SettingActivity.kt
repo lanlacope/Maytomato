@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.lanlacope.maytomato.activity.component.SettingAbout
+import io.github.lanlacope.maytomato.activity.component.SettingCopipe
 import io.github.lanlacope.maytomato.activity.component.SettingRoot
 import io.github.lanlacope.maytomato.ui.theme.MaytomatoTheme
 
@@ -33,7 +34,7 @@ class SettingActivity : ComponentActivity() {
 
 object SettingNavi {
     const val ROOT = "Root"
-
+    const val COPIPE = "Copipe"
     const val ABOUT = "About"
 }
 
@@ -47,7 +48,7 @@ fun SettingView() {
         startDestination = SettingNavi.ROOT
     ) {
         composable(SettingNavi.ROOT) { SettingRoot(navController) }
-
+        composable(SettingNavi.COPIPE) { SettingCopipe() }
         composable(SettingNavi.ABOUT) { SettingAbout() }
     }
 }
