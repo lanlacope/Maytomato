@@ -32,5 +32,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.CopipeSelectActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Maytomato" />
     </application>
 </manifest>

@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Maytomato</string>
     
-    <string name="dialog_title_convert">数値参照変換</string>
     <string name="dialog_hint_convert">テキストを入力</string>
     <string name="dialog_positive_convert">変換</string>
 

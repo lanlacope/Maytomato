@@ -2,11 +2,17 @@ package io.github.lanlacope.maytomato.activity.component
 
 import android.app.Activity
 import android.content.Intent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -28,12 +34,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.lanlacope.collection.collection.toggle
+import io.github.lanlacope.compose.composeable.ui.click.BoxButton
 import io.github.lanlacope.compose.ui.action.option.CompactOptionCheckBox
 import io.github.lanlacope.compose.ui.busy.manu.BusyManu
 import io.github.lanlacope.compose.ui.busy.option.texts
 import io.github.lanlacope.compose.ui.button.layout.ManuButton
 import io.github.lanlacope.compose.ui.dialog.GrowDialog
 import io.github.lanlacope.maytomato.R
+import io.github.lanlacope.maytomato.activity.rememberCopipeSelectResult
 import io.github.lanlacope.maytomato.clazz.ConvertMode
 import io.github.lanlacope.maytomato.clazz.ConvertNumber
 import io.github.lanlacope.maytomato.clazz.ConvertOption
@@ -52,12 +60,7 @@ fun ConvertDialog() {
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
 
-            Text(
-                text = stringResource(id = R.string.dialog_title_convert),
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(all = 10.dp)
-            )
+            Spacer(modifier = Modifier.height(8.dp))
 
             var selectedMode by remember { mutableStateOf(ConvertMode.MOJIBAKE) }
             var modeManuShown by remember { mutableStateOf(false) }
@@ -150,29 +153,55 @@ fun ConvertDialog() {
                     .padding(all = 8.dp)
             )
 
-            TextButton(
-                onClick = {
-                    val output =
-                        stringConverter.startConvert(
-                            rawText = text,
-                            mode = selectedMode,
-                            number = selectedNumber,
-                            options = selectedOptions
-                        )
-                    val intent = Intent().apply {
-                        putExtra(Simeji.REPLACE_KEY, output)
-                    }
-                    activity.setResult(Activity.RESULT_OK, intent)
-                    activity.finish()
-                },
-                modifier = Modifier.align(Alignment.End)
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = stringResource(id = R.string.dialog_positive_convert),
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                )
+
+                val copipeSelectResult = rememberCopipeSelectResult { copipe ->
+                    text = "$text\n$copipe"
+                }
+
+                BoxButton(
+                    onClick = {
+                        copipeSelectResult.launch()
+                    },
+                    innerPadding = PaddingValues(horizontal = 20.dp)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.setting_copipe),
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
+                    )
+                }
+
+                Spacer(modifier = Modifier.weight(1.0f))
+
+                TextButton(
+                    onClick = {
+                        val output =
+                            stringConverter.startConvert(
+                                rawText = text,
+                                mode = selectedMode,
+                                number = selectedNumber,
+                                options = selectedOptions
+                            )
+                        val intent = Intent().apply {
+                            putExtra(Simeji.REPLACE_KEY, output)
+                        }
+                        activity.setResult(Activity.RESULT_OK, intent)
+                        activity.finish()
+                    },
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.dialog_positive_convert),
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
