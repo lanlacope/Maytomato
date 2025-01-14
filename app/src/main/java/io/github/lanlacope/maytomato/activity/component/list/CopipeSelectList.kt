@@ -2,7 +2,6 @@ package io.github.lanlacope.maytomato.activity.component.list
 
 import android.app.Activity
 import android.content.Intent
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,14 +16,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.lanlacope.compose.ui.animation.FadeInAnimated
 import io.github.lanlacope.compose.ui.button.combined.CombinedColumnButton
 import io.github.lanlacope.compose.ui.lazy.animatedItems
-import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.MAYTOMATO_COPIPE
 import io.github.lanlacope.maytomato.activity.component.DisplayPadding
 import io.github.lanlacope.maytomato.clazz.CopipeData
