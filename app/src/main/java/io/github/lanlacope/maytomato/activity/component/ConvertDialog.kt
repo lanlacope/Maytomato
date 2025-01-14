@@ -155,7 +155,8 @@ fun ConvertDialog() {
 
             Row(
                 horizontalArrangement = Arrangement.Start,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.height(50.dp)
             ) {
 
                 val copipeSelectResult = rememberCopipeSelectResult { copipe ->
@@ -163,10 +164,12 @@ fun ConvertDialog() {
                 }
 
                 BoxButton(
+                    contentAlignment = Alignment.Center,
                     onClick = {
                         copipeSelectResult.launch()
                     },
-                    innerPadding = PaddingValues(horizontal = 20.dp)
+                    innerPadding = PaddingValues(horizontal = 20.dp),
+                    modifier = Modifier.fillMaxHeight()
                 ) {
                     Text(
                         text = stringResource(id = R.string.setting_copipe),
@@ -192,6 +195,7 @@ fun ConvertDialog() {
                         activity.setResult(Activity.RESULT_OK, intent)
                         activity.finish()
                     },
+                    modifier = Modifier.fillMaxHeight()
                 ) {
                     Text(
                         text = stringResource(id = R.string.dialog_positive_convert),

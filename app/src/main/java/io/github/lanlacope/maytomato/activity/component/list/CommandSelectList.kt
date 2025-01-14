@@ -94,16 +94,14 @@ private fun CommandSelectorItem(copipeData: CopipeData) {
 
             Text(
                 text = text,
-                fontSize = 8.sp,
-                fontFamily = FontFamily((Font(resId = R.font.mona))),
-                lineHeight = 8.sp,
+                fontSize = 14.sp,
+                maxLines = 1,
                 modifier = Modifier
                     .padding(
                         start = DisplayPadding.START,
                         end = DisplayPadding.END,
                         bottom = 8.dp
                     )
-                    .horizontalScroll(rememberScrollState())
             )
         }
     }

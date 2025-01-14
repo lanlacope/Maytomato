@@ -95,16 +95,14 @@ private fun CopipeSelectorItem(copipeData: CopipeData) {
 
             Text(
                 text = text,
-                fontSize = 8.sp,
-                fontFamily = FontFamily((Font(resId = R.font.mona))),
-                lineHeight = 8.sp,
+                fontSize = 12.sp,
+                maxLines = 3,
                 modifier = Modifier
                     .padding(
                         start = DisplayPadding.START,
                         end = DisplayPadding.END,
                         bottom = 8.dp
                     )
-                    .horizontalScroll(rememberScrollState())
             )
         }
     }

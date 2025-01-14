@@ -156,7 +156,7 @@ private fun CopipeItem(copipeData: CopipeData) {
 
                 Text(
                     text = text,
-                    fontSize = 8.sp,
+                    fontSize = 12.sp,
                     maxLines = 3,
                     modifier = Modifier.padding(
                         start = DisplayPadding.START,

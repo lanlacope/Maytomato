@@ -49,7 +49,7 @@ fun MaytomatoTheme(
     var theme by remember { mutableStateOf(AppTheme.SYSTEM) }
 
     LaunchedEffect(Unit) {
-        theme = themeManager.getAppTheme()
+        theme = themeManager.getAppThemeMain()
     }
 
     LaunchedEffect(updateThemeKey.value) {

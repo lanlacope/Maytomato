@@ -3,7 +3,6 @@ package io.github.lanlacope.maytomato.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.provider.ContactsContract
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -41,14 +40,13 @@ class CopipeSelectActivity : ComponentActivity() {
 
         override fun createIntent(context: Context, input: Unit): Intent {
             val intentSelect = Intent(context, CopipeSelectActivity::class.java)
-            intentSelect.setAction(ContactsContract.Intents.ACTION_VOICE_SEND_MESSAGE_TO_CONTACTS)
             intentSelect.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             return intentSelect
         }
 
         override fun parseResult(resultCode: Int, intent: Intent?): Result<String> {
             if (resultCode == RESULT_OK) {
-                return Result.success(intent?.action ?: "")
+                return Result.success(intent?.getStringExtra(MAYTOMATO_COPIPE) ?: "")
             } else {
                 return Result.failure(Exception())
             }
