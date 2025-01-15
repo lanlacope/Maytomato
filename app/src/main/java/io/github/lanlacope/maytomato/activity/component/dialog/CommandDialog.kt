@@ -53,7 +53,7 @@ fun CommandAddDialog(
             OutlinedInputTextField(
                 text = text,
                 onTextChange = { text = it },
-                hintText = stringResource(id = R.string.hint_copipe_text),
+                hintText = stringResource(id = R.string.hint_command_text),
                 useLabel = true,
                 modifier = Modifier
                     .fillMaxWidth()
