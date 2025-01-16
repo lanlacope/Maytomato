@@ -1,9 +1,9 @@
 package io.github.lanlacope.maytomato.activity.component.list
 
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -68,41 +68,43 @@ fun AAList() {
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        var searchText by remember { mutableStateOf("") }
+        Column(modifier = Modifier.fillMaxSize()) {
 
-        SearchTextField(
-            text = searchText,
-            onTextChange = {
-                searchText = it
-                scope.launch {
-                    val searchList = copipeManager.getCopipeList().toMutableList().filter { aa ->
-                        if (it.isNotEmpty()) {
-                            aa.title.contains(it) || aa.text.contains(it)
-                        } else {
-                            true
-                        }
+            var searchText by remember { mutableStateOf("") }
+
+            SearchTextField(
+                text = searchText,
+                onTextChange = {
+                    searchText = it
+                    scope.launch {
+                        val searchList =
+                            copipeManager.getCopipeList().toMutableList().filter { aa ->
+                                if (it.isNotEmpty()) {
+                                    aa.title.contains(it) || aa.text.contains(it)
+                                } else {
+                                    true
+                                }
+                            }
+                        aas.clear()
+                        aas.addAll(searchList)
                     }
-                    aas.clear()
-                    aas.addAll(searchList)
+                },
+                hintText = stringResource(id = R.string.hint_aa_search),
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth()
+            )
+
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                state = listState
+            ) {
+                animatedItems(
+                    items = aas,
+                    key = { it.title },
+                ) { aa ->
+                    AAItem(copipeData = aa)
                 }
-            },
-            hintText = stringResource(id = R.string.hint_aa_search),
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth()
-        )
-
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            state = listState
-        ) {
-
-            animatedItems(
-                items = aas,
-                key = { it.title },
-            ) { aa ->
-
-                AAItem(copipeData = aa)
             }
         }
 

@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -50,7 +50,7 @@ fun AASelectorList() {
         aas.addAll(copipeManager.getAaList())
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize()) {
 
         var searchText by remember { mutableStateOf("") }
 
@@ -59,13 +59,14 @@ fun AASelectorList() {
             onTextChange = {
                 searchText = it
                 scope.launch {
-                    val searchList = copipeManager.getCopipeList().toMutableList().filter { aa ->
-                        if (it.isNotEmpty()) {
-                            aa.title.contains(it) || aa.text.contains(it)
-                        } else {
-                            true
+                    val searchList =
+                        copipeManager.getCopipeList().toMutableList().filter { aa ->
+                            if (it.isNotEmpty()) {
+                                aa.title.contains(it) || aa.text.contains(it)
+                            } else {
+                                true
+                            }
                         }
-                    }
                     aas.clear()
                     aas.addAll(searchList)
                 }
@@ -83,7 +84,6 @@ fun AASelectorList() {
                 items = aas,
                 key = { it.title },
             ) { aa ->
-
                 AASelectorItem(copipeData = aa)
             }
         }

@@ -3,7 +3,7 @@ package io.github.lanlacope.maytomato.activity.component.list
 import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -47,7 +47,7 @@ fun CopipeSelectorList() {
         copipes.addAll(copipeManager.getCopipeList())
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize()) {
 
         var searchText by remember { mutableStateOf("") }
 
@@ -79,7 +79,6 @@ fun CopipeSelectorList() {
                 items = copipes,
                 key = { it.title },
             ) { copipe ->
-
                 CopipeSelectorItem(copipeData = copipe)
             }
         }

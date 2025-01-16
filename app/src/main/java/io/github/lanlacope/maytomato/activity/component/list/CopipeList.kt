@@ -2,6 +2,7 @@ package io.github.lanlacope.maytomato.activity.component.list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -42,7 +43,6 @@ import io.github.lanlacope.maytomato.activity.component.dialog.CopipeRemoveDialo
 import io.github.lanlacope.maytomato.clazz.CopipeData
 import io.github.lanlacope.maytomato.clazz.rememberCopipeManager
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 @Composable
@@ -64,41 +64,44 @@ fun CopipeList() {
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        var searchText by remember { mutableStateOf("") }
+        Column(modifier = Modifier.fillMaxSize()) {
 
-        SearchTextField(
-            text = searchText,
-            onTextChange = {
-                searchText = it
-                scope.launch {
-                    val searchList = copipeManager.getCopipeList().toMutableList().filter { copipe ->
-                        if (it.isNotEmpty()) {
-                            copipe.title.contains(it) || copipe.text.contains(it)
-                        } else {
-                            true
-                        }
+            var searchText by remember { mutableStateOf("") }
+
+            SearchTextField(
+                text = searchText,
+                onTextChange = {
+                    searchText = it
+                    scope.launch {
+                        val searchList =
+                            copipeManager.getCopipeList().toMutableList().filter { copipe ->
+                                if (it.isNotEmpty()) {
+                                    copipe.title.contains(it) || copipe.text.contains(it)
+                                } else {
+                                    true
+                                }
+                            }
+                        copipes.clear()
+                        copipes.addAll(searchList)
                     }
-                    copipes.clear()
-                    copipes.addAll(searchList)
+                },
+                hintText = stringResource(id = R.string.hint_copipe_search),
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth()
+            )
+
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                state = listState
+            ) {
+
+                animatedItems(
+                    items = copipes,
+                    key = { it.title },
+                ) { copipe ->
+                    CopipeItem(copipeData = copipe)
                 }
-            },
-            hintText = stringResource(id = R.string.hint_copipe_search),
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth()
-        )
-
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            state = listState
-        ) {
-
-            animatedItems(
-                items = copipes,
-                key = { it.title },
-            ) { copipe ->
-
-                CopipeItem(copipeData = copipe)
             }
         }
 

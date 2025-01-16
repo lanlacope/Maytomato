@@ -2,6 +2,7 @@ package io.github.lanlacope.maytomato.activity.component.list
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -63,40 +64,43 @@ fun CommandList() {
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        var searchText by remember { mutableStateOf("") }
+        Column(modifier = Modifier.fillMaxSize()) {
 
-        SearchTextField(
-            text = searchText,
-            onTextChange = {
-                searchText = it
-                scope.launch {
-                    val searchList = copipeManager.getCopipeList().toMutableList().filter { command ->
-                        if (it.isNotEmpty()) {
-                            command.title.contains(it) || command.text.contains(it)
-                        } else {
-                            true
-                        }
+            var searchText by remember { mutableStateOf("") }
+
+            SearchTextField(
+                text = searchText,
+                onTextChange = {
+                    searchText = it
+                    scope.launch {
+                        val searchList =
+                            copipeManager.getCopipeList().toMutableList().filter { command ->
+                                if (it.isNotEmpty()) {
+                                    command.title.contains(it) || command.text.contains(it)
+                                } else {
+                                    true
+                                }
+                            }
+                        commands.clear()
+                        commands.addAll(searchList)
                     }
-                    commands.clear()
-                    commands.addAll(searchList)
+                },
+                hintText = stringResource(id = R.string.hint_command_search),
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth()
+            )
+
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                state = listState
+            ) {
+                animatedItems(
+                    items = commands,
+                    key = { it.title },
+                ) { command ->
+                    CommandItem(copipeData = command)
                 }
-            },
-            hintText = stringResource(id = R.string.hint_command_search),
-            modifier = Modifier
-                .padding(8.dp)
-                .fillMaxWidth()
-        )
-
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            state = listState
-        ) {
-            animatedItems(
-                items = commands,
-                key = { it.title },
-            ) { command ->
-
-                CommandItem(copipeData = command)
             }
         }
 
