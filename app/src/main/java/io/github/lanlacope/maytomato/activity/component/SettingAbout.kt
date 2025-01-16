@@ -99,7 +99,7 @@ object AppGitHost {
 fun versionName(): String? {
     val context = LocalContext.current
     val activity = context as Activity
-    val name = activity.getPackageName()
+    val name = activity.packageName
 
     val pm: PackageManager = activity.getPackageManager()
 
