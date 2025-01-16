@@ -91,13 +91,14 @@ object AppGitHost {
     const val SOURCE: String = "https://github.com/lanlacope/Maytomato"
     const val LICENSE: String = "https://github.com/lanlacope/Maytomato/blob/master/README.MD#license"
     const val LATEST: String = "https://github.com/lanlacope/Maytomato/releases/latest"
-    const val LATEST_API: String = "https://api.github.com/repos/Maytomato/NXShare/releases/latest"
+    const val LATEST_API: String = "https://api.github.com/repos/lanlacope/Maytomato/releases/latest"
     const val LATEST_TAG: String = "tag_name"
 }
 
 @Composable
 fun versionName(): String? {
-    val activity = LocalContext.current as Activity
+    val context = LocalContext.current
+    val activity = context as Activity
     val name = activity.getPackageName()
 
     val pm: PackageManager = activity.getPackageManager()
