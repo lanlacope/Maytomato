@@ -29,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -37,6 +38,7 @@ import io.github.lanlacope.compose.ui.animation.DrawUpAnimated
 import io.github.lanlacope.compose.ui.animation.FadeInAnimated
 import io.github.lanlacope.compose.ui.button.combined.CombinedColumnButton
 import io.github.lanlacope.compose.ui.lazy.animatedItems
+import io.github.lanlacope.compose.ui.text.search.SearchTextField
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.component.DisplayPadding
 import io.github.lanlacope.maytomato.activity.component.dialog.AAAddDialog
@@ -65,6 +67,31 @@ fun AAList() {
     var addDialogError by rememberSaveable { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize()) {
+
+        var searchText by remember { mutableStateOf("") }
+
+        SearchTextField(
+            text = searchText,
+            onTextChange = {
+                searchText = it
+                scope.launch {
+                    val searchList = copipeManager.getCopipeList().toMutableList().filter { aa ->
+                        if (it.isNotEmpty()) {
+                            aa.title.contains(it) || aa.text.contains(it)
+                        } else {
+                            true
+                        }
+                    }
+                    aas.clear()
+                    aas.addAll(searchList)
+                }
+            },
+            hintText = stringResource(id = R.string.hint_aa_search),
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+        )
+
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             state = listState

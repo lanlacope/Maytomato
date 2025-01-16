@@ -12,24 +12,33 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.lanlacope.compose.ui.animation.FadeInAnimated
 import io.github.lanlacope.compose.ui.button.combined.CombinedColumnButton
 import io.github.lanlacope.compose.ui.lazy.animatedItems
+import io.github.lanlacope.compose.ui.text.search.SearchTextField
+import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.MAYTOMATO_COPIPE
 import io.github.lanlacope.maytomato.activity.component.DisplayPadding
 import io.github.lanlacope.maytomato.clazz.CopipeData
 import io.github.lanlacope.maytomato.clazz.rememberCopipeManager
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun CommandSelectorList() {
 
+    val scope = rememberCoroutineScope()
     val copipeManager = rememberCopipeManager()
 
     val commands = remember { emptyList<CopipeData>().toMutableStateList() }
@@ -39,6 +48,30 @@ fun CommandSelectorList() {
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
+
+        var searchText by remember { mutableStateOf("") }
+
+        SearchTextField(
+            text = searchText,
+            onTextChange = {
+                searchText = it
+                scope.launch {
+                    val searchList = copipeManager.getCopipeList().toMutableList().filter { command ->
+                        if (it.isNotEmpty()) {
+                            command.title.contains(it) || command.text.contains(it)
+                        } else {
+                            true
+                        }
+                    }
+                    commands.clear()
+                    commands.addAll(searchList)
+                }
+            },
+            hintText = stringResource(id = R.string.hint_command_search),
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+        )
 
         LazyColumn(modifier = Modifier.fillMaxSize()) {
 

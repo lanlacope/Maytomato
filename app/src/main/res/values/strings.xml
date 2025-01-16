@@ -31,6 +31,12 @@
     <string name="dialog_title_command_add">コマンド追加</string>
     <string name="dialog_title_command_edit">コマンド編集</string>
 
+    <string name="confirm_text_copipe_remove">このコピペを削除しますか？</string>
+    <string name="confirm_text_aa_remove">このAAを削除しますか？</string>
+    <string name="confirm_text_command_remove">このコマンドを削除しますか？</string>
+
+    <string name="dialog_input_warning_exists">既に存在しています！</string>
+
     <!-- TextField Message -->
     <string name="hint_copipe_title">コピペ名</string>
     <string name="hint_copipe_text">コピペ</string>
@@ -39,11 +45,10 @@
     <string name="hint_command_title">コマンド名</string>
     <string name="hint_command_text">コマンド</string>
 
-    <string name="confirm_text_copipe_remove">このコピペを削除しますか？</string>
-    <string name="confirm_text_aa_remove">このAAを削除しますか？</string>
-    <string name="confirm_text_command_remove">このコマンドを削除しますか？</string>
+    <string name="hint_copipe_search">コピペ名、コピペを入力</string>
+    <string name="hint_aa_search">AA名、AAを入力</string>
+    <string name="hint_command_search">コマンド名、コマンドを入力</string>
 
-    <string name="dialog_input_warning_exists">既に存在しています！</string>
 
     <!-- Setting -->
     <string name="setting_theme">アプリテーマ</string>
