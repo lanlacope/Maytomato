@@ -100,8 +100,7 @@ fun versionName(): String? {
     val context = LocalContext.current
     val activity = context as Activity
     val name = activity.packageName
-
-    val pm: PackageManager = activity.getPackageManager()
+    val pm: PackageManager = activity.packageManager
 
     val info = pm.getPackageInfo(name, PackageManager.GET_META_DATA)
 
