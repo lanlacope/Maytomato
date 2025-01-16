@@ -18,5 +18,16 @@
 	See the License for the specific language governing permissions and
 	limitations under the License.
 
+# クレジット
+[モナーフォント][1001]
+
+    モナーフォントのライセンスは東雲フォントのライセンスに準じます。 東雲フォント自体は実質的な public domain となっているため、 モナーフォントもこれにならいます。
+
+    Copyright (C) 2000-2001 Kazuhiko <kazuhiko@ring.gr.jp>
+    Copyright (C) 2000-2002 Kenji Kano <kc@ring.gr.jp>
+    東雲 ビットマップフォントファミリー
+    古川泰之さん原作のビットマップフォント、 「東雲フォント」の保守・開発を /efont/ が引き継ぎました。
+    ライセンスはすべて、Public Domain です。
 
 [999]: http://www.apache.org/licenses/LICENSE-2.0
+[1001]: http://monafont.sourceforge.net/
