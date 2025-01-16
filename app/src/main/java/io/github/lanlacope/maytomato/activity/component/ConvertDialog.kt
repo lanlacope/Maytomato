@@ -158,9 +158,9 @@ fun ConvertDialog() {
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.height(50.dp)
             ) {
-
                 val copipeSelectResult = rememberCopipeSelectResult { copipe ->
-                    text = "$text\n$copipe"
+                    // いい感じに改行
+                    text = if (text.isEmpty() || text.last() == '\n') "$text$copipe" else "$text\n$copipe"
                 }
 
                 BoxButton(
