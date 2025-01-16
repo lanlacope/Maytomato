@@ -74,7 +74,7 @@ fun CommandList() {
                     searchText = it
                     scope.launch {
                         val searchList =
-                            copipeManager.getCopipeList().toMutableList().filter { command ->
+                            copipeManager.getCommandList().toMutableList().filter { command ->
                                 if (it.isNotEmpty()) {
                                     command.title.contains(it) || command.text.contains(it)
                                 } else {

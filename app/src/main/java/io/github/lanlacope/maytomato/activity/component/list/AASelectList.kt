@@ -60,7 +60,7 @@ fun AASelectorList() {
                 searchText = it
                 scope.launch {
                     val searchList =
-                        copipeManager.getCopipeList().toMutableList().filter { aa ->
+                        copipeManager.getAaList().toMutableList().filter { aa ->
                             if (it.isNotEmpty()) {
                                 aa.title.contains(it) || aa.text.contains(it)
                             } else {

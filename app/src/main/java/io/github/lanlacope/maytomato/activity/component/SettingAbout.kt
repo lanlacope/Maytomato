@@ -98,11 +98,10 @@ object AppGitHost {
 @Composable
 fun versionName(): String? {
     val context = LocalContext.current
-    val activity = context as Activity
-    val name = activity.packageName
-    val pm: PackageManager = activity.packageManager
+    val packageName = context.packageName
+    val packageManager = context.packageManager
 
-    val info = pm.getPackageInfo(name, PackageManager.GET_META_DATA)
+    val info = packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)
 
     return info.versionName
 }
