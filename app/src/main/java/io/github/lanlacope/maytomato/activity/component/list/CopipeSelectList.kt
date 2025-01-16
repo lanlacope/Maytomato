@@ -73,7 +73,11 @@ fun CopipeSelectorList() {
                 .fillMaxWidth()
         )
 
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(weight = 1f)
+        ) {
 
             animatedItems(
                 items = copipes,
