@@ -34,7 +34,7 @@ import io.github.lanlacope.compose.ui.animation.DrawUpAnimated
 import io.github.lanlacope.compose.ui.animation.FadeInAnimated
 import io.github.lanlacope.compose.ui.button.combined.CombinedColumnButton
 import io.github.lanlacope.compose.ui.lazy.animatedItems
-import io.github.lanlacope.compose.ui.text.search.SearchTextField
+import io.github.lanlacope.compose.ui.text.search.OutlinedSearchTextField
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.component.DisplayPadding
 import io.github.lanlacope.maytomato.activity.component.dialog.CommandAddDialog
@@ -68,7 +68,7 @@ fun CommandList() {
 
             var searchText by remember { mutableStateOf("") }
 
-            SearchTextField(
+            OutlinedSearchTextField(
                 text = searchText,
                 onTextChange = {
                     searchText = it
