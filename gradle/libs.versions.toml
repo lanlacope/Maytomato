@@ -8,14 +8,14 @@ appcompat = "1.7.0"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 
-datastorePreferences = "1.1.1"
+datastorePreferences = "1.1.2"
 coroutinesCore = "1.6.4"
 collectionsImmutable = "0.3.5"
 
-activityCompose = "1.9.3"
+activityCompose = "1.10.0"
 navigationCompose = "2.8.5"
 
-lanlacope = "1.2.4"
+lanlacope = "1.2.5"
 firebaseCrashlyticsBuildtools = "3.0.2"
 
 [libraries]
