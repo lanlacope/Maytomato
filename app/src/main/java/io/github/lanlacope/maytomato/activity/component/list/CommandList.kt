@@ -92,9 +92,7 @@ fun CommandList() {
             )
 
             LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(weight = 1f),
+                modifier = Modifier.fillMaxSize(),
                 state = listState
             ) {
                 animatedItems(

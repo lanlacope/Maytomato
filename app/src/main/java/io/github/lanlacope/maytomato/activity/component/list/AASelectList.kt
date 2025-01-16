@@ -77,11 +77,8 @@ fun AASelectorList() {
                 .fillMaxWidth()
         )
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(weight = 1f)
-        ) {
+        LazyColumn(modifier = Modifier.fillMaxSize(),) {
+
             animatedItems(
                 items = aas,
                 key = { it.title },

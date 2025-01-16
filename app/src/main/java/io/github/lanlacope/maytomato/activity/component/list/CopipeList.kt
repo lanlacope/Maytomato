@@ -92,12 +92,9 @@ fun CopipeList() {
             )
 
             LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(weight = 1f),
+                modifier = Modifier.fillMaxSize(),
                 state = listState
             ) {
-
                 animatedItems(
                     items = copipes,
                     key = { it.title },
