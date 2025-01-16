@@ -3,6 +3,7 @@ package io.github.lanlacope.maytomato.activity.component
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -108,7 +109,6 @@ fun versionName(): String? {
 suspend fun getLatestVersion(): String? = withContext(Dispatchers.Default) {
     try {
         val response = URL(AppGitHost.LATEST_API).readText()
-        println(response)
         val jsonObject = JSONObject(response)
         return@withContext jsonObject.getString(AppGitHost.LATEST_TAG)
     } catch (e: Exception) {
