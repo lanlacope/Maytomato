@@ -52,6 +52,10 @@
     <string name="setting_theme_value_dark">ダークテーマ</string>
 
     <string name="setting_copipe">コピペ</string>
+    <string name="setting_copipe_copipe">コピペ</string>
+    <string name="setting_copipe_aa">AA</string>
+    <string name="setting_copipe_command">コマンド</string>
+
 
     <string name="setting_about">このアプリについて</string>
     <string name="setting_about_licence">ライセンス</string>
