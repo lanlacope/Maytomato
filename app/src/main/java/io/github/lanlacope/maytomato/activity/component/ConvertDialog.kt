@@ -210,6 +210,6 @@ fun ConvertDialog() {
     }
 }
 
-object Simeji {
+private object Simeji {
     const val REPLACE_KEY = "replace_key"
 }
