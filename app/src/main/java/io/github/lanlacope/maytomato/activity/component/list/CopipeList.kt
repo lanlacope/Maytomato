@@ -206,7 +206,7 @@ private fun CopipeItem(copipeData: CopipeData) {
                         copipeManager.editCopipe(
                             title = newTitle,
                             text = newText,
-                            lastTitle = title
+                            lastText = text
                         )
                         title = newTitle
                         text = newText
@@ -221,7 +221,7 @@ private fun CopipeItem(copipeData: CopipeData) {
                 title = title,
                 onConfirm = { removedTitle ->
                     scope.launch {
-                        copipeManager.removeCopipe(title)
+                        copipeManager.removeCopipe(text)
                         isRemoved = true
                         removeDialogShown = false
                     }

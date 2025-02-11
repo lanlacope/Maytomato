@@ -32,7 +32,8 @@ class CopipeManager(context: Context) {
 
         val copipeList = emptyList<CopipeData>().toMutableList()
 
-        copipeObject.forEach { title: String, text: String ->
+        copipeObject.forEach { text: String, data: JSONObject ->
+            val title = data.optString(CopipeJson.TITLE)
             copipeList.add(CopipeData(title, text))
         }
         return@withContext copipeList
@@ -48,17 +49,21 @@ class CopipeManager(context: Context) {
             JSONObject()
         }
 
-        if (copipeObject.keyList().contains(title)) {
+        if (copipeObject.keyList().contains(text)) {
             return@withContext Result.failure(Exception())
         }
 
-        copipeObject.put(title, text)
+        val data = JSONObject().apply {
+            put(CopipeJson.TITLE, title)
+        }
+
+        copipeObject.put(text, data)
         copopeFile.writeText(copipeObject.toString())
 
         return@withContext Result.success(CopipeData(title, text))
     }
 
-    suspend fun editCopipe(title: String, text: String, lastTitle: String): Result<CopipeData>  = withContext(Dispatchers.IO) {
+    suspend fun editCopipe(title: String, text: String, lastText: String): Result<CopipeData>  = withContext(Dispatchers.IO) {
 
         val copopeFile = appContext.getCopipeListFile()
 
@@ -68,18 +73,22 @@ class CopipeManager(context: Context) {
             JSONObject()
         }
 
-        if (copipeObject.keyList().contains(title)) {
+        if (copipeObject.keyList().contains(text)) {
             return@withContext Result.failure(Exception())
         }
 
-        copipeObject.remove(lastTitle)
-        copipeObject.put(title, text)
+        val data = JSONObject().apply {
+            put(CopipeJson.TITLE, title)
+        }
+        copipeObject.remove(lastText)
+        copipeObject.put(text, data)
+
         copopeFile.writeText(copipeObject.toString())
 
         return@withContext Result.success(CopipeData(title, text))
     }
 
-    suspend fun removeCopipe(title: String) = withContext(Dispatchers.IO) {
+    suspend fun removeCopipe(text: String) = withContext(Dispatchers.IO) {
         val copopeFile = appContext.getCopipeListFile()
 
         val copipeObject = try {
@@ -88,7 +97,7 @@ class CopipeManager(context: Context) {
             JSONObject()
         }
 
-        copipeObject.remove(title)
+        copipeObject.remove(text)
         copopeFile.writeText(copipeObject.toString())
     }
 
@@ -101,7 +110,8 @@ class CopipeManager(context: Context) {
 
         val aaList = emptyList<CopipeData>().toMutableList()
 
-        aaObject.forEach { title: String, text: String ->
+        aaObject.forEach { text: String, data: JSONObject ->
+            val title = data.optString(CopipeJson.TITLE)
             aaList.add(CopipeData(title, text))
         }
         return@withContext aaList
@@ -117,17 +127,21 @@ class CopipeManager(context: Context) {
             JSONObject()
         }
 
-        if (aaObject.keyList().contains(title)) {
+        if (aaObject.keyList().contains(text)) {
             return@withContext Result.failure(Exception())
         }
 
-        aaObject.put(title, text)
+        val data = JSONObject().apply {
+            put(CopipeJson.TITLE, title)
+        }
+
+        aaObject.put(text, data)
         aaFile.writeText(aaObject.toString())
 
         return@withContext Result.success(CopipeData(title, text))
     }
 
-    suspend fun editAa(title: String, text: String, lastTitle: String): Result<CopipeData>  = withContext(Dispatchers.IO) {
+    suspend fun editAa(title: String, text: String, lastText: String): Result<CopipeData>  = withContext(Dispatchers.IO) {
 
         val aaFile = appContext.getAaListFile()
 
@@ -137,18 +151,21 @@ class CopipeManager(context: Context) {
             JSONObject()
         }
 
-        if (aaObject.keyList().contains(title)) {
+        if (aaObject.keyList().contains(text)) {
             return@withContext Result.failure(Exception())
         }
 
-        aaObject.remove(lastTitle)
-        aaObject.put(title, text)
+        val data = JSONObject().apply {
+            put(CopipeJson.TITLE, title)
+        }
+        aaObject.remove(lastText)
+        aaObject.put(text, data)
         aaFile.writeText(aaObject.toString())
 
         return@withContext Result.success(CopipeData(title, text))
     }
 
-    suspend fun removeAa(title: String) = withContext(Dispatchers.IO) {
+    suspend fun removeAa(text: String) = withContext(Dispatchers.IO) {
         val aaFile = appContext.getAaListFile()
 
         val aaObject = try {
@@ -157,7 +174,7 @@ class CopipeManager(context: Context) {
             JSONObject()
         }
 
-        aaObject.remove(title)
+        aaObject.remove(text)
         aaFile.writeText(aaObject.toString())
     }
 
@@ -170,7 +187,8 @@ class CopipeManager(context: Context) {
 
         val commandList = emptyList<CopipeData>().toMutableList()
 
-        commandObject.forEach { title: String, text: String ->
+        commandObject.forEach { text: String, data: JSONObject ->
+            val title = data.optString(CopipeJson.TITLE)
             commandList.add(CopipeData(title, text))
         }
         return@withContext commandList
@@ -186,17 +204,21 @@ class CopipeManager(context: Context) {
             JSONObject()
         }
 
-        if (commandObject.keyList().contains(title)) {
+        if (commandObject.keyList().contains(text)) {
             return@withContext Result.failure(Exception())
         }
 
-        commandObject.put(title, text)
+        val data = JSONObject().apply {
+            put(CopipeJson.TITLE, title)
+        }
+
+        commandObject.put(text, data)
         commandFile.writeText(commandObject.toString())
 
         return@withContext Result.success(CopipeData(title, text))
     }
 
-    suspend fun editCommand(title: String, text: String, lastTitle: String): Result<CopipeData>  = withContext(Dispatchers.IO) {
+    suspend fun editCommand(title: String, text: String, lastText: String): Result<CopipeData>  = withContext(Dispatchers.IO) {
 
         val commandFile = appContext.getCommandListFile()
 
@@ -206,18 +228,21 @@ class CopipeManager(context: Context) {
             JSONObject()
         }
 
-        if (commandObject.keyList().contains(title)) {
+        if (commandObject.keyList().contains(text)) {
             return@withContext Result.failure(Exception())
         }
 
-        commandObject.remove(lastTitle)
-        commandObject.put(title, text)
+        val data = JSONObject().apply {
+            put(CopipeJson.TITLE, title)
+        }
+        commandObject.remove(lastText)
+        commandObject.put(text, data)
         commandFile.writeText(commandObject.toString())
 
         return@withContext Result.success(CopipeData(title, text))
     }
 
-    suspend fun removeCommand(title: String) = withContext(Dispatchers.IO) {
+    suspend fun removeCommand(text: String) = withContext(Dispatchers.IO) {
         val commandFile = appContext.getCommandListFile()
 
         val commandObject = try {
@@ -226,10 +251,15 @@ class CopipeManager(context: Context) {
             JSONObject()
         }
 
-        commandObject.remove(title)
+        commandObject.remove(text)
         commandFile.writeText(commandObject.toString())
     }
 }
+
+private object CopipeJson {
+    const val TITLE = "Title"
+}
+
 
 data class CopipeData(
     val title: String,

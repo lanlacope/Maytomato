@@ -213,7 +213,7 @@ private fun AAItem(copipeData: CopipeData) {
                         copipeManager.editAa(
                             title = newTitle,
                             text = newText,
-                            lastTitle = title
+                            lastText = text
                         )
                         title = newTitle
                         text = newText
@@ -228,7 +228,7 @@ private fun AAItem(copipeData: CopipeData) {
                 title = title,
                 onConfirm = { removedTitle ->
                     scope.launch {
-                        copipeManager.removeAa(title)
+                        copipeManager.removeAa(text)
                         isRemoved = true
                         removeDialogShown = false
                     }

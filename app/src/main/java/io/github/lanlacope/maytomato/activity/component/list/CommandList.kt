@@ -206,7 +206,7 @@ private fun CommandItem(copipeData: CopipeData) {
                         copipeManager.editCommand(
                             title = newTitle,
                             text = newText,
-                            lastTitle = title
+                            lastText = text
                         )
                         title = newTitle
                         text = newText
@@ -221,7 +221,7 @@ private fun CommandItem(copipeData: CopipeData) {
                 title = title,
                 onConfirm = { removedTitle ->
                     scope.launch {
-                        copipeManager.removeCommand(title)
+                        copipeManager.removeCommand(text)
                         isRemoved = true
                         removeDialogShown = false
                     }
