@@ -164,6 +164,7 @@ private fun CopipeItem(copipeData: CopipeData) {
 
         var editDialogShown by rememberSaveable { mutableStateOf(false) }
         var removeDialogShown by rememberSaveable { mutableStateOf(false) }
+        var editDialogError by rememberSaveable { mutableStateOf(false) }
 
         CombinedColumnButton(
             onClick = { editDialogShown = true },
@@ -203,17 +204,23 @@ private fun CopipeItem(copipeData: CopipeData) {
                 text = text,
                 onConfirm = { newTitle, newText ->
                     scope.launch {
-                        copipeManager.editCopipe(
+                        val result = copipeManager.editCopipe(
                             title = newTitle,
                             text = newText,
                             lastText = text
                         )
-                        title = newTitle
-                        text = newText
-                        editDialogShown = false
+                        if (result.isSuccess) {
+                            title = newTitle
+                            text = newText
+                            editDialogShown = false
+                        }
+                        else {
+                            editDialogError = true
+                        }
                     }
                 },
-                onCancel = { editDialogShown = false }
+                onCancel = { editDialogShown = false },
+                isError = editDialogError
             )
 
             CopipeRemoveDialog(

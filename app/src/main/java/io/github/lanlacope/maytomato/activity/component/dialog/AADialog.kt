@@ -46,8 +46,6 @@ fun AAAddDialog(
                 text = title,
                 onTextChange = { title = it },
                 hintText = stringResource(id = R.string.hint_aa_title),
-                isError = isError,
-                errorText = stringResource(id = R.string.dialog_input_warning_exists),
                 singleLine = true,
                 useLabel = true,
                 modifier = Modifier
@@ -58,6 +56,8 @@ fun AAAddDialog(
             OutlinedInputTextField(
                 text = text,
                 onTextChange = { text = it },
+                isError = isError,
+                errorText = stringResource(id = R.string.dialog_input_warning_exists),
                 hintText = stringResource(id = R.string.hint_aa_text),
                 useLabel = true,
                 textStyle = TextStyle.Default.copy(
@@ -81,6 +81,7 @@ fun AAEditDialog(
     text: String,
     onConfirm: (title: String, text: String) -> Unit,
     onCancel: () -> Unit,
+    isError: Boolean
 ) {
     var dTitle by rememberSaveable(expanded) { mutableStateOf(title) }
     var dText by rememberSaveable(expanded) { mutableStateOf(text) }
@@ -109,6 +110,8 @@ fun AAEditDialog(
             OutlinedInputTextField(
                 text = dText,
                 onTextChange = { dText = it },
+                isError = isError,
+                errorText = stringResource(id = R.string.dialog_input_warning_exists),
                 hintText = stringResource(id = R.string.hint_aa_text),
                 useLabel = true,
                 textStyle = TextStyle.Default.copy(

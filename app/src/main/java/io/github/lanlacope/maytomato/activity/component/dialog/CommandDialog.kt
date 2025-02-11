@@ -41,8 +41,6 @@ fun CommandAddDialog(
                 text = title,
                 onTextChange = { title = it },
                 hintText = stringResource(id = R.string.hint_command_title),
-                isError = isError,
-                errorText = stringResource(id = R.string.dialog_input_warning_exists),
                 singleLine = true,
                 useLabel = true,
                 modifier = Modifier
@@ -53,6 +51,8 @@ fun CommandAddDialog(
             OutlinedInputTextField(
                 text = text,
                 onTextChange = { text = it },
+                isError = isError,
+                errorText = stringResource(id = R.string.dialog_input_warning_exists),
                 hintText = stringResource(id = R.string.hint_command_text),
                 useLabel = true,
                 modifier = Modifier
@@ -71,6 +71,7 @@ fun CommandEditDialog(
     text: String,
     onConfirm: (title: String, text: String) -> Unit,
     onCancel: () -> Unit,
+    isError: Boolean
 ) {
     var dTitle by rememberSaveable(expanded) { mutableStateOf(title) }
     var dText by rememberSaveable(expanded) { mutableStateOf(text) }
@@ -99,6 +100,8 @@ fun CommandEditDialog(
             OutlinedInputTextField(
                 text = dText,
                 onTextChange = { dText = it },
+                isError = isError,
+                errorText = stringResource(id = R.string.dialog_input_warning_exists),
                 hintText = stringResource(id = R.string.hint_command_text),
                 useLabel = true,
                 modifier = Modifier
