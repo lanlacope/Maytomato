@@ -173,9 +173,14 @@ private fun BoardItem(boardSetting: BoardSetting) {
                 boardSettig = iBoardSetting,
                 onConfirm = { newBoardSetting ->
                     scope.launch {
-                        boardManager.editBoard(iBoardSetting)
-                        iBoardSetting = newBoardSetting
-                        editDialogShown = false
+                        val result = boardManager.editBoard(newBoardSetting)
+                        if (result.isSuccess) {
+                            iBoardSetting = result.getOrNull()!!
+                            editDialogShown = false
+                        }
+                        else {
+
+                        }
                     }
                 },
                 onCancel = { editDialogShown = false }

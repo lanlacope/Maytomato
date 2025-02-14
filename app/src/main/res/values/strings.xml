@@ -4,8 +4,10 @@
     <string name="toast_error_nonexist_chmate">chmateがインストールされていません</string>
     <string name="toast_error_unread_url">対応していないURLです</string>
 
-
-    <string name="dialog_hint_convert">テキストを入力</string>
+    <string name="dialog_hint_subject">タイトルを入力</string>
+    <string name="dialog_hint_name">名前</string>
+    <string name="dialog_hint_mail">メール</string>
+    <string name="dialog_hint_message">テキストを入力</string>
     <string name="dialog_positive_convert">変換</string>
     <string name="dialog_positive_post">書き込む</string>
 
@@ -53,7 +55,6 @@
     <string name="hint_copipe_search">コピペ名、コピペを入力</string>
     <string name="hint_aa_search">AA名、AAを入力</string>
     <string name="hint_command_search">コマンド名、コマンドを入力</string>
-
 
     <!-- Setting -->
     <string name="setting_theme">アプリテーマ</string>

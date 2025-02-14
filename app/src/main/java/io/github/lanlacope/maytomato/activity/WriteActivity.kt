@@ -50,29 +50,13 @@ class WriteActivity : ComponentActivity() {
 
         val bbsSetting = runBlocking {
             BoardManager(this@WriteActivity).getBoardList().firstOrNull { boardSetting ->
-                bbsInfo.domain.endsWith(boardSetting.domain)
+                bbsInfo.domain.endsWith(boardSetting.domain) && boardSetting.enabled
             }
         }
 
-        if (bbsSetting == null) {
-            originIntent.component = ComponentName(
-                ChmateWriteComponent.APP_NAME,
-                ChmateWriteComponent.ACTIVITY_NAME
-            )
+        println(bbsSetting)
 
-            try {
-                startActivity(originIntent)
-            } catch (e: ActivityNotFoundException) {
-                Toast.makeText(
-                    this,
-                    this.getString(R.string.toast_error_nonexist_chmate),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-            finish()
-            return
-        }
-        else {
+        if (bbsSetting != null) {
             val url = originIntent.dataString ?: ""
 
             if (url.isThread() || url.isBoard()) {
@@ -96,6 +80,24 @@ class WriteActivity : ComponentActivity() {
                 finish()
                 return
             }
+        }
+        else {
+            originIntent.component = ComponentName(
+                ChmateWriteComponent.APP_NAME,
+                ChmateWriteComponent.ACTIVITY_NAME
+            )
+
+            try {
+                startActivity(originIntent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(
+                    this,
+                    this.getString(R.string.toast_error_nonexist_chmate),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            finish()
+            return
         }
     }
 }

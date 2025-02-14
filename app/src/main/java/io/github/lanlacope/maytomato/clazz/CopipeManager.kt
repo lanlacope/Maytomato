@@ -73,8 +73,10 @@ class CopipeManager(context: Context) {
             JSONObject()
         }
 
-        if (copipeObject.keyList().contains(text)) {
-            return@withContext Result.failure(Exception())
+        if (text != lastText) {
+            if (copipeObject.keyList().contains(text)) {
+                return@withContext Result.failure(Exception())
+            }
         }
 
         val data = JSONObject().apply {
@@ -151,8 +153,10 @@ class CopipeManager(context: Context) {
             JSONObject()
         }
 
-        if (aaObject.keyList().contains(text)) {
-            return@withContext Result.failure(Exception())
+        if (text != lastText) {
+            if (aaObject.keyList().contains(text)) {
+                return@withContext Result.failure(Exception())
+            }
         }
 
         val data = JSONObject().apply {
@@ -228,8 +232,10 @@ class CopipeManager(context: Context) {
             JSONObject()
         }
 
-        if (commandObject.keyList().contains(text)) {
-            return@withContext Result.failure(Exception())
+        if (text != lastText) {
+            if (commandObject.keyList().contains(text)) {
+                return@withContext Result.failure(Exception())
+            }
         }
 
         val data = JSONObject().apply {

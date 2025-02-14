@@ -138,7 +138,7 @@ fun ConvertDialog() {
                 onValueChange = { text = it },
                 placeholder = {
                     Text(
-                        text = stringResource(id = R.string.dialog_hint_convert),
+                        text = stringResource(id = R.string.dialog_hint_message),
                         fontWeight = FontWeight.Bold,
                         style = TextStyle(
                             color = Gray

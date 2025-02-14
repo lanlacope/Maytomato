@@ -60,13 +60,13 @@ fun WriteDialog(bbsInfo: BbsInfo, boardSetting: BoardSetting) {
             var subject by remember { mutableStateOf("") }
             var message by remember { mutableStateOf("") }
 
-            if (!bbsInfo.key.isNullOrEmpty()) {
+            if (bbsInfo.key.isNullOrEmpty()) {
                 OutlinedTextField(
                     value = subject,
                     onValueChange = { subject = it },
                     placeholder = {
                         Text(
-                            text = stringResource(id = R.string.dialog_hint_convert),
+                            text = stringResource(id = R.string.dialog_hint_subject),
                             fontWeight = FontWeight.Bold,
                             style = TextStyle(
                                 color = Gray
@@ -87,7 +87,7 @@ fun WriteDialog(bbsInfo: BbsInfo, boardSetting: BoardSetting) {
                     onValueChange = { name = it },
                     placeholder = {
                         Text(
-                            text = stringResource(id = R.string.dialog_hint_convert),
+                            text = stringResource(id = R.string.dialog_hint_name),
                             fontWeight = FontWeight.Bold,
                             style = TextStyle(
                                 color = Gray
@@ -107,7 +107,7 @@ fun WriteDialog(bbsInfo: BbsInfo, boardSetting: BoardSetting) {
                     onValueChange = { mail = it },
                     placeholder = {
                         Text(
-                            text = stringResource(id = R.string.dialog_hint_convert),
+                            text = stringResource(id = R.string.dialog_hint_mail),
                             fontWeight = FontWeight.Bold,
                             style = TextStyle(
                                 color = Gray
@@ -128,7 +128,7 @@ fun WriteDialog(bbsInfo: BbsInfo, boardSetting: BoardSetting) {
                 onValueChange = { message = it },
                 placeholder = {
                     Text(
-                        text = stringResource(id = R.string.dialog_hint_convert),
+                        text = stringResource(id = R.string.dialog_hint_message),
                         fontWeight = FontWeight.Bold,
                         style = TextStyle(
                             color = Gray
