@@ -92,6 +92,14 @@ fun SettingRoot(navController: NavHostController) {
         )
 
         SettingTextButton(
+            text = stringResource(id = R.string.setting_board),
+            onClick = { navController.navigate(SettingNavi.BOARD) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = SETTING_MINHEIGHT)
+        )
+
+        SettingTextButton(
             text = stringResource(id = R.string.setting_about),
             onClick = { navController.navigate(SettingNavi.ABOUT) },
             modifier = Modifier

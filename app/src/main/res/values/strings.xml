@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">Maytomato</string>
-    
+
+    <string name="toast_error_nonexist_chmate">chmateがインストールされていません</string>
+    <string name="toast_error_unread_url">対応していないURLです</string>
+
+
     <string name="dialog_hint_convert">テキストを入力</string>
     <string name="dialog_positive_convert">変換</string>
+    <string name="dialog_positive_post">書き込む</string>
 
     <string name="manu_text_mode_all">全て変換</string>
     <string name="manu_text_mode_slip_br">改行以外変換</string>
@@ -61,6 +66,7 @@
     <string name="setting_copipe_aa">AA</string>
     <string name="setting_copipe_command">コマンド</string>
 
+    <string name="setting_board">板設定</string>
 
     <string name="setting_about">このアプリについて</string>
     <string name="setting_about_licence">ライセンス</string>

@@ -5,6 +5,14 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <queries>
+        <package android:name="jp.co.airfront.android.a2chMate" />
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="http" />
+        </intent>
+    </queries>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -27,7 +35,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.Trandlucent">
+            android:theme="@style/Theme.Translucent">
             <intent-filter>
                 <action android:name="com.adamrocker.android.simeji.ACTION_INTERCEPT" />
                 <category android:name="com.adamrocker.android.simeji.REPLACE" />
@@ -38,5 +46,16 @@
             android:name=".activity.CopipeSelectActivity"
             android:exported="true"
             android:theme="@style/Theme.Maytomato" />
+        <activity
+            android:name=".activity.WriteActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Translucent">
+            <intent-filter>
+                <action android:name="android.intent.action.SENDTO" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>

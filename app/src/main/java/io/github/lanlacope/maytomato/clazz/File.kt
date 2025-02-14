@@ -4,22 +4,16 @@ import android.content.Context
 import java.io.File
 
 private const val DATA_DIR_NAME = "data"
-private const val COPIPE_DIR_NAME = "copipe"
 private const val COPIPE_LIST_FILE_NAME = "copipe.json"
 private const val AA_LIST_FILE_NAME = "aa.json"
 private const val COMMAND_LIST_FILE_NAME = "command.json"
 
+private const val SETTING_DIR_NAME = "setting"
+private const val BOARD_LIST_FILE_NAME = "board.json"
+
 
 private fun Context.getAppDataFilesDir(): File {
     val folder = File(getExternalFilesDir(null), DATA_DIR_NAME)
-    if (!folder.exists()) {
-        folder.mkdirs()
-    }
-    return folder
-}
-
-fun Context.getCopipeListDir(): File {
-    val folder = File(getAppDataFilesDir(), COPIPE_DIR_NAME)
     if (!folder.exists()) {
         folder.mkdirs()
     }
@@ -40,6 +34,20 @@ fun Context.getAaListFile(): File {
 
 fun Context.getCommandListFile(): File {
     val file = File(getAppDataFilesDir(), COMMAND_LIST_FILE_NAME)
+    file.createNewFile()
+    return file
+}
+
+private fun Context.getAppSettingFilesDir(): File {
+    val folder = File(getExternalFilesDir(null), SETTING_DIR_NAME)
+    if (!folder.exists()) {
+        folder.mkdirs()
+    }
+    return folder
+}
+
+fun Context.getBoardListFile(): File {
+    val file = File(getAppDataFilesDir(), BOARD_LIST_FILE_NAME)
     file.createNewFile()
     return file
 }
