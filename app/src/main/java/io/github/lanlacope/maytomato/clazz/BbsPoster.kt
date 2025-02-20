@@ -1,7 +1,10 @@
 package io.github.lanlacope.maytomato.clazz
 
+import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import io.github.lanlacope.maytomato.activity.BbsInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -12,17 +15,18 @@ import java.nio.charset.Charset
 import java.util.zip.GZIPInputStream
 import java.util.zip.Inflater
 import java.util.zip.InflaterInputStream
-import javax.security.auth.Subject
 
 @Suppress("unused")
 @Composable
 fun rememberBbsPoster(bbsInfo: BbsInfo, bbsSetting: BoardSetting): BbsPoster {
+    val context = LocalContext.current
     return remember {
-        BbsPoster(bbsInfo, bbsSetting)
+        BbsPoster(context, bbsInfo, bbsSetting)
     }
 }
 
 class BbsPoster(
+    private val context: Context,
     private val bbsInfo: BbsInfo,
     private val bbsSetting: BoardSetting,
 ) {
@@ -32,10 +36,11 @@ class BbsPoster(
         mail: String,
         subject: String,
         message: String,
-        onSucces: (String) -> Unit,
-        onFailed: () -> Unit
+        onSucces: (resNum: Int?) -> Unit,
+        onFailed: (title: String, text: String) -> Unit
     ) = withContext(Dispatchers.IO) {
         try {
+            val cookieManager = CookieManager(context)
             val encodeStr = "shift_jis"
             val encodeChar = Charset.forName(encodeStr)
             val requestURL = if (true) {
@@ -45,7 +50,7 @@ class BbsPoster(
             }
 
 
-            val cockie: String? = null
+            val cockie = cookieManager.getCookie(bbsSetting.domain)
 
             val connection = URL(requestURL).openConnection() as HttpURLConnection
             connection.apply {
@@ -63,13 +68,23 @@ class BbsPoster(
                 setRequestProperty("Accept-Charset", encodeStr)
                 setRequestProperty("Accept-Encoding", "gzip, identity")
                 setRequestProperty("Referer", "${bbsInfo.protocol}${bbsInfo.domain}/${bbsInfo.bbs}/${bbsInfo.key}/")
-                setRequestProperty("User-Agent", bbsSetting.useAgent)
-                cockie?.let { setRequestProperty("Cookie", it) }
+                setRequestProperty("User-Agent", bbsSetting.userAgent)
+                if (cockie.isNotEmpty()) {
+                    setRequestProperty("Cookie", cockie)
+                }
             }
 
             connection.outputStream.use { it.write(createByteCode(name, mail, subject, message)) }
 
             val responseCode = connection.responseCode
+
+            connection.headerFields.forEach { (key, values) ->
+                Log.d("PostingProcess", "$key: ${values.joinToString(", ")}")
+            }
+
+            if (connection.getCookie().isNotEmpty()) {
+                cookieManager.updateCookie(bbsSetting.domain, connection.getCookie())
+            }
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 val inputStream =
@@ -79,12 +94,22 @@ class BbsPoster(
                         else -> connection.inputStream
                     }
 
-                onSucces(inputStream.bufferedReader(encodeChar).use { it.readText() })
+                val responce = inputStream.bufferedReader(encodeChar).use { it.readText() }
+                println(responce)
+
+                val result = PostResult.parse(responce)
+
+                if (result.isSuccess) {
+                    val resNum = connection.getHeaderField("X-ResNum").toIntOrNull()
+                    onSucces(resNum)
+                }
+                else {
+                    onFailed(result.title, result.text)
+                }
             } else {
-                onFailed()
+                onFailed("接続エラー", responseCode.toString())
             }
 
-            connection.getCookie() // TODO: 保存
             connection.disconnect()
 
         } catch (e: Exception) {
@@ -92,7 +117,7 @@ class BbsPoster(
         }
     }
 
-    fun createByteCode(name: String, mail: String, subject: String, message: String): ByteArray {
+    private fun createByteCode(name: String, mail: String, subject: String, message: String): ByteArray {
         val currentTime = (System.currentTimeMillis() / 1000L).toString()
         val nameJis = name.urlEncodeWithJis()
         val mailJis = mail.urlEncodeWithJis()
@@ -104,13 +129,13 @@ class BbsPoster(
             URLEncoder.encode("書き込む", "Shift_JIS")
         }
         return if (bbsInfo.key.isNullOrEmpty()) {
-            "bbs=${bbsInfo.bbs}&key=${bbsInfo.key}&time=$currentTime&FROM=$nameJis&mail=$mailJis&MESSAGE=$messageJis&submit=$submit".toByteArray(Charset.forName("shift_JIS"))
-        } else {
             "bbs=${bbsInfo.bbs}&subject=$subjectJis&time=$currentTime&FROM=$nameJis&mail=$mailJis&MESSAGE=$messageJis&submit=$submit".toByteArray(Charset.forName("shift_JIS"))
+        } else {
+            "bbs=${bbsInfo.bbs}&key=${bbsInfo.key}&time=$currentTime&FROM=$nameJis&mail=$mailJis&MESSAGE=$messageJis&submit=$submit".toByteArray(Charset.forName("shift_JIS"))
         }
     }
 
-    fun String.urlEncodeWithJis(): String {
+    private fun String.urlEncodeWithJis(): String {
         return buildString {
             this@urlEncodeWithJis.forEach { c ->
                 val bytes = c.toString().toByteArray(Charset.forName("Shift_JIS"))
@@ -125,7 +150,7 @@ class BbsPoster(
         }.replace("+", "%20")
     }
 
-    fun HttpURLConnection.getCookie(): String {
+    private fun HttpURLConnection.getCookie(): String {
         val headers = this.headerFields
         val cookies = headers["Set-Cookie"]
         return buildString {
@@ -142,5 +167,49 @@ class BbsPoster(
                 }
             } ?: ""
         }.removeSuffix("; ")
+    }
+
+    private data class PostResult(
+        val title: String,
+        val text: String,
+        val isSuccess: Boolean
+    ) {
+        companion object {
+            fun parse(response: String): PostResult {
+                val matcher = Regex(
+                    """<title>(.*?)</title>.*?<body>(.*?)</body>""",
+                    setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL)
+                ).find(response)
+
+                val title = matcher?.groups?.get(1)?.value?.replace(
+                    Regex(
+                        """<br>""",
+                        RegexOption.IGNORE_CASE
+                    ), "\n"
+                )?.replace(Regex("""<[^<>]*>""", RegexOption.DOT_MATCHES_ALL), "") ?: ""
+
+                val text = matcher?.groups?.get(2)?.value?.replace(
+                    Regex(
+                        """<br>""",
+                        RegexOption.IGNORE_CASE
+                    ), "\n"
+                )?.replace(Regex("""<[^<>]*>""", RegexOption.DOT_MATCHES_ALL), "") ?: ""
+
+
+                return when {
+                    response.contains(Regex("""<!--\s*2ch_X:true\s*-->""", RegexOption.IGNORE_CASE)) -> PostResult(title, text, true)
+                    response.contains(Regex("""<!--\s*2ch_X:error\s*-->""", RegexOption.IGNORE_CASE)) -> PostResult(title, text, false)
+                    title.contains(
+                        Regex("ERORR", RegexOption.IGNORE_CASE)
+                    ) -> PostResult(title, text, false)
+
+                    title.contains(
+                        Regex("""書き[込こ]み(ました|成功)""")
+                    ) -> PostResult(title, text, true)
+
+                    else -> PostResult(title, text, false)
+                }
+            }
+        }
     }
 }

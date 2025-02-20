@@ -1,6 +1,7 @@
 package io.github.lanlacope.maytomato.activity.component
 
 import android.app.Activity
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,7 +11,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -20,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,12 +36,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.lanlacope.compose.composeable.ui.click.BoxButton
+import io.github.lanlacope.compose.ui.dialog.BasicDialog
 import io.github.lanlacope.compose.ui.dialog.GrowDialog
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.BbsInfo
 import io.github.lanlacope.maytomato.activity.rememberCopipeSelectResult
 import io.github.lanlacope.maytomato.clazz.BoardSetting
 import io.github.lanlacope.maytomato.clazz.rememberBbsPoster
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
@@ -170,20 +177,37 @@ fun WriteDialog(bbsInfo: BbsInfo, boardSetting: BoardSetting) {
 
                 Spacer(modifier = Modifier.weight(1.0f))
 
+                var errorDialogTitle by rememberSaveable{ mutableStateOf("") }
+                var errorDialogText by rememberSaveable{ mutableStateOf("") }
+                var eroorDialogShown by rememberSaveable{ mutableStateOf(false) }
+                var waitingDialogShown by rememberSaveable { mutableStateOf(false) }
+                val sendPost: () -> Unit = {
+                    scope.launch {
+                        bbsPoster.sendPost(
+                            name = name,
+                            mail = mail,
+                            subject = subject,
+                            message = message,
+                            onSucces = { resNumber ->
+                                scope.launch(Dispatchers.Main) {
+                                    Toast.makeText(context, context.getString(R.string.toast_state_success_post), Toast.LENGTH_SHORT)
+                                        .show()
+                                    waitingDialogShown = false
+                                    activity.finish()
+                                }
+                            },
+                            onFailed = { newTitle, newText ->
+                                waitingDialogShown = false
+                                errorDialogTitle = newTitle
+                                errorDialogText = newText
+                                eroorDialogShown = true
+                            }
+                        )
+                    }
+                }
+
                 TextButton(
-                    onClick = {
-                        scope.launch {
-                            bbsPoster.sendPost(
-                                name = name,
-                                mail = mail,
-                                subject = subject,
-                                message = message,
-                                onSucces = {_ -> },
-                                onFailed = { }
-                            )
-                        }
-                        activity.finish()
-                    },
+                    onClick =  sendPost,
                     modifier = Modifier.fillMaxHeight()
                 ) {
                     Text(
@@ -192,9 +216,67 @@ fun WriteDialog(bbsInfo: BbsInfo, boardSetting: BoardSetting) {
                         fontWeight = FontWeight.Bold,
                     )
                 }
+
+                ErrorDialog(
+                    expanded = eroorDialogShown,
+                    title = errorDialogTitle,
+                    text = errorDialogText,
+                    onConfirm = {
+                        eroorDialogShown = false
+                        sendPost()
+                    },
+                    onCancel = { eroorDialogShown = false }
+
+                )
+
+                WaitingDialog(
+                    expanded = waitingDialogShown,
+                    onDismissRequest = { }
+                )
             }
 
             Spacer(modifier = Modifier.height(8.dp))
         }
+    }
+}
+
+@Composable
+private fun ErrorDialog(
+    expanded: Boolean,
+    title: String,
+    text: String,
+    onConfirm: () -> Unit,
+    onCancel: () -> Unit,
+) {
+    BasicDialog(
+        title = title,
+        expanded = expanded,
+        onConfirm = onConfirm,
+        confirmText = stringResource(id = R.string.dialog_positive_retry),
+        onCancel = onCancel,
+        cancelText = stringResource(id = R.string.dialog_negative_cancel)
+    ) {
+        Column {
+            SelectionContainer {
+                Text(
+                    text = text,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun WaitingDialog(
+    expanded: Boolean,
+    onDismissRequest: () -> Unit,
+) {
+    BasicDialog(
+        expanded = expanded,
+        onDismissRequest = onDismissRequest
+    ) {
+        CircularProgressIndicator(
+            modifier = Modifier.size(200.dp)
+        )
     }
 }

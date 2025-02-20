@@ -1,5 +1,6 @@
 package io.github.lanlacope.maytomato.activity.component.list
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -41,6 +43,7 @@ import io.github.lanlacope.maytomato.activity.component.dialog.BoardEditDialog
 import io.github.lanlacope.maytomato.activity.component.dialog.BoardRemoveDialog
 import io.github.lanlacope.maytomato.clazz.BoardSetting
 import io.github.lanlacope.maytomato.clazz.rememberBoardManager
+import io.github.lanlacope.maytomato.clazz.rememberCookieManager
 import kotlinx.coroutines.launch
 
 
@@ -129,8 +132,10 @@ private fun BoardItem(boardSetting: BoardSetting) {
 
     DrawUpAnimated(visible = !isRemoved) {
 
+        val context = LocalContext.current
         val scope = rememberCoroutineScope()
         val boardManager = rememberBoardManager()
+        val cookieManager = rememberCookieManager()
 
         var iBoardSetting by remember { mutableStateOf(boardSetting.copy()) }
 
@@ -170,20 +175,20 @@ private fun BoardItem(boardSetting: BoardSetting) {
 
             BoardEditDialog(
                 expanded = editDialogShown,
-                boardSettig = iBoardSetting,
+                boardSetting = iBoardSetting,
                 onConfirm = { newBoardSetting ->
                     scope.launch {
                         val result = boardManager.editBoard(newBoardSetting)
                         if (result.isSuccess) {
                             iBoardSetting = result.getOrNull()!!
                             editDialogShown = false
+                            Toast.makeText(context, context.getString(R.string.setting_board_edit_success), Toast.LENGTH_LONG).show()
                         }
                         else {
-
+                            Toast.makeText(context, context.getString(R.string.setting_board_edit_failed), Toast.LENGTH_LONG).show()
                         }
                     }
                 },
-                onCancel = { editDialogShown = false }
             )
 
             BoardRemoveDialog(
@@ -192,6 +197,7 @@ private fun BoardItem(boardSetting: BoardSetting) {
                 onConfirm = { removedTitle ->
                     scope.launch {
                         boardManager.removeBoard(iBoardSetting.domain)
+                        cookieManager.removeCookie(iBoardSetting.domain)
                         isRemoved = true
                         removeDialogShown = false
                     }

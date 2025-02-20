@@ -77,9 +77,10 @@ class BoardManager(context: Context) {
 
         val data = JSONObject().apply {
             put(BoardSettingJson.ENABLED, boardSetting.enabled)
-            put(BoardSettingJson.USER_AGENT, boardSetting.useAgent)
-            put(BoardSettingJson.USED_MOBILE_COMMUNICATION, boardSetting.usedMobileCommunication)
-            put(BoardSettingJson.UNFORCED_CLEAR_TRAFFIC, boardSetting.unforcedClearTraffic)
+            put(BoardSettingJson.USER_AGENT, boardSetting.userAgent)
+            put(BoardSettingJson.REMOVE_MAIL, boardSetting.removeMail)
+            put(BoardSettingJson.FORCE_MOBILE_COMMUNICATION, boardSetting.forceMobileCommunication)
+            put(BoardSettingJson.FORCE_CLEAR_TRAFFIC, boardSetting.forceClearHttps)
         }
 
         boardObject.put(boardSetting.domain, data)
@@ -104,16 +105,18 @@ class BoardManager(context: Context) {
 private object BoardSettingJson {
     const val ENABLED = "Enabled"
     const val USER_AGENT = "UserAgent"
-    const val USED_MOBILE_COMMUNICATION = "UsedMobileCommunication"
-    const val UNFORCED_CLEAR_TRAFFIC = "UnforcedClearTraffic"
+    const val REMOVE_MAIL = "RemoveMail"
+    const val FORCE_MOBILE_COMMUNICATION = "ForceMobileCommunication"
+    const val FORCE_CLEAR_TRAFFIC = "ForceHttps"
 }
 
 data class BoardSetting(
     val domain: String,
     val enabled: Boolean,
-    val useAgent: String,
-    val usedMobileCommunication: Boolean,
-    val unforcedClearTraffic: Boolean
+    val userAgent: String,
+    val removeMail: Boolean,
+    val forceMobileCommunication: Boolean,
+    val forceClearHttps: Boolean
 ) {
 
     companion object {
@@ -121,15 +124,17 @@ data class BoardSetting(
             jsonObject.apply {
                 val enabled = optBoolean(BoardSettingJson.ENABLED, true)
                 val useAgent = optString(BoardSettingJson.USER_AGENT,"")
-                val usedMobileCommunication = optBoolean(BoardSettingJson.USED_MOBILE_COMMUNICATION, false)
-                val unusedClearTraffic = optBoolean(BoardSettingJson.UNFORCED_CLEAR_TRAFFIC, false)
+                val removeMail = optBoolean(BoardSettingJson.REMOVE_MAIL, false)
+                val forceMobileCommunication = optBoolean(BoardSettingJson.FORCE_MOBILE_COMMUNICATION, false)
+                val forceClearTraffic = optBoolean(BoardSettingJson.FORCE_CLEAR_TRAFFIC, false)
 
                 return BoardSetting(
                     domain = domain,
                     enabled = enabled,
-                    useAgent = useAgent,
-                    usedMobileCommunication = usedMobileCommunication,
-                    unforcedClearTraffic = unusedClearTraffic
+                    userAgent = useAgent,
+                    removeMail = removeMail,
+                    forceMobileCommunication = forceMobileCommunication,
+                    forceClearHttps = forceClearTraffic
                 )
             }
         }

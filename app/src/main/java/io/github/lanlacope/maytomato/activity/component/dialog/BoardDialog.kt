@@ -3,16 +3,21 @@ package io.github.lanlacope.maytomato.activity.component.dialog
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -20,12 +25,19 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.lanlacope.compose.ui.action.option.CompactOptionCheckBox
+import io.github.lanlacope.compose.ui.action.setting.SettingSwitch
+import io.github.lanlacope.compose.ui.action.setting.SettingTextButton
+import io.github.lanlacope.compose.ui.action.setting.SettingTextButtonColors
+import io.github.lanlacope.compose.ui.action.setting.SettingTextButtonDefaults
 import io.github.lanlacope.compose.ui.dialog.GrowDialog
 import io.github.lanlacope.compose.ui.text.input.InputTextField
 import io.github.lanlacope.compose.ui.text.input.OutlinedInputTextField
 import io.github.lanlacope.maytomato.R
+import io.github.lanlacope.maytomato.activity.SETTING_MINHEIGHT
+import io.github.lanlacope.maytomato.activity.SettingNavi
 import io.github.lanlacope.maytomato.clazz.BoardSetting
-import io.github.lanlacope.maytomato.clazz.userAgent
+import io.github.lanlacope.maytomato.clazz.rememberCookieManager
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -39,7 +51,7 @@ fun BoardAddDialog(
     var dDomain by rememberSaveable(expanded) { mutableStateOf("") }
 
     GrowDialog(
-        title = stringResource(id = R.string.dialog_title_aa_add),
+        title = stringResource(id = R.string.dialog_title_domain_add),
         expanded = expanded,
         onConfirm = { onConfirm(dDomain) },
         confirmText = stringResource(id = R.string.dialog_positive_add),
@@ -64,76 +76,121 @@ fun BoardAddDialog(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BoardEditDialog(
     expanded: Boolean,
-    boardSettig: BoardSetting,
-    onConfirm: (boardSettig: BoardSetting) -> Unit,
-    onCancel: () -> Unit,
+    boardSetting: BoardSetting,
+    onConfirm: (boardSetting: BoardSetting) -> Unit,
 ) {
-    var dEnabled by rememberSaveable(expanded) { mutableStateOf(boardSettig.enabled) }
-    var dUserAgent by rememberSaveable(expanded) { mutableStateOf(boardSettig.useAgent) }
-    var dUsedMobileCommunication by rememberSaveable(expanded) { mutableStateOf(boardSettig.usedMobileCommunication) }
-    var dUnusedClearTraffic by rememberSaveable(expanded) { mutableStateOf(boardSettig.unforcedClearTraffic) }
+    val scope = rememberCoroutineScope()
+    val cookieManager = rememberCookieManager()
 
-    GrowDialog(
-        title = stringResource(id = R.string.dialog_title_aa_edit),
-        expanded = expanded,
-        onConfirm = { onConfirm(BoardSetting(boardSettig.domain, dEnabled, dUserAgent, dUsedMobileCommunication, dUnusedClearTraffic)) },
-        confirmText = stringResource(id = R.string.dialog_positive_apply),
-        onCancel = onCancel,
-        cancelText = stringResource(id = R.string.dialog_negative_cancel)
-    ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
+    var dEnabled by rememberSaveable(expanded) { mutableStateOf(boardSetting.enabled) }
+    var dUserAgent by rememberSaveable(expanded) { mutableStateOf(boardSetting.userAgent) }
+    var dRemoveMail by rememberSaveable(expanded) { mutableStateOf(boardSetting.removeMail) }
+    var dForceMobileCommunication by rememberSaveable(expanded) { mutableStateOf(boardSetting.forceMobileCommunication) }
+    var dForceHttp by rememberSaveable(expanded) { mutableStateOf(boardSetting.forceClearHttps) }
 
-            Text(
-                text = boardSettig.domain,
-                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
-                modifier = Modifier.fillMaxWidth()
-            )
+    if (expanded) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                onConfirm(
+                    BoardSetting(
+                        boardSetting.domain,
+                        dEnabled,
+                        dUserAgent,
+                        dRemoveMail,
+                        dForceMobileCommunication,
+                        dForceHttp
+                    )
+                )
+            },
+        ) {
+            Column(modifier = Modifier.fillMaxWidth()) {
 
-            CompactOptionCheckBox(
-                text = "有効",
-                checked = dEnabled,
-                onClick = { dEnabled = !dEnabled },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 8.dp)
-            )
+                Text(
+                    text = boardSetting.domain,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-            CompactOptionCheckBox(
-                text = "モバイルで(未実装)",
-                checked = dUsedMobileCommunication,
-                onClick = { dUsedMobileCommunication = !dUsedMobileCommunication },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 8.dp)
-            )
+                SettingSwitch(
+                    text = stringResource(id = R.string.setting_board_enabled),
+                    checked = dEnabled,
+                    onClick = { dEnabled = !dEnabled },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 8.dp)
+                )
 
-            CompactOptionCheckBox(
-                text = "httpsを強制しない",
-                checked = dUnusedClearTraffic,
-                onClick = { dUnusedClearTraffic = !dUnusedClearTraffic },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 8.dp)
-            )
+                SettingSwitch(
+                    text = stringResource(id = R.string.setting_board_remove_mail),
+                    checked = dRemoveMail,
+                    onClick = { dRemoveMail = !dRemoveMail },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 8.dp)
+                )
 
-            InputTextField(
-                text = dUserAgent,
-                onTextChange = { dUserAgent = it },
-                hintText = userAgent,
-                singleLine = true,
-                useLabel = true,
-                textStyle = TextStyle.Default.copy(
-                    fontFamily = FontFamily(Font(resId = R.font.mona))
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 8.dp)
-                    .horizontalScroll(rememberScrollState())
+                SettingSwitch(
+                    text = stringResource(id = R.string.setting_board_force_mobile_communication),
+                    checked = dForceMobileCommunication,
+                    onClick = { dForceMobileCommunication = !dForceMobileCommunication },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 8.dp)
+                )
 
-            )
+                SettingSwitch(
+                    text = stringResource(id = R.string.setting_board_force_https),
+                    checked = dForceHttp,
+                    onClick = { dForceHttp = !dForceHttp },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 8.dp)
+                )
+
+                InputTextField(
+                    text = dUserAgent,
+                    onTextChange = { dUserAgent = it },
+                    hintText = stringResource(id = R.string.hint_board_ua),
+                    singleLine = true,
+                    useLabel = true,
+                    textStyle = TextStyle.Default.copy(
+                        fontFamily = FontFamily(Font(resId = R.font.mona))
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 8.dp)
+                        .horizontalScroll(rememberScrollState())
+
+                )
+
+                var removeDialogShown by rememberSaveable { mutableStateOf(false) }
+
+                SettingTextButton(
+                    text = stringResource(id = R.string.setting_board_remove_cookie),
+                    colors = SettingTextButtonDefaults.colors().copy(
+                        textColor = MaterialTheme.colorScheme.onError
+                    ),
+                    onClick = { removeDialogShown = true },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = SETTING_MINHEIGHT)
+                )
+
+                CookieRemoveDialog(
+                    expanded = removeDialogShown,
+                    onConfirm = {  ->
+                        scope.launch {
+                            cookieManager.removeCookie(boardSetting.domain)
+                            removeDialogShown = false
+                        }
+                    },
+                    onCancel = { removeDialogShown = false }
+                )
+            }
         }
     }
 }
@@ -156,7 +213,35 @@ fun BoardRemoveDialog(
         Column(modifier = Modifier.fillMaxWidth()) {
 
             Text(
-                text = stringResource(id = R.string.confirm_text_aa_remove),
+                text = stringResource(id = R.string.confirm_text_domain_remove),
+                fontSize = 16.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp)
+
+            )
+        }
+    }
+}
+
+@Composable
+private fun CookieRemoveDialog(
+    expanded: Boolean,
+    onConfirm: () -> Unit,
+    onCancel: () -> Unit,
+) {
+    GrowDialog(
+        title = stringResource(id = R.string.dialog_title_comfirm),
+        expanded = expanded,
+        onConfirm = { onConfirm() },
+        confirmText = stringResource(id = R.string.dialog_positive_remove),
+        onCancel = onCancel,
+        cancelText = stringResource(id = R.string.dialog_negative_cancel)
+    ) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+
+            Text(
+                text = stringResource(id = R.string.confirm_text_cookie_remove),
                 fontSize = 16.sp,
                 modifier = Modifier
                     .fillMaxWidth()
