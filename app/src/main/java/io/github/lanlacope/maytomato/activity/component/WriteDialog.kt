@@ -109,25 +109,27 @@ fun WriteDialog(bbsInfo: BbsInfo, boardSetting: BoardSetting) {
                         .padding(all = 8.dp)
                 )
 
-                OutlinedTextField(
-                    value = mail,
-                    onValueChange = { mail = it },
-                    placeholder = {
-                        Text(
-                            text = stringResource(id = R.string.dialog_hint_mail),
-                            fontWeight = FontWeight.Bold,
-                            style = TextStyle(
-                                color = Gray
-                            ),
-                            modifier = Modifier.wrapContentSize()
-                        )
-                    },
-                    singleLine = true,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(weight = 1f)
-                        .padding(all = 8.dp)
-                )
+                if (!boardSetting.removeMail) {
+                    OutlinedTextField(
+                        value = mail,
+                        onValueChange = { mail = it },
+                        placeholder = {
+                            Text(
+                                text = stringResource(id = R.string.dialog_hint_mail),
+                                fontWeight = FontWeight.Bold,
+                                style = TextStyle(
+                                    color = Gray
+                                ),
+                                modifier = Modifier.wrapContentSize()
+                            )
+                        },
+                        singleLine = true,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(weight = 1f)
+                            .padding(all = 8.dp)
+                    )
+                }
             }
 
             OutlinedTextField(

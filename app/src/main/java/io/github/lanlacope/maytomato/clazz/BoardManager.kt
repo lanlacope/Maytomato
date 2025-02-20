@@ -126,7 +126,7 @@ data class BoardSetting(
                 val useAgent = optString(BoardSettingJson.USER_AGENT,"")
                 val removeMail = optBoolean(BoardSettingJson.REMOVE_MAIL, false)
                 val forceMobileCommunication = optBoolean(BoardSettingJson.FORCE_MOBILE_COMMUNICATION, false)
-                val forceClearTraffic = optBoolean(BoardSettingJson.FORCE_CLEAR_TRAFFIC, false)
+                val forceClearTraffic = optBoolean(BoardSettingJson.FORCE_CLEAR_TRAFFIC, true)
 
                 return BoardSetting(
                     domain = domain,
