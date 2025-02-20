@@ -43,10 +43,10 @@ class BbsPoster(
             val cookieManager = CookieManager(context)
             val encodeStr = "shift_jis"
             val encodeChar = Charset.forName(encodeStr)
-            val requestURL = if (true) {
-                "${bbsInfo.protocol}${bbsInfo.domain}/test/bbs.cgi"
+            val requestURL = if (bbsSetting.forceClearHttps) {
+                "https://${bbsInfo.domain}/test/bbs.cgi"
             } else {
-                "http://${bbsInfo.domain}/test/bbs.cgi"
+                "${bbsInfo.protocol}${bbsInfo.domain}/test/bbs.cgi"
             }
 
 
