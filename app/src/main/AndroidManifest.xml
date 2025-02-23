@@ -34,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.MashroomActivity"
             android:exported="true"
             android:theme="@style/Theme.Translucent">
             <intent-filter>
