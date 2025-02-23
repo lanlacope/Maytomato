@@ -204,7 +204,7 @@ class BbsPoster(
                     ) -> PostResult(title, text, false)
 
                     title.contains(
-                        Regex("""書き[込こ]み(ました|成功)""")
+                        Regex("""書き[込こ]み(ました|完了|成功|OK|ＯＫ)""")
                     ) -> PostResult(title, text, true)
 
                     else -> PostResult(title, text, false)

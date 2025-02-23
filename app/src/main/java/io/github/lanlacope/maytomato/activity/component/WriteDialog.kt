@@ -67,27 +67,6 @@ fun WriteDialog(bbsInfo: BbsInfo, boardSetting: BoardSetting) {
             var subject by remember { mutableStateOf("") }
             var message by remember { mutableStateOf("") }
 
-            if (bbsInfo.key.isNullOrEmpty()) {
-                OutlinedTextField(
-                    value = subject,
-                    onValueChange = { subject = it },
-                    placeholder = {
-                        Text(
-                            text = stringResource(id = R.string.dialog_hint_subject),
-                            fontWeight = FontWeight.Bold,
-                            style = TextStyle(
-                                color = Gray
-                            ),
-                            modifier = Modifier.wrapContentSize()
-                        )
-                    },
-                    singleLine = true,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(all = 8.dp)
-                )
-            }
-
             Row(modifier = Modifier.fillMaxWidth()) {
                 OutlinedTextField(
                     value = name,
@@ -130,6 +109,27 @@ fun WriteDialog(bbsInfo: BbsInfo, boardSetting: BoardSetting) {
                             .padding(all = 8.dp)
                     )
                 }
+            }
+
+            if (bbsInfo.key.isNullOrEmpty()) {
+                OutlinedTextField(
+                    value = subject,
+                    onValueChange = { subject = it },
+                    placeholder = {
+                        Text(
+                            text = stringResource(id = R.string.dialog_hint_subject),
+                            fontWeight = FontWeight.Bold,
+                            style = TextStyle(
+                                color = Gray
+                            ),
+                            modifier = Modifier.wrapContentSize()
+                        )
+                    },
+                    singleLine = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 8.dp)
+                )
             }
 
             OutlinedTextField(
@@ -192,9 +192,22 @@ fun WriteDialog(bbsInfo: BbsInfo, boardSetting: BoardSetting) {
                             message = message,
                             onSucces = { resNumber ->
                                 scope.launch(Dispatchers.Main) {
-                                    Toast.makeText(context, context.getString(R.string.toast_state_success_post), Toast.LENGTH_SHORT)
-                                        .show()
+                                    if (resNumber == null) {
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(R.string.toast_state_success_post),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                    else {
+                                        Toast.makeText(
+                                            context,
+                                            context.getString(R.string.toast_state_success_post_with_num, resNumber),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
                                     waitingDialogShown = false
+                                    activity.setResult(Activity.RESULT_OK)
                                     activity.finish()
                                 }
                             },

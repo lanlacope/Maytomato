@@ -4,6 +4,8 @@
     <string name="toast_error_nonexist_chmate">chmateがインストールされていません</string>
     <string name="toast_error_unread_url">対応していないURLです</string>
     <string name="toast_state_success_post">書き込みました</string>
+    <string name="toast_state_success_post_with_num">書き込みました: %1$dレス目</string>
+
 
     <string name="dialog_hint_subject">タイトルを入力</string>
     <string name="dialog_hint_name">名前</string>
@@ -91,5 +93,5 @@
     <string name="setting_about_licence">ライセンス</string>
     <string name="setting_about_source">オープンソースプロジェクト</string>
     <string name="setting_about_version">バージョン</string>
-    <string name="setting_about_version_update">アップデートがあります。</string>
+    <string name="setting_about_version_update">アップデートがあります</string>
 </resources>

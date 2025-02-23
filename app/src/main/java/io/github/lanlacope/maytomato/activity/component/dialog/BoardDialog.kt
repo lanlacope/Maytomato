@@ -4,6 +4,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -103,7 +104,11 @@ fun BoardEditDialog(
                 )
             },
         ) {
-            Column(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .imePadding()
+            ) {
 
                 Text(
                     text = boardSetting.domain,
@@ -168,7 +173,7 @@ fun BoardEditDialog(
                 SettingTextButton(
                     text = stringResource(id = R.string.setting_board_remove_cookie),
                     colors = SettingTextButtonDefaults.colors().copy(
-                        textColor = MaterialTheme.colorScheme.onError
+                        textColor = MaterialTheme.colorScheme.error
                     ),
                     onClick = { removeDialogShown = true },
                     modifier = Modifier
@@ -178,7 +183,7 @@ fun BoardEditDialog(
 
                 CookieRemoveDialog(
                     expanded = removeDialogShown,
-                    onConfirm = {  ->
+                    onConfirm = { ->
                         scope.launch {
                             cookieManager.removeCookie(boardSetting.domain)
                             removeDialogShown = false
