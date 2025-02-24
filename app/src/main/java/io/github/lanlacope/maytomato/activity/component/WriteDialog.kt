@@ -70,11 +70,10 @@ fun WriteDialog(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            var postSuccessKey by remember { mutableStateOf(0) }
             var name by rememberCacheable(key = "${bbsInfo.bbs}_mame"){ mutableStateOf("") }
             var mail by rememberCacheable(key = "${bbsInfo.bbs}_mail") { mutableStateOf("") }
-            var subject by rememberCacheable(postSuccessKey, key = "${bbsInfo.bbs}_subject") { mutableStateOf("") }
-            var message by rememberCacheable(postSuccessKey, key = "${bbsInfo.bbs}_${bbsInfo.key}_message") { mutableStateOf("") }
+            var subject by rememberCacheable(key = "${bbsInfo.bbs}_subject") { mutableStateOf("") }
+            var message by rememberCacheable(key = "${bbsInfo.bbs}_${bbsInfo.key}_message") { mutableStateOf("") }
 
             LaunchedEffect(Unit) {
                 if (subject.isNotEmpty()) subject = defaultSubject
@@ -227,8 +226,9 @@ fun WriteDialog(
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     }
+                                    subject = ""
+                                    message = ""
                                     waitingDialogShown = false
-                                    postSuccessKey++
                                     activity.setResult(Activity.RESULT_OK)
                                     activity.finish()
                                 }
