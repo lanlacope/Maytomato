@@ -8,14 +8,12 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.collection.intSetOf
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.component.WriteDialog
-import io.github.lanlacope.maytomato.activity.component.versionName
 import io.github.lanlacope.maytomato.clazz.BoardManager
 import io.github.lanlacope.maytomato.ui.theme.MaytomatoTheme
 import kotlinx.coroutines.runBlocking
@@ -30,7 +28,7 @@ class WriteActivity : ComponentActivity() {
         val originIntent = this.intent
         val url = originIntent.dataString ?: ""
 
-
+        /*
         println("--- Extras ---")
         val extras = originIntent.extras ?: Bundle()
         val intentKeys = extras.keySet()
@@ -38,6 +36,8 @@ class WriteActivity : ComponentActivity() {
             val value = extras.get(key)
             println("Key: $key, Value: $value\n")
         }
+
+         */
 
         val bbsInfo = try {
             BbsInfo.parse(url)
