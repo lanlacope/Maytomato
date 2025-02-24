@@ -205,6 +205,7 @@ fun MushroomDialog() {
                         activity.finish()
                     },
                     contentAlignment = Alignment.Center,
+                    innerPadding = PaddingValues(horizontal = 8.dp),
                     modifier = Modifier.fillMaxHeight()
                 ) {
                     Text(
