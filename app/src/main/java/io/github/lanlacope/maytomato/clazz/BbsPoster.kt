@@ -158,10 +158,8 @@ class BbsPoster(
                 val matchResult = Regex("""(.+?)=(.*)""").find(cookie)
                 if (matchResult != null) {
                     val (key, value) = matchResult.destructured
-                    val lowerKey = key.lowercase()
-
                     // これらは保存しない
-                    if (lowerKey !in listOf("expires", "path", "secure", "name", "mail")) {
+                    if (key.lowercase() !in listOf("expires", "path", "secure", "name", "mail")) {
                         append("$key=$value; ")
                     }
                 }
