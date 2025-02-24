@@ -38,6 +38,7 @@ import io.github.lanlacope.compose.composeable.ui.click.BoxButton
 import io.github.lanlacope.compose.ui.action.option.CompactOptionCheckBox
 import io.github.lanlacope.compose.ui.busy.manu.BusyManu
 import io.github.lanlacope.compose.ui.busy.option.texts
+import io.github.lanlacope.compose.ui.button.combined.CombinedBoxButton
 import io.github.lanlacope.compose.ui.button.layout.ManuButton
 import io.github.lanlacope.compose.ui.dialog.GrowDialog
 import io.github.lanlacope.maytomato.R
@@ -180,7 +181,7 @@ fun MashroomDialog() {
 
                 Spacer(modifier = Modifier.weight(1.0f))
 
-                TextButton(
+                BoxButton(
                     onClick = {
                         val output =
                             stringConverter.startConvert(
@@ -195,12 +196,12 @@ fun MashroomDialog() {
                         activity.setResult(Activity.RESULT_OK, intent)
                         activity.finish()
                     },
+                    contentAlignment = Alignment.Center,
                     modifier = Modifier.fillMaxHeight()
                 ) {
                     Text(
                         text = stringResource(id = R.string.dialog_positive_convert),
                         fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
                     )
                 }
             }

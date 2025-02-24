@@ -3,7 +3,6 @@ package io.github.lanlacope.maytomato.activity.component
 import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,7 +20,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -266,8 +264,7 @@ fun WriteDialog(
                 ) {
                     Text(
                         text = stringResource(id = R.string.dialog_positive_post),
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp
                     )
                 }
 
