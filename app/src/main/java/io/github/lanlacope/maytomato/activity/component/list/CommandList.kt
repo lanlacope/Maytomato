@@ -97,7 +97,7 @@ fun CommandList() {
             ) {
                 animatedItems(
                     items = commands,
-                    key = { it.title },
+                    key = { it.text },
                 ) { command ->
                     CommandItem(copipeData = command)
                 }

@@ -77,7 +77,7 @@ fun CommandSelectorList() {
 
             animatedItems(
                 items = commands,
-                key = { it.title },
+                key = { it.text },
             ) { command ->
                 CommandSelectorItem(copipeData = command)
             }

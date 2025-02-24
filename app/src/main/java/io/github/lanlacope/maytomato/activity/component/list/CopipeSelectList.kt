@@ -77,7 +77,7 @@ fun CopipeSelectorList() {
 
             animatedItems(
                 items = copipes,
-                key = { it.title },
+                key = { it.text },
             ) { copipe ->
                 CopipeSelectorItem(copipeData = copipe)
             }

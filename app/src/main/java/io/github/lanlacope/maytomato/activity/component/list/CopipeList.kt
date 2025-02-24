@@ -97,7 +97,7 @@ fun CopipeList() {
             ) {
                 animatedItems(
                     items = copipes,
-                    key = { it.title },
+                    key = { it.text },
                 ) { copipe ->
                     CopipeItem(copipeData = copipe)
                 }

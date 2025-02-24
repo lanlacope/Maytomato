@@ -81,7 +81,7 @@ fun AASelectorList() {
 
             animatedItems(
                 items = aas,
-                key = { it.title },
+                key = { it.text },
             ) { aa ->
                 AASelectorItem(copipeData = aa)
             }

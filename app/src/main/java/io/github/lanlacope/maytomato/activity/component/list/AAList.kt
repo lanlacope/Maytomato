@@ -101,7 +101,7 @@ fun AAList() {
             ) {
                 animatedItems(
                     items = aas,
-                    key = { it.title },
+                    key = { it.text },
                 ) { aa ->
                     AAItem(copipeData = aa)
                 }
