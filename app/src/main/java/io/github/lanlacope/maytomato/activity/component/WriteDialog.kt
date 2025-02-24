@@ -76,12 +76,12 @@ fun WriteDialog(
             var message by rememberCacheable(key = "${bbsInfo.bbs}_${bbsInfo.key}_message") { mutableStateOf("") }
 
             LaunchedEffect(Unit) {
-                if (subject.isNotEmpty()) subject = defaultSubject
+                if (defaultSubject.isNotEmpty()) subject = defaultSubject
                 if (bbsInfo.key.isNullOrEmpty()) {
-                    if (message.isNotEmpty()) message = defaultMessage
+                    if (defaultMessage.isNotEmpty()) message = defaultMessage
                 }
                 else {
-                    if (message.isNotEmpty()) {
+                    if (defaultMessage.isNotEmpty()) {
                         message = if (message.isEmpty() || message.last() == '\n') "$message$defaultMessage" else "$message\n$defaultMessage"
                     }
                 }

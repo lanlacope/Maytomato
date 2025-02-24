@@ -8,12 +8,14 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.collection.intSetOf
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.component.WriteDialog
+import io.github.lanlacope.maytomato.activity.component.versionName
 import io.github.lanlacope.maytomato.clazz.BoardManager
 import io.github.lanlacope.maytomato.ui.theme.MaytomatoTheme
 import kotlinx.coroutines.runBlocking
@@ -107,8 +109,8 @@ private fun String.isBoard() = this.matches(Regex("""^https?://[^/]+/[^/]+/$""")
 
 private fun Intent.parseDefaultMessage(): Pair<String, String> {
     val originalUrl = this@parseDefaultMessage.getStringExtra(ChmateString.EXTRAS_URL) ?: ""
-    val originalTitle = this@parseDefaultMessage.getStringExtra(ChmateString.EXTRAS_1RES) ?: ""
-    val originalRes = this@parseDefaultMessage.getStringExtra(ChmateString.EXTRAS_TITLE) ?: ""
+    val originalTitle = this@parseDefaultMessage.getStringExtra(ChmateString.EXTRAS_TITLE) ?: ""
+    val originalRes = this@parseDefaultMessage.getStringExtra(ChmateString.EXTRAS_1RES) ?: ""
 
     val (title, res) = createNewThreadMessage(url = originalUrl, title = originalTitle, res = originalRes)
 
@@ -136,9 +138,10 @@ private fun createNewThreadMessage(url: String, title: String, res: String): Pai
         val newTitle = if (numberMatchResult != null) {
             val (prefixMain, number, suffixMain) = numberMatchResult.destructured
             "${prefix}${prefixMain}${number.toInt() + 1}${suffixMain}${suffix}"
-        }
-        else {
+        } else if (title.isNotEmpty()) {
             "${prefix}${main} ★1${suffix}"
+        } else {
+            ""
         }
 
         // <hr>(-)以降は消す
@@ -148,8 +151,11 @@ private fun createNewThreadMessage(url: String, title: String, res: String): Pai
         val newRes = if (resMatchResult != null) {
             val (prefixRes, preThread, suffixRes) = resMatchResult.destructured
             "${prefixRes}${preThread}\n${title}\n${url}${suffixRes}"
+        } else if (res.isNotEmpty()) {
+            if (cutRes.isNotEmpty()) "$cutRes\n\n※前スレ\n${title}\n${url}"
+            else "※前スレ\n${title}\n${url}"
         } else {
-            "$cutRes\n※前スレ\n${title}\n${url}"
+            ""
         }
 
         return Pair(newTitle, newRes)
