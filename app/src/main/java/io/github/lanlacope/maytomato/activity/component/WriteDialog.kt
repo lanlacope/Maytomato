@@ -20,6 +20,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import io.github.lanlacope.compose.composeable.ui.click.BoxButton
 import io.github.lanlacope.compose.ui.dialog.BasicDialog
 import io.github.lanlacope.compose.ui.dialog.GrowDialog
+import io.github.lanlacope.compose.unit.rememberCacheable
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.BbsInfo
 import io.github.lanlacope.maytomato.activity.rememberCopipeSelectResult
@@ -45,9 +47,15 @@ import io.github.lanlacope.maytomato.clazz.BoardSetting
 import io.github.lanlacope.maytomato.clazz.rememberBbsPoster
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.security.auth.Subject
 
 @Composable
-fun WriteDialog(bbsInfo: BbsInfo, boardSetting: BoardSetting) {
+fun WriteDialog(
+    defaultSubject: String,
+    defaultMessage: String,
+    bbsInfo: BbsInfo,
+    boardSetting: BoardSetting
+) {
 
     val context = LocalContext.current
     val activity = context as Activity
@@ -62,10 +70,23 @@ fun WriteDialog(bbsInfo: BbsInfo, boardSetting: BoardSetting) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            var name by remember { mutableStateOf("") }
-            var mail by remember { mutableStateOf("") }
-            var subject by remember { mutableStateOf("") }
-            var message by remember { mutableStateOf("") }
+            var postSuccessKey by remember { mutableStateOf(0) }
+            var name by rememberCacheable(key = "${bbsInfo.bbs}_mame"){ mutableStateOf("") }
+            var mail by rememberCacheable(key = "${bbsInfo.bbs}_mail") { mutableStateOf("") }
+            var subject by rememberCacheable(postSuccessKey, key = "${bbsInfo.bbs}_subject") { mutableStateOf("") }
+            var message by rememberCacheable(postSuccessKey, key = "${bbsInfo.bbs}_${bbsInfo.key}_message") { mutableStateOf("") }
+
+            LaunchedEffect(Unit) {
+                if (subject.isNotEmpty()) subject = defaultSubject
+                if (bbsInfo.key.isNullOrEmpty()) {
+                    if (message.isNotEmpty()) message = defaultMessage
+                }
+                else {
+                    if (message.isNotEmpty()) {
+                        message = if (message.isEmpty() || message.last() == '\n') "$message$defaultMessage" else "$message\n$defaultMessage"
+                    }
+                }
+            }
 
             Row(modifier = Modifier.fillMaxWidth()) {
                 OutlinedTextField(
@@ -207,6 +228,7 @@ fun WriteDialog(bbsInfo: BbsInfo, boardSetting: BoardSetting) {
                                         ).show()
                                     }
                                     waitingDialogShown = false
+                                    postSuccessKey++
                                     activity.setResult(Activity.RESULT_OK)
                                     activity.finish()
                                 }
