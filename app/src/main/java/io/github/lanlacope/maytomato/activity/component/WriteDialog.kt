@@ -24,11 +24,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -71,21 +74,41 @@ fun WriteDialog(
 
             Spacer(modifier = Modifier.height(8.dp))
 
+            val subjectFocusRequester = remember { FocusRequester() }
+            val messageFocusRequester = remember { FocusRequester() }
+
             var name by rememberCacheable(key = "${bbsInfo.bbs}_mame"){ mutableStateOf("") }
             var mail by rememberCacheable(key = "${bbsInfo.bbs}_mail") { mutableStateOf("") }
             var subject by rememberCacheable(key = "${bbsInfo.bbs}_subject") { mutableStateOf("") }
             var message by rememberCacheable(key = "${bbsInfo.bbs}_${bbsInfo.key}_message") { mutableStateOf("") }
 
             LaunchedEffect(Unit) {
-                // いい感じに改行
-                if (defaultSubject.isNotEmpty()) subject = defaultSubject
+                // いい感じに改行して追加
+                if (defaultSubject.isNotEmpty()) {
+                    subject = defaultSubject
+                }
                 if (bbsInfo.key.isNullOrEmpty()) {
                     if (defaultMessage.isNotEmpty()) message = defaultMessage
                 }
                 else {
                     if (defaultMessage.isNotEmpty()) {
-                        message = if (message.isEmpty() || message.last() == '\n') "$message$defaultMessage" else "$message\n$defaultMessage"
+                        message = if (message.isEmpty() || message.last() == '\n') {
+                            "$message$defaultMessage"
+                        } else {
+                            "$message\n$defaultMessage"
+                        }
                     }
+                }
+
+                // いい感じにフォーカス
+                if (bbsInfo.key.isNullOrEmpty()) {
+                    if (defaultSubject.isNotEmpty()) {
+                        messageFocusRequester.requestFocus()
+                    } else {
+                        subjectFocusRequester.requestFocus()
+                    }
+                } else {
+                    messageFocusRequester.requestFocus()
                 }
             }
 
@@ -151,6 +174,7 @@ fun WriteDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(all = 8.dp)
+                        .focusRequester(subjectFocusRequester)
                 )
             }
 
@@ -164,7 +188,8 @@ fun WriteDialog(
                         style = TextStyle(
                             color = Gray
                         ),
-                        modifier = Modifier.wrapContentSize()
+                        modifier = Modifier
+                            .wrapContentSize()
                     )
                 },
                 minLines = 3,
@@ -172,6 +197,7 @@ fun WriteDialog(
                     .fillMaxWidth()
                     .weight(weight = 1f, fill = false)
                     .padding(all = 8.dp)
+                    .focusRequester(messageFocusRequester)
             )
 
             Row(

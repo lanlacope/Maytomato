@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -26,6 +27,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -62,6 +65,9 @@ fun MashroomDialog() {
 
             Spacer(modifier = Modifier.height(8.dp))
 
+            val focusRequester = remember { FocusRequester() }
+            var text by rememberSaveable { mutableStateOf("") }
+
             var selectedMode by remember { mutableStateOf(ConvertMode.MOJIBAKE) }
             var modeManuShown by remember { mutableStateOf(false) }
             val modes = remember {
@@ -80,6 +86,12 @@ fun MashroomDialog() {
                     ConvertNumber.DEC to context.getString(R.string.manu_text_number_decimal),
                     ConvertNumber.HEX to context.getString(R.string.manu_text_number_hexadecima)
                 )
+            }
+
+            val selectedOptions = remember { mutableStateListOf<String>() }
+
+            LaunchedEffect(Unit) {
+                focusRequester.requestFocus()
             }
 
             Row {
@@ -120,8 +132,6 @@ fun MashroomDialog() {
                 }
             }
 
-            val selectedOptions = remember { mutableStateListOf<String>() }
-
             CompactOptionCheckBox(
                 text = stringResource(id = R.string.manu_text_option_entity),
                 checked = selectedOptions.contains(ConvertOption.ENTITY),
@@ -130,8 +140,6 @@ fun MashroomDialog() {
                 },
                 modifier = Modifier.fillMaxWidth()
             )
-
-            var text by rememberSaveable { mutableStateOf("") }
 
             OutlinedTextField(
                 value = text,
@@ -151,6 +159,7 @@ fun MashroomDialog() {
                     .fillMaxWidth()
                     .weight(weight = 1f, fill = false)
                     .padding(all = 8.dp)
+                    .focusRequester(focusRequester)
             )
 
             Row(
