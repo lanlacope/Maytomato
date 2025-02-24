@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -172,6 +173,14 @@ data class BbsInfo(
     val key: String? = null
 ) {
 
+    fun toUri(): Uri {
+        return if (key.isNullOrEmpty()) {
+            Uri.parse("${protocol}//${domain}/${bbs}/")
+        } else {
+            Uri.parse("${protocol}//${domain}/test/read.cgi/${bbs}/${key}/")
+        }
+    }
+
     companion object {
         fun parse(url: String): BbsInfo {
 
@@ -202,7 +211,7 @@ data class BbsInfo(
 }
 
 
-private object ChmateString {
+object ChmateString {
     const val APP_NAME = "jp.co.airfront.android.a2chMate"
     const val ACTIVITY_NAME = "jp.syoboi.a2chMate.activity.ResEditActivity\$Dialog"
     const val EXTRAS_URL = "sourceUrl"

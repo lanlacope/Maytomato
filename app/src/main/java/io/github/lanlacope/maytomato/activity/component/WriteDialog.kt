@@ -1,6 +1,9 @@
 package io.github.lanlacope.maytomato.activity.component
 
 import android.app.Activity
+import android.content.ComponentName
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -36,11 +39,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.lanlacope.compose.composeable.ui.click.BoxButton
+import io.github.lanlacope.compose.ui.button.combined.CombinedBoxButton
 import io.github.lanlacope.compose.ui.dialog.BasicDialog
 import io.github.lanlacope.compose.ui.dialog.GrowDialog
 import io.github.lanlacope.compose.unit.rememberCacheable
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.BbsInfo
+import io.github.lanlacope.maytomato.activity.ChmateString
 import io.github.lanlacope.maytomato.activity.rememberCopipeSelectResult
 import io.github.lanlacope.maytomato.clazz.BoardSetting
 import io.github.lanlacope.maytomato.clazz.rememberBbsPoster
@@ -241,8 +246,22 @@ fun WriteDialog(
                     }
                 }
 
-                TextButton(
+                CombinedBoxButton(
                     onClick =  sendPost,
+                    onLongClick = {
+                        val intent = Intent().apply {
+                            action = Intent.ACTION_SENDTO
+                            addCategory(Intent.CATEGORY_DEFAULT)
+                            data = bbsInfo.toUri()
+                            component = ComponentName(
+                                ChmateString.APP_NAME,
+                                ChmateString.ACTIVITY_NAME
+                            )
+                        }
+                        activity.startActivity(intent)
+                        activity.finish()
+                    },
+                    contentAlignment = Alignment.Center,
                     modifier = Modifier.fillMaxHeight()
                 ) {
                     Text(
