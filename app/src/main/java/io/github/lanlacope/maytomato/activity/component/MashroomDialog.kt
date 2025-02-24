@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -23,6 +22,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,7 +38,6 @@ import io.github.lanlacope.compose.composeable.ui.click.BoxButton
 import io.github.lanlacope.compose.ui.action.option.CompactOptionCheckBox
 import io.github.lanlacope.compose.ui.busy.manu.BusyManu
 import io.github.lanlacope.compose.ui.busy.option.texts
-import io.github.lanlacope.compose.ui.button.combined.CombinedBoxButton
 import io.github.lanlacope.compose.ui.button.layout.ManuButton
 import io.github.lanlacope.compose.ui.dialog.GrowDialog
 import io.github.lanlacope.maytomato.R
@@ -132,7 +131,7 @@ fun MashroomDialog() {
                 modifier = Modifier.fillMaxWidth()
             )
 
-            var text by remember { mutableStateOf("") }
+            var text by rememberSaveable { mutableStateOf("") }
 
             OutlinedTextField(
                 value = text,
