@@ -77,6 +77,7 @@ fun WriteDialog(
             var message by rememberCacheable(key = "${bbsInfo.bbs}_${bbsInfo.key}_message") { mutableStateOf("") }
 
             LaunchedEffect(Unit) {
+                // いい感じに改行
                 if (defaultSubject.isNotEmpty()) subject = defaultSubject
                 if (bbsInfo.key.isNullOrEmpty()) {
                     if (defaultMessage.isNotEmpty()) message = defaultMessage
