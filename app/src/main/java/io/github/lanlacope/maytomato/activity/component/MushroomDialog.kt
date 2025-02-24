@@ -51,7 +51,7 @@ import io.github.lanlacope.maytomato.clazz.ConvertOption
 import io.github.lanlacope.maytomato.clazz.rememberStringConverter
 
 @Composable
-fun MashroomDialog() {
+fun MushroomDialog() {
 
     val context = LocalContext.current
     val activity = context as Activity
