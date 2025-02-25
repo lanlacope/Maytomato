@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.CircularProgressIndicator
@@ -233,6 +235,7 @@ fun WriteDialog(
                 var waitingDialogShown by rememberSaveable { mutableStateOf(false) }
                 val sendPost: () -> Unit = {
                     scope.launch {
+                        waitingDialogShown = true
                         bbsPoster.sendPost(
                             name = name,
                             mail = mail,
@@ -308,10 +311,7 @@ fun WriteDialog(
 
                 )
 
-                WaitingDialog(
-                    expanded = waitingDialogShown,
-                    onDismissRequest = { }
-                )
+                WaitingDialog(expanded = waitingDialogShown)
             }
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -347,15 +347,32 @@ private fun ErrorDialog(
 
 @Composable
 private fun WaitingDialog(
-    expanded: Boolean,
-    onDismissRequest: () -> Unit,
+    expanded: Boolean
 ) {
     BasicDialog(
         expanded = expanded,
-        onDismissRequest = onDismissRequest
+        onDismissRequest = { /* do nothing */ }
     ) {
-        CircularProgressIndicator(
-            modifier = Modifier.size(200.dp)
-        )
+        Row(
+            horizontalArrangement = Arrangement.SpaceAround,
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(160.dp)
+        ) {
+
+            Text(
+                text = stringResource(id = R.string.dialog_waiting_text),
+                modifier = Modifier.align(Alignment.CenterVertically)
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            CircularProgressIndicator(
+                strokeWidth = 4.dp,
+                modifier = Modifier
+                    .size(50.dp)
+                    .align(Alignment.CenterVertically)
+            )
+        }
     }
 }
