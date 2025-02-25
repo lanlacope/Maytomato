@@ -12,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -19,7 +20,9 @@ import androidx.compose.ui.res.stringResource
 import io.github.lanlacope.compose.ui.action.setting.SettingTextButton
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.SETTING_MINHEIGHT
+import io.github.lanlacope.maytomato.rememberTo200Helper
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.net.URL
@@ -77,6 +80,26 @@ fun SettingAbout() {
                 val uri = Uri.parse(AppGitHost.LATEST)
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 context.startActivity(intent)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = SETTING_MINHEIGHT)
+        )
+
+
+        /*
+         * 1.xxから2.00へのデータ移行用
+         * 2.1.xで削除
+         *
+         */
+        val to200Helper = rememberTo200Helper()
+        val scope = rememberCoroutineScope()
+        SettingTextButton(
+            text = "1.xxからのデータ移行",
+            onClick = {
+                scope.launch {
+                    to200Helper.to2xxData()
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()

@@ -3,43 +3,50 @@ package io.github.lanlacope.maytomato.clazz
 import android.content.Context
 import java.io.File
 
-private const val DATA_DIR_NAME = "data"
-private const val COPIPE_LIST_FILE_NAME = "copipe.json"
-private const val AA_LIST_FILE_NAME = "aa.json"
-private const val COMMAND_LIST_FILE_NAME = "command.json"
+private const val APP_DIR_NAME = "maytomato"
+private const val COPIPE_DIR_NAME = "copipe"
+private const val COPIPE_LIST_FILE_NAME = "copipe_list.json"
+private const val AA_LIST_FILE_NAME = "aa_list.json"
+private const val COMMAND_LIST_FILE_NAME = "command_list.json"
 
-private const val SETTING_DIR_NAME = "setting"
-private const val BOARD_LIST_FILE_NAME = "board.json"
+private const val board_DIR_NAME = "board"
+private const val BOARD_LIST_FILE_NAME = "board_list.json"
 
 
-private fun Context.getAppDataFilesDir(): File {
-    val folder = File(getExternalFilesDir(null), DATA_DIR_NAME)
+private fun Context.getAppDir(): File {
+    val folder = File(getExternalFilesDir(null), APP_DIR_NAME)
     if (!folder.exists()) {
         folder.mkdirs()
     }
     return folder
 }
 
+private fun Context.getCopipeDir(): File {
+    val file = File(getAppDir(), COPIPE_DIR_NAME)
+    file.createNewFile()
+    return file
+}
+
 fun Context.getCopipeListFile(): File {
-    val file = File(getAppDataFilesDir(), COPIPE_LIST_FILE_NAME)
+    val file = File(getCopipeDir(), COPIPE_LIST_FILE_NAME)
     file.createNewFile()
     return file
 }
 
 fun Context.getAaListFile(): File {
-    val file = File(getAppDataFilesDir(), AA_LIST_FILE_NAME)
+    val file = File(getCopipeDir(), AA_LIST_FILE_NAME)
     file.createNewFile()
     return file
 }
 
 fun Context.getCommandListFile(): File {
-    val file = File(getAppDataFilesDir(), COMMAND_LIST_FILE_NAME)
+    val file = File(getCopipeDir(), COMMAND_LIST_FILE_NAME)
     file.createNewFile()
     return file
 }
 
-private fun Context.getAppSettingFilesDir(): File {
-    val folder = File(getExternalFilesDir(null), SETTING_DIR_NAME)
+private fun Context.getBoardDir(): File {
+    val folder = File(getExternalFilesDir(null), board_DIR_NAME)
     if (!folder.exists()) {
         folder.mkdirs()
     }
@@ -47,7 +54,7 @@ private fun Context.getAppSettingFilesDir(): File {
 }
 
 fun Context.getBoardListFile(): File {
-    val file = File(getAppDataFilesDir(), BOARD_LIST_FILE_NAME)
+    val file = File(getBoardDir(), BOARD_LIST_FILE_NAME)
     file.createNewFile()
     return file
 }
