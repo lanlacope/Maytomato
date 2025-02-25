@@ -100,7 +100,7 @@ class BbsPoster(
                 val result = PostResult.parse(responce)
 
                 if (result.isSuccess) {
-                    val resNum = connection.getHeaderField("X-ResNum").toIntOrNull()
+                    val resNum = connection.getHeaderField("X-ResNum")?.toIntOrNull()
                     onSucces(resNum)
                 }
                 else {
