@@ -92,12 +92,15 @@ fun SettingAbout() {
          * 2.1.xで削除
          *
          */
+        var isClicked by remember { mutableStateOf(false) }
         val to200Helper = rememberTo200Helper()
         val scope = rememberCoroutineScope()
         SettingTextButton(
             text = "1.xxからのデータ移行",
             onClick = {
                 scope.launch {
+                    if (isClicked) return@launch
+                    isClicked = true
                     to200Helper.to2xxData()
                 }
             },
