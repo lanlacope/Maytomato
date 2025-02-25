@@ -82,7 +82,7 @@
     <string name="setting_board_enabled">有効</string>
     <string name="setting_board_disabled">無効</string>
     <string name="setting_board_remove_mail">メール欄を削除</string>
-    <string name="setting_board_force_mobile_communication">モバイル通信を強制</string>
+    <string name="setting_board_force_mobile_communication">モバイル通信を強制(未実装)</string>
     <string name="setting_board_force_https">https通信を強制</string>
     <string name="setting_board_remove_cookie">クッキーを削除</string>
 
