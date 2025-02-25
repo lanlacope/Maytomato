@@ -98,7 +98,7 @@ fun SettingAbout() {
         SettingTextButton(
             text = "1.xxからのデータ移行",
             onClick = {
-                scope.launch {
+                scope.launch(Dispatchers.IO) {
                     if (isClicked) return@launch
                     isClicked = true
                     to200Helper.to2xxData()

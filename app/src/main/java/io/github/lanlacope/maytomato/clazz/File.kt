@@ -22,9 +22,11 @@ private fun Context.getAppDir(): File {
 }
 
 private fun Context.getCopipeDir(): File {
-    val file = File(getAppDir(), COPIPE_DIR_NAME)
-    file.createNewFile()
-    return file
+    val folder = File(getAppDir(), COPIPE_DIR_NAME)
+    if (!folder.exists()) {
+        folder.mkdirs()
+    }
+    return folder
 }
 
 fun Context.getCopipeListFile(): File {

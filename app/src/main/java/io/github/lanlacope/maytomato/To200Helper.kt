@@ -98,7 +98,6 @@ class To200Helper(context: Context) {
             } catch (e: Exception) {
                 isFailed = true
             }
-            copipeManager.addAa(title, text)
         }
         commandObject.forEach { title: String, text: String ->
             try {
