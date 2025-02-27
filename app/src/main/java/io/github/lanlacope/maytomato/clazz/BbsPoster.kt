@@ -58,7 +58,7 @@ class BbsPoster(
                 doInput = true
                 doOutput = true
                 useCaches = false
-                connectTimeout = 30
+                connectTimeout = 10
                 setRequestProperty("Host", bbsInfo.domain)
                 setRequestProperty("Connection", "keep-alive")
                 setRequestProperty(
