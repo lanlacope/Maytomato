@@ -12,6 +12,10 @@
             <action android:name="android.intent.action.SENDTO" />
             <data android:scheme="http" />
         </intent>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="https" />
+        </intent>
     </queries>
 
     <application
@@ -62,10 +66,7 @@
                 <action android:name="android.intent.action.SENDTO" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="http" />
-                <!--
-                5ch, pink, したらば, open2chはサポートしない
                 <data android:scheme="https" />
-                -->
             </intent-filter>
         </activity>
     </application>
