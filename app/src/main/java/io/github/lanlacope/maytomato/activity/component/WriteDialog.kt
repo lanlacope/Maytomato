@@ -214,9 +214,7 @@ fun WriteDialog(
 
                 BoxButton(
                     contentAlignment = Alignment.Center,
-                    onClick = {
-                        copipeSelectResult.launch()
-                    },
+                    onClick = { copipeSelectResult.launch() },
                     innerPadding = PaddingValues(horizontal = 20.dp),
                     modifier = Modifier.fillMaxHeight()
                 ) {
@@ -242,6 +240,7 @@ fun WriteDialog(
                             subject = subject,
                             message = message,
                             onSucces = { resNumber ->
+                                if (!waitingDialogShown) return@sendPost
                                 scope.launch(Dispatchers.Main) {
                                     if (resNumber == null) {
                                         Toast.makeText(
@@ -265,6 +264,7 @@ fun WriteDialog(
                                 }
                             },
                             onFailed = { newTitle, newText ->
+                                if (!waitingDialogShown) return@sendPost
                                 waitingDialogShown = false
                                 errorDialogTitle = newTitle
                                 errorDialogText = newText
@@ -311,7 +311,10 @@ fun WriteDialog(
 
                 )
 
-                WaitingDialog(expanded = waitingDialogShown)
+                WaitingDialog(
+                    expanded = waitingDialogShown,
+                    onDismissRequest = { waitingDialogShown = false }
+                )
             }
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -347,11 +350,12 @@ private fun ErrorDialog(
 
 @Composable
 private fun WaitingDialog(
-    expanded: Boolean
+    expanded: Boolean,
+    onDismissRequest: () -> Unit
 ) {
     BasicDialog(
         expanded = expanded,
-        onDismissRequest = { /* do nothing */ }
+        onDismissRequest = onDismissRequest
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceAround,
