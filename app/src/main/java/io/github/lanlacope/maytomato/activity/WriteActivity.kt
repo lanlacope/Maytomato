@@ -30,6 +30,9 @@ class WriteActivity : ComponentActivity() {
         val url = originIntent.dataString ?: ""
 
         /*
+        println(originIntent)
+        println("--- Data ---")
+        println(originIntent.data)
         println("--- Extras ---")
         val extras = originIntent.extras ?: Bundle()
         val intentKeys = extras.keySet()
@@ -39,6 +42,7 @@ class WriteActivity : ComponentActivity() {
         }
 
          */
+
 
         val bbsInfo = try {
             BbsInfo.parse(url)
