@@ -53,7 +53,9 @@
     <string name="dialog_input_warning_exists">既に存在しています！</string>
 
     <string name="dialog_waiting_text">書き込み中……</string>
-
+    <string name="dialog_failed_title_connection">接続エラー</string>
+    <string name="dialog_failed_text_timeout">タイムアウトしました</string>">
+    <string name="dialog_failed_title_unknown">不明なエラー</string>
 
     <!-- TextField Message -->
     <string name="hint_copipe_title">コピペ名</string>

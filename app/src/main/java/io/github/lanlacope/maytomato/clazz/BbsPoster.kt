@@ -5,10 +5,12 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
+import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.BbsInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
+import java.net.SocketTimeoutException
 import java.net.URL
 import java.net.URLEncoder
 import java.nio.charset.Charset
@@ -39,7 +41,6 @@ class BbsPoster(
         onSucces: (resNum: Int?) -> Unit,
         onFailed: (title: String, text: String) -> Unit
     ) = withContext(Dispatchers.IO) {
-        try {
             val cookieManager = CookieManager(context)
             val encodeStr = "shift_jis"
             val encodeChar = Charset.forName(encodeStr)
@@ -58,7 +59,7 @@ class BbsPoster(
                 doInput = true
                 doOutput = true
                 useCaches = false
-                connectTimeout = 10
+                connectTimeout = 10000
                 setRequestProperty("Host", bbsInfo.domain)
                 setRequestProperty("Connection", "keep-alive")
                 setRequestProperty(
@@ -73,6 +74,8 @@ class BbsPoster(
                     setRequestProperty("Cookie", cockie)
                 }
             }
+
+        try {
 
             connection.outputStream.use { it.write(createByteCode(name, mail, subject, message)) }
 
@@ -107,13 +110,15 @@ class BbsPoster(
                     onFailed(result.title, result.text)
                 }
             } else {
-                onFailed("接続エラー", responseCode.toString())
+                onFailed(context.getString(R.string.dialog_failed_title_connection), responseCode.toString())
             }
 
-            connection.disconnect()
-
+        } catch (e: SocketTimeoutException){
+            onFailed(context.getString(R.string.dialog_failed_title_connection), context.getString(R.string.dialog_failed_text_timeout))
         } catch (e: Exception) {
-            e.printStackTrace()
+            onFailed(context.getString(R.string.dialog_failed_title_unknown), e.toString())
+        } finally {
+            connection.disconnect()
         }
     }
 
