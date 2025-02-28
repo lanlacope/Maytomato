@@ -29,7 +29,6 @@ class WriteActivity : ComponentActivity() {
         val originIntent = this.intent
         val url = originIntent.dataString ?: ""
 
-        /*
         println(originIntent)
         println("--- Data ---")
         println(originIntent.data)
@@ -41,14 +40,17 @@ class WriteActivity : ComponentActivity() {
             println("Key: $key, Value: $value\n")
         }
 
-         */
 
 
         val bbsInfo = try {
             BbsInfo.parse(url)
         } catch (e: Exception) {
-            finish()
-            return
+            // 仮対応
+            BbsInfo(
+                domain = "",
+                protocol = "",
+                bbs = ""
+            )
         }
 
         val boardSetting = runBlocking {
@@ -88,6 +90,7 @@ class WriteActivity : ComponentActivity() {
             }
         }
         else {
+            originIntent.data = Uri.parse(originIntent.dataString?.replace("shitaraba.net", "livedoor.jp"))
             originIntent.component = ComponentName(
                 ChmateString.APP_NAME,
                 ChmateString.ACTIVITY_NAME
