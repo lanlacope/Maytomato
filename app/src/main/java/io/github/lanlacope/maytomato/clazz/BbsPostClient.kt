@@ -89,6 +89,7 @@ class BbsPostClient(
             if (bbsSetting.forceMobileCommunication) {
                 if (!connectivityManager.bindMobileCommunication()) {
                     onFailed(context.getString(R.string.dialog_failed_title_connection), context.getString(R.string.dialog_failed_text_mobile))
+                    return@withContext
                 }
             }
 
