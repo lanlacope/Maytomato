@@ -1,7 +1,8 @@
 package io.github.lanlacope.maytomato.clazz
 
 import android.content.Context
-import android.util.Log
+import android.net.ConnectivityManager
+import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -17,6 +18,7 @@ import java.nio.charset.Charset
 import java.util.zip.GZIPInputStream
 import java.util.zip.Inflater
 import java.util.zip.InflaterInputStream
+
 
 @Suppress("unused")
 @Composable
@@ -41,8 +43,11 @@ class BbsPostClient(
         onSucces: (resNum: Int?) -> Unit,
         onFailed: (title: String, text: String) -> Unit
     ) = withContext(Dispatchers.IO) {
-            val cookieManager = CookieManager(context)
-            val encodeStr = "shift_jis"
+
+        val cookieManager = CookieManager(context)
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        val encodeStr = "shift_jis"
             val encodeChar = Charset.forName(encodeStr)
             val requestURL = if (bbsSetting.forceClearHttps) {
                 "https://${bbsInfo.domain}/test/bbs.cgi"
@@ -51,39 +56,52 @@ class BbsPostClient(
             }
 
 
-            val cockie = cookieManager.getCookie(bbsSetting.domain)
+        val cockie = cookieManager.getCookie(bbsSetting.domain)
 
-            val connection = URL(requestURL).openConnection() as HttpURLConnection
-            connection.apply {
-                requestMethod = "POST"
-                doInput = true
-                doOutput = true
-                useCaches = false
-                connectTimeout = 10000
-                setRequestProperty("Host", bbsInfo.domain)
-                setRequestProperty("Connection", "keep-alive")
-                setRequestProperty(
-                    "Content-Type",
-                    "application/x-www-form-urlencoded; charset=$encodeStr"
-                )
-                setRequestProperty("Accept-Charset", encodeStr)
-                setRequestProperty("Accept-Encoding", "gzip, identity")
-                setRequestProperty("Referer", "${bbsInfo.protocol}${bbsInfo.domain}/${bbsInfo.bbs}/${bbsInfo.key}/")
-                setRequestProperty("User-Agent", bbsSetting.userAgent)
-                if (cockie.isNotEmpty()) {
-                    setRequestProperty("Cookie", cockie)
-                }
+        val connection = URL(requestURL).openConnection() as HttpURLConnection
+        connection.apply {
+            requestMethod = "POST"
+            doInput = true
+            doOutput = true
+            useCaches = false
+            connectTimeout = 10000
+            setRequestProperty("Host", bbsInfo.domain)
+            setRequestProperty("Connection", "keep-alive")
+            setRequestProperty(
+                "Content-Type",
+                "application/x-www-form-urlencoded; charset=$encodeStr"
+            )
+            setRequestProperty("Accept-Charset", encodeStr)
+            setRequestProperty("Accept-Encoding", "gzip, identity")
+            setRequestProperty(
+                "Referer",
+                "${bbsInfo.protocol}${bbsInfo.domain}/${bbsInfo.bbs}/${bbsInfo.key}/"
+            )
+            setRequestProperty("User-Agent", bbsSetting.userAgent)
+            if (cockie.isNotEmpty()) {
+                setRequestProperty("Cookie", cockie)
             }
+        }
+
 
         try {
+            // モバイル通信を強制
+            if (bbsSetting.forceMobileCommunication) {
+                if (!connectivityManager.bindMobileCommunication()) {
+                    onFailed(context.getString(R.string.dialog_failed_title_connection), context.getString(R.string.dialog_failed_text_mobile))
+                }
+            }
 
             connection.outputStream.use { it.write(createByteCode(name, mail, subject, message)) }
 
             val responseCode = connection.responseCode
 
+            /*
             connection.headerFields.forEach { (key, values) ->
                 Log.d("PostingProcess", "$key: ${values.joinToString(", ")}")
             }
+
+             */
 
             if (connection.getCookie().isNotEmpty()) {
                 cookieManager.updateCookie(bbsSetting.domain, connection.getCookie())
@@ -116,9 +134,19 @@ class BbsPostClient(
         } catch (e: SocketTimeoutException){
             onFailed(context.getString(R.string.dialog_failed_title_connection), context.getString(R.string.dialog_failed_text_timeout))
         } catch (e: Exception) {
-            onFailed(context.getString(R.string.dialog_failed_title_unknown), e.toString())
+            onFailed(context.getString(R.string.dialog_failed_title_unknown), "$e : ${e.message}")
         } finally {
             connection.disconnect()
+
+            // モバイル通信を強制の解除
+            if (bbsSetting.forceMobileCommunication) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    connectivityManager.bindProcessToNetwork(null)
+                } else {
+                    @Suppress("DEPRECATION")
+                    ConnectivityManager.setProcessDefaultNetwork(null)
+                }
+            }
         }
     }
 
@@ -134,9 +162,13 @@ class BbsPostClient(
             URLEncoder.encode("書き込む", "Shift_JIS")
         }
         return if (bbsInfo.key.isNullOrEmpty()) {
-            "bbs=${bbsInfo.bbs}&subject=$subjectJis&time=$currentTime&FROM=$nameJis&mail=$mailJis&MESSAGE=$messageJis&submit=$submit".toByteArray(Charset.forName("shift_JIS"))
+            "bbs=${bbsInfo.bbs}&subject=$subjectJis&time=$currentTime&FROM=$nameJis&mail=$mailJis&MESSAGE=$messageJis&submit=$submit".toByteArray(
+                Charset.forName("shift_JIS")
+            )
         } else {
-            "bbs=${bbsInfo.bbs}&key=${bbsInfo.key}&time=$currentTime&FROM=$nameJis&mail=$mailJis&MESSAGE=$messageJis&submit=$submit".toByteArray(Charset.forName("shift_JIS"))
+            "bbs=${bbsInfo.bbs}&key=${bbsInfo.key}&time=$currentTime&FROM=$nameJis&mail=$mailJis&MESSAGE=$messageJis&submit=$submit".toByteArray(
+                Charset.forName("shift_JIS")
+            )
         }
     }
 

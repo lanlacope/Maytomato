@@ -55,6 +55,10 @@
     <string name="dialog_waiting_text">書き込み中……</string>
     <string name="dialog_failed_title_connection">接続エラー</string>
     <string name="dialog_failed_text_timeout">タイムアウトしました</string>">
+    <string name="dialog_failed_text_mobile">
+        モバイルネットワークに接続できませんでした\n
+        VPNを無効化すると改善することがあります
+    </string>">
     <string name="dialog_failed_title_unknown">不明なエラー</string>
 
     <!-- TextField Message -->
