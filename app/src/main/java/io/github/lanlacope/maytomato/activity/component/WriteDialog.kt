@@ -51,7 +51,7 @@ import io.github.lanlacope.maytomato.activity.BbsInfo
 import io.github.lanlacope.maytomato.activity.ChmateString
 import io.github.lanlacope.maytomato.activity.rememberCopipeSelectResult
 import io.github.lanlacope.maytomato.clazz.BoardSetting
-import io.github.lanlacope.maytomato.clazz.rememberBbsPoster
+import io.github.lanlacope.maytomato.clazz.rememberBbsPostClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -66,7 +66,7 @@ fun WriteDialog(
     val context = LocalContext.current
     val activity = context as Activity
     val scope = rememberCoroutineScope()
-    val bbsPoster = rememberBbsPoster(bbsInfo = bbsInfo, bbsSetting = boardSetting)
+    val bbsPoster = rememberBbsPostClient(bbsInfo = bbsInfo, bbsSetting = boardSetting)
 
     GrowDialog(
         expanded = true,

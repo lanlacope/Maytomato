@@ -20,14 +20,14 @@ import java.util.zip.InflaterInputStream
 
 @Suppress("unused")
 @Composable
-fun rememberBbsPoster(bbsInfo: BbsInfo, bbsSetting: BoardSetting): BbsPoster {
+fun rememberBbsPostClient(bbsInfo: BbsInfo, bbsSetting: BoardSetting): BbsPostClient {
     val context = LocalContext.current
     return remember {
-        BbsPoster(context, bbsInfo, bbsSetting)
+        BbsPostClient(context, bbsInfo, bbsSetting)
     }
 }
 
-class BbsPoster(
+class BbsPostClient(
     private val context: Context,
     private val bbsInfo: BbsInfo,
     private val bbsSetting: BoardSetting,
