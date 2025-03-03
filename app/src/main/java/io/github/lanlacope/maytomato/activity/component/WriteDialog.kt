@@ -3,6 +3,7 @@ package io.github.lanlacope.maytomato.activity.component
 import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -18,7 +20,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -36,6 +41,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -46,6 +52,7 @@ import io.github.lanlacope.compose.ui.button.combined.CombinedBoxButton
 import io.github.lanlacope.compose.ui.dialog.BasicDialog
 import io.github.lanlacope.compose.ui.dialog.GrowDialog
 import io.github.lanlacope.compose.unit.rememberCacheable
+import io.github.lanlacope.compose.unit.toSp
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.BbsInfo
 import io.github.lanlacope.maytomato.activity.ChmateString
@@ -215,13 +222,37 @@ fun WriteDialog(
                 BoxButton(
                     contentAlignment = Alignment.Center,
                     onClick = { copipeSelectResult.launch() },
-                    innerPadding = PaddingValues(horizontal = 20.dp),
-                    modifier = Modifier.fillMaxHeight()
+                    modifier = Modifier.size(40.dp)
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.setting_copipe),
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f),
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_text_snippet_24),
+                        contentDescription = "Text",
+                        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                        modifier = Modifier
+                            .matchParentSize()
+                            .padding(horizontal = 8.dp)
+                    )
+                }
+
+                BoxButton(
+                    contentAlignment = Alignment.Center,
+                    onClick = {
+                        val intent = Intent().apply {
+                            action = Intent.ACTION_VIEW
+                            addCategory(Intent.CATEGORY_DEFAULT)
+                            data = Uri.parse("https://imgur.com/upload")
+                        }
+                        activity.startActivity(intent)
+                    },
+                    modifier = Modifier.size(40.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_image_24),
+                        contentDescription = "Image",
+                        tint = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f),
+                        modifier = Modifier
+                            .matchParentSize()
+                            .padding(horizontal = 8.dp)
                     )
                 }
 
@@ -295,7 +326,7 @@ fun WriteDialog(
                 ) {
                     Text(
                         text = stringResource(id = R.string.dialog_positive_post),
-                        fontSize = 24.sp
+                        fontSize = 24.dp.toSp()
                     )
                 }
 
