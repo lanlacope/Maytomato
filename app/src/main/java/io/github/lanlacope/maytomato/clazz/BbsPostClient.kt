@@ -3,7 +3,6 @@ package io.github.lanlacope.maytomato.clazz
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
