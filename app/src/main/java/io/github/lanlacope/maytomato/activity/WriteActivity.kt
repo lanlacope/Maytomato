@@ -29,6 +29,7 @@ class WriteActivity : ComponentActivity() {
         val originIntent = this.intent
         val url = originIntent.dataString ?: ""
 
+        /*
         println(originIntent)
         println("--- Data ---")
         println(originIntent.data)
@@ -39,6 +40,8 @@ class WriteActivity : ComponentActivity() {
             val value = extras.get(key)
             println("Key: $key, Value: $value\n")
         }
+
+         */
 
 
 
