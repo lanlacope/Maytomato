@@ -48,7 +48,7 @@ fun Context.getCommandListFile(): File {
 }
 
 private fun Context.getBoardDir(): File {
-    val folder = File(getExternalFilesDir(null), board_DIR_NAME)
+    val folder = File(getAppDir(), board_DIR_NAME)
     if (!folder.exists()) {
         folder.mkdirs()
     }
@@ -57,6 +57,26 @@ private fun Context.getBoardDir(): File {
 
 fun Context.getBoardListFile(): File {
     val file = File(getBoardDir(), BOARD_LIST_FILE_NAME)
+
+    /* 後のバージョンで削除予定 */
+    if (!file.exists() && getPreBoardListFile().exists()) {
+        file.createNewFile()
+        getPreBoardListFile().copyTo(file, true)
+        getPreBoardDir().deleteRecursively()
+    }
+    /* 削除予定末尾 */
     file.createNewFile()
+    return file
+}
+
+/* 古いバージョンのディレクトリ */
+
+private fun Context.getPreBoardDir(): File {
+    val folder = File(getExternalFilesDir(null), board_DIR_NAME)
+    return folder
+}
+
+private fun Context.getPreBoardListFile(): File {
+    val file = File(getPreBoardDir(), BOARD_LIST_FILE_NAME)
     return file
 }
