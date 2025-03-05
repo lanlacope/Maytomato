@@ -6,6 +6,15 @@
 
 ## 設定画面を呼び出す
 `設定 > 実験的 > 検索に使うURL(追加用)`に以下を追加
+設定全体
 ```txt
 Maytomato maytomato:
+```
+コピペ設定
+```txt
+Maytomato maytomato:Copipe
+```
+板設定
+```txt
+Maytomato maytomato:Board
 ```
