@@ -20,38 +20,54 @@ import io.github.lanlacope.maytomato.ui.theme.MaytomatoTheme
 class SettingActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val path = SettingNavi.fromString(intent.dataString?.replace("maytomato:", "") ?: "")
+
         setContent {
             MaytomatoTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SettingView()
+                    SettingView(path)
                 }
             }
         }
     }
 }
 
-object SettingNavi {
-    const val ROOT = "Root"
-    const val COPIPE = "Copipe"
-    const val BOARD = "Board"
-    const val ABOUT = "About"
+enum class SettingNavi {
+    ROOT, COPIPE, BOARD, ABOUT;
+
+    override fun toString(): String {
+        return when (this) {
+            ROOT -> "Root"
+            COPIPE -> "Copipe"
+            BOARD -> "Board"
+            ABOUT -> "About"
+        }
+    }
+
+    companion object {
+        fun fromString(value: String): SettingNavi {
+            return SettingNavi.entries.find { it.toString() == value } ?: ROOT
+        }
+    }
 }
 
 val SETTING_MINHEIGHT = 80.dp
 
 @Composable
-fun SettingView() {
+fun SettingView(path: SettingNavi = SettingNavi.ROOT) {
     val navController = rememberNavController()
+
     NavHost(
         navController = navController,
-        startDestination = SettingNavi.ROOT
+        startDestination = path.toString()
     ) {
-        composable(SettingNavi.ROOT) { SettingRoot(navController) }
-        composable(SettingNavi.COPIPE) { SettingCopipe() }
-        composable(SettingNavi.BOARD) { SettingBoard() }
-        composable(SettingNavi.ABOUT) { SettingAbout() }
+        composable(SettingNavi.ROOT.toString()) { SettingRoot(navController) }
+        composable(SettingNavi.COPIPE.toString()) { SettingCopipe() }
+        composable(SettingNavi.BOARD.toString()) { SettingBoard() }
+        composable(SettingNavi.ABOUT.toString()) { SettingAbout() }
     }
 }

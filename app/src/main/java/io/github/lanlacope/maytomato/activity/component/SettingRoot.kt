@@ -1,7 +1,5 @@
 package io.github.lanlacope.maytomato.activity.component
 
-import android.app.Activity
-import android.content.pm.PackageManager
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,11 +23,7 @@ import io.github.lanlacope.maytomato.activity.SettingNavi
 import io.github.lanlacope.maytomato.clazz.AppTheme
 import io.github.lanlacope.maytomato.clazz.rememberThemeManager
 import io.github.lanlacope.maytomato.ui.theme.updateTheme
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.json.JSONObject
-import java.net.URL
 
 /*
  * 設定の一覧を
@@ -85,7 +79,7 @@ fun SettingRoot(navController: NavHostController) {
 
         SettingTextButton(
             text = stringResource(id = R.string.setting_copipe),
-            onClick = { navController.navigate(SettingNavi.COPIPE) },
+            onClick = { navController.navigate(SettingNavi.COPIPE.toString()) },
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = SETTING_MINHEIGHT)
@@ -93,7 +87,7 @@ fun SettingRoot(navController: NavHostController) {
 
         SettingTextButton(
             text = stringResource(id = R.string.setting_board),
-            onClick = { navController.navigate(SettingNavi.BOARD) },
+            onClick = { navController.navigate(SettingNavi.BOARD.toString()) },
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = SETTING_MINHEIGHT)
@@ -101,7 +95,7 @@ fun SettingRoot(navController: NavHostController) {
 
         SettingTextButton(
             text = stringResource(id = R.string.setting_about),
-            onClick = { navController.navigate(SettingNavi.ABOUT) },
+            onClick = { navController.navigate(SettingNavi.ABOUT.toString()) },
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = SETTING_MINHEIGHT)
