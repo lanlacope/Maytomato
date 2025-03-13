@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.lanlacope.compose.ui.dialog.GrowDialog
-import io.github.lanlacope.compose.ui.text.input.OutlinedInputTextField
+import io.github.lanlacope.rewheel.ui.dialog.GrowDialog
+import io.github.lanlacope.rewheel.ui.text.input.OutlinedInputTextField
 import io.github.lanlacope.maytomato.R
 
 @Composable

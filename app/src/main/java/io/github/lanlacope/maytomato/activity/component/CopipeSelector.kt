@@ -9,12 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import io.github.lanlacope.compose.ui.lazy.pager.LazyHorizontalPager
-import io.github.lanlacope.compose.ui.lazy.pager.helper.PagerHelper
-import io.github.lanlacope.compose.ui.lazy.pager.pages
 import io.github.lanlacope.maytomato.activity.component.list.AASelectorList
 import io.github.lanlacope.maytomato.activity.component.list.CommandSelectorList
 import io.github.lanlacope.maytomato.activity.component.list.CopipeSelectorList
+import io.github.lanlacope.rewheel.ui.lazy.pager.LazyHorizontalPager
+import io.github.lanlacope.rewheel.ui.lazy.pager.helper.PagerHelper
+import io.github.lanlacope.rewheel.ui.lazy.pager.pages
 
 @Composable
 fun CopipeSelector() {

@@ -30,11 +30,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.lanlacope.compose.ui.animation.DrawUpAnimated
-import io.github.lanlacope.compose.ui.animation.FadeInAnimated
-import io.github.lanlacope.compose.ui.button.combined.CombinedColumnButton
-import io.github.lanlacope.compose.ui.lazy.animatedItems
-import io.github.lanlacope.compose.ui.text.search.OutlinedSearchTextField
+import io.github.lanlacope.rewheel.ui.animation.DrawUpAnimated
+import io.github.lanlacope.rewheel.ui.animation.FadeInAnimated
+import io.github.lanlacope.rewheel.ui.button.combined.CombinedColumnButton
+import io.github.lanlacope.rewheel.ui.lazy.animatedItems
+import io.github.lanlacope.rewheel.ui.text.search.OutlinedSearchTextField
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.component.DisplayPadding
 import io.github.lanlacope.maytomato.activity.component.dialog.CommandAddDialog

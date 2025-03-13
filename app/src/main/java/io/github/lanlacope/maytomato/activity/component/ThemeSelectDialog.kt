@@ -2,7 +2,7 @@ package io.github.lanlacope.maytomato.activity.component
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import io.github.lanlacope.compose.ui.dialog.option.RadioButtonDialog
+import io.github.lanlacope.rewheel.ui.dialog.option.RadioButtonDialog
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.clazz.AppTheme
 

@@ -68,5 +68,11 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
 
-    implementation(libs.lanlacope.rewheel.compose)
+    implementation(libs.lanlacope.rewheel) {
+        isChanging = true
+    }
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor(0, "seconds")
 }

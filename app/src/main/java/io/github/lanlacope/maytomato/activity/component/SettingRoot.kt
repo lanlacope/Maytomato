@@ -15,14 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
-import io.github.lanlacope.collection.collection.toMutableStateMap
-import io.github.lanlacope.compose.ui.action.setting.SettingTextButton
+import io.github.lanlacope.rewheel.ui.action.setting.SettingTextButton
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.SETTING_MINHEIGHT
 import io.github.lanlacope.maytomato.activity.SettingNavi
 import io.github.lanlacope.maytomato.clazz.AppTheme
 import io.github.lanlacope.maytomato.clazz.rememberThemeManager
 import io.github.lanlacope.maytomato.ui.theme.updateTheme
+import io.github.lanlacope.rewheel.util.collection.toMutableStateMap
 import kotlinx.coroutines.launch
 
 /*

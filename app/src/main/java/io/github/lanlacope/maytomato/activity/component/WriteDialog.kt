@@ -18,13 +18,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,19 +39,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import io.github.lanlacope.compose.composeable.ui.click.BoxButton
-import io.github.lanlacope.compose.ui.button.combined.CombinedBoxButton
-import io.github.lanlacope.compose.ui.dialog.BasicDialog
-import io.github.lanlacope.compose.ui.dialog.GrowDialog
-import io.github.lanlacope.compose.unit.rememberCacheable
-import io.github.lanlacope.compose.unit.toSp
+import io.github.lanlacope.rewheel.composeable.ui.click.BoxButton
+import io.github.lanlacope.rewheel.ui.button.combined.CombinedBoxButton
+import io.github.lanlacope.rewheel.ui.dialog.BasicDialog
+import io.github.lanlacope.rewheel.ui.dialog.GrowDialog
+import io.github.lanlacope.rewheel.util.rememberCacheable
+import io.github.lanlacope.rewheel.util.toSp
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.BbsInfo
 import io.github.lanlacope.maytomato.activity.ChmateString
@@ -366,11 +372,51 @@ private fun ErrorDialog(
         cancelText = stringResource(id = R.string.dialog_negative_cancel)
     ) {
         Column {
+            /*
             SelectionContainer {
                 Text(
                     text = text,
                 )
             }
+             */
+
+
+            // 簡単なURLパターン（https://またはhttp://で始まる文字列）を定義
+            val urlRegex = remember { Regex("(https?://\\S+)") }
+            // テキスト内のURLの最初の一致を取得（※ 複数ある場合は追加処理が必要）
+            val urlMatch = urlRegex.find(text)
+
+            var textFieldValue by remember {
+                mutableStateOf(TextFieldValue(text = text, selection = TextRange(0, 0)))
+            }
+
+            CompositionLocalProvider() { }
+
+            TextField(
+                value = textFieldValue,
+                onValueChange = { newValue ->
+                    // ユーザーが何らかの選択を行った場合（カーソルが動かず、選択範囲が空でない場合）
+                    if (!newValue.selection.collapsed && urlMatch != null) {
+                        // 選択された範囲が、URLの範囲内に完全に収まっている場合
+                        if (newValue.selection.start in urlMatch.range && newValue.selection.end in urlMatch.range) {
+                            // URL全体を選択するように、選択範囲を拡張
+                            val expandedSelection =
+                                TextRange(urlMatch.range.first, urlMatch.range.last + 1)
+                            textFieldValue = newValue.copy(selection = expandedSelection)
+                            return@TextField
+                        }
+                    }
+                    textFieldValue = newValue
+                },
+                readOnly = true,
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors().copy(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent
+                ),
+                textStyle = LocalTextStyle.current
+            )
         }
     }
 }

@@ -27,10 +27,10 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.lanlacope.compose.ui.animation.FadeInAnimated
-import io.github.lanlacope.compose.ui.button.combined.CombinedColumnButton
-import io.github.lanlacope.compose.ui.lazy.animatedItems
-import io.github.lanlacope.compose.ui.text.search.SearchTextField
+import io.github.lanlacope.rewheel.ui.animation.FadeInAnimated
+import io.github.lanlacope.rewheel.ui.button.combined.CombinedColumnButton
+import io.github.lanlacope.rewheel.ui.lazy.animatedItems
+import io.github.lanlacope.rewheel.ui.text.search.SearchTextField
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.MAYTOMATO_COPIPE
 import io.github.lanlacope.maytomato.activity.component.DisplayPadding
