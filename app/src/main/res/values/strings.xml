@@ -21,6 +21,19 @@
     <string name="manu_text_number_decimal">10進数に変換</string>
     <string name="manu_text_number_hexadecima">16進数に変換</string>
     <string name="manu_text_option_entity">実体参照に変換</string>
+    
+    <!-- Toolbar -->
+    <string name="toolbar_title_copy">コピー</string>
+    <string name="toolbar_title_paste">貼り付け</string>
+    <string name="toolbar_title_cut">切り取り</string>
+    <string name="toolbar_title_select_all">全て選択</string>
+    <string name="toolbar_title_share">共有</string>
+    <string name="toolbar_title_search">検索</string>
+    <string name="toolbar_title_translate">翻訳</string>
+    <string name="toolbar_title_open_in_browser">ブラウザで開く</string>
+    <string name="toolbar_title_convert_decimal">10進数数値参照に変換</string>
+    <string name="toolbar_title_convert_hexadecimal">16進数数値参照に変換</string>
+    <string name="toolbar_title_convert_entity">実体参照に変換</string>"
 
 
     <!-- Dialog -->
