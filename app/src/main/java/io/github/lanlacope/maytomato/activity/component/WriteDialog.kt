@@ -32,7 +32,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -50,7 +49,6 @@ import io.github.lanlacope.maytomato.activity.BbsInfo
 import io.github.lanlacope.maytomato.activity.ChmateString
 import io.github.lanlacope.maytomato.activity.component.dialog.ErrorDialog
 import io.github.lanlacope.maytomato.activity.component.dialog.WaitingDialog
-import io.github.lanlacope.maytomato.activity.component.text.ResultTextField
 import io.github.lanlacope.maytomato.activity.rememberCopipeSelectResult
 import io.github.lanlacope.maytomato.clazz.BoardSetting
 import io.github.lanlacope.maytomato.clazz.rememberBbsPostClient
