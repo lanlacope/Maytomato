@@ -15,10 +15,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -32,12 +30,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.lanlacope.rewheel.composeable.ui.click.BoxButton
 import io.github.lanlacope.rewheel.ui.button.combined.CombinedBoxButton
@@ -52,6 +47,7 @@ import io.github.lanlacope.maytomato.activity.component.dialog.WaitingDialog
 import io.github.lanlacope.maytomato.activity.component.text.MailTextField
 import io.github.lanlacope.maytomato.activity.component.text.MessageTextField
 import io.github.lanlacope.maytomato.activity.component.text.NameTextField
+import io.github.lanlacope.maytomato.activity.component.text.SubjectTextField
 import io.github.lanlacope.maytomato.activity.rememberCopipeSelectResult
 import io.github.lanlacope.maytomato.clazz.BoardSetting
 import io.github.lanlacope.maytomato.clazz.rememberBbsPostClient
@@ -141,20 +137,9 @@ fun WriteDialog(
             }
 
             if (bbsInfo.key.isNullOrEmpty()) {
-                OutlinedTextField(
+                SubjectTextField(
                     value = subject,
                     onValueChange = { subject = it },
-                    placeholder = {
-                        Text(
-                            text = stringResource(id = R.string.dialog_hint_subject),
-                            fontWeight = FontWeight.Bold,
-                            style = TextStyle(
-                                color = Gray
-                            ),
-                            modifier = Modifier.wrapContentSize()
-                        )
-                    },
-                    singleLine = true,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(all = 8.dp)
