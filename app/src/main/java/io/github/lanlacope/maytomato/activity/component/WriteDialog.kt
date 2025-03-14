@@ -50,6 +50,7 @@ import io.github.lanlacope.maytomato.activity.ChmateString
 import io.github.lanlacope.maytomato.activity.component.dialog.ErrorDialog
 import io.github.lanlacope.maytomato.activity.component.dialog.WaitingDialog
 import io.github.lanlacope.maytomato.activity.component.text.MailTextField
+import io.github.lanlacope.maytomato.activity.component.text.MessageTextField
 import io.github.lanlacope.maytomato.activity.component.text.NameTextField
 import io.github.lanlacope.maytomato.activity.rememberCopipeSelectResult
 import io.github.lanlacope.maytomato.clazz.BoardSetting
@@ -161,21 +162,9 @@ fun WriteDialog(
                 )
             }
 
-            OutlinedTextField(
+            MessageTextField(
                 value = message,
                 onValueChange = { message = it },
-                placeholder = {
-                    Text(
-                        text = stringResource(id = R.string.dialog_hint_message),
-                        fontWeight = FontWeight.Bold,
-                        style = TextStyle(
-                            color = Gray
-                        ),
-                        modifier = Modifier
-                            .wrapContentSize()
-                    )
-                },
-                minLines = 3,
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(weight = 1f, fill = false)
