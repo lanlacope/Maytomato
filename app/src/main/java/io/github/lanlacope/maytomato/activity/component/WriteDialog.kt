@@ -58,6 +58,9 @@ import io.github.lanlacope.rewheel.util.toSp
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.BbsInfo
 import io.github.lanlacope.maytomato.activity.ChmateString
+import io.github.lanlacope.maytomato.activity.component.dialog.ErrorDialog
+import io.github.lanlacope.maytomato.activity.component.dialog.WaitingDialog
+import io.github.lanlacope.maytomato.activity.component.text.ResultTextField
 import io.github.lanlacope.maytomato.activity.rememberCopipeSelectResult
 import io.github.lanlacope.maytomato.clazz.BoardSetting
 import io.github.lanlacope.maytomato.clazz.rememberBbsPostClient
@@ -351,105 +354,6 @@ fun WriteDialog(
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-        }
-    }
-}
-
-@Composable
-private fun ErrorDialog(
-    expanded: Boolean,
-    title: String,
-    text: String,
-    onConfirm: () -> Unit,
-    onCancel: () -> Unit,
-) {
-    BasicDialog(
-        title = title,
-        expanded = expanded,
-        onConfirm = onConfirm,
-        confirmText = stringResource(id = R.string.dialog_positive_retry),
-        onCancel = onCancel,
-        cancelText = stringResource(id = R.string.dialog_negative_cancel)
-    ) {
-        Column {
-            /*
-            SelectionContainer {
-                Text(
-                    text = text,
-                )
-            }
-             */
-
-
-            // 簡単なURLパターン（https://またはhttp://で始まる文字列）を定義
-            val urlRegex = remember { Regex("(https?://\\S+)") }
-            // テキスト内のURLの最初の一致を取得（※ 複数ある場合は追加処理が必要）
-            val urlMatch = urlRegex.find(text)
-
-            var textFieldValue by remember {
-                mutableStateOf(TextFieldValue(text = text, selection = TextRange(0, 0)))
-            }
-
-            CompositionLocalProvider() { }
-
-            TextField(
-                value = textFieldValue,
-                onValueChange = { newValue ->
-                    // ユーザーが何らかの選択を行った場合（カーソルが動かず、選択範囲が空でない場合）
-                    if (!newValue.selection.collapsed && urlMatch != null) {
-                        // 選択された範囲が、URLの範囲内に完全に収まっている場合
-                        if (newValue.selection.start in urlMatch.range && newValue.selection.end in urlMatch.range) {
-                            // URL全体を選択するように、選択範囲を拡張
-                            val expandedSelection =
-                                TextRange(urlMatch.range.first, urlMatch.range.last + 1)
-                            textFieldValue = newValue.copy(selection = expandedSelection)
-                            return@TextField
-                        }
-                    }
-                    textFieldValue = newValue
-                },
-                readOnly = true,
-                modifier = Modifier.fillMaxWidth(),
-                colors = OutlinedTextFieldDefaults.colors().copy(
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent
-                ),
-                textStyle = LocalTextStyle.current
-            )
-        }
-    }
-}
-
-@Composable
-private fun WaitingDialog(
-    expanded: Boolean,
-    onDismissRequest: () -> Unit
-) {
-    BasicDialog(
-        expanded = expanded,
-        onDismissRequest = onDismissRequest
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceAround,
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(160.dp)
-        ) {
-
-            Text(
-                text = stringResource(id = R.string.dialog_waiting_text),
-                modifier = Modifier.align(Alignment.CenterVertically)
-            )
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            CircularProgressIndicator(
-                strokeWidth = 4.dp,
-                modifier = Modifier
-                    .size(50.dp)
-                    .align(Alignment.CenterVertically)
-            )
         }
     }
 }
