@@ -26,7 +26,10 @@ fun SubjectTextField(
 
     SubjectTextToolbar(
         value = textFieldValue,
-        onValueChange = { textFieldValue = it }
+        onValueChange = {
+            textFieldValue = it
+            onValueChange(it.text)
+        }
     ) {
         OutlinedTextField(
             value = textFieldValue,
