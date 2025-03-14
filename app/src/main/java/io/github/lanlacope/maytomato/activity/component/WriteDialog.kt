@@ -49,6 +49,8 @@ import io.github.lanlacope.maytomato.activity.BbsInfo
 import io.github.lanlacope.maytomato.activity.ChmateString
 import io.github.lanlacope.maytomato.activity.component.dialog.ErrorDialog
 import io.github.lanlacope.maytomato.activity.component.dialog.WaitingDialog
+import io.github.lanlacope.maytomato.activity.component.text.MailTextField
+import io.github.lanlacope.maytomato.activity.component.text.NameTextField
 import io.github.lanlacope.maytomato.activity.rememberCopipeSelectResult
 import io.github.lanlacope.maytomato.clazz.BoardSetting
 import io.github.lanlacope.maytomato.clazz.rememberBbsPostClient
@@ -115,20 +117,9 @@ fun WriteDialog(
             }
 
             Row(modifier = Modifier.fillMaxWidth()) {
-                OutlinedTextField(
+                NameTextField(
                     value = name,
                     onValueChange = { name = it },
-                    placeholder = {
-                        Text(
-                            text = stringResource(id = R.string.dialog_hint_name),
-                            fontWeight = FontWeight.Bold,
-                            style = TextStyle(
-                                color = Gray
-                            ),
-                            modifier = Modifier.wrapContentSize()
-                        )
-                    },
-                    singleLine = true,
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(weight = 1f)
@@ -136,24 +127,14 @@ fun WriteDialog(
                 )
 
                 if (!boardSetting.removeMail) {
-                    OutlinedTextField(
+                    MailTextField(
                         value = mail,
                         onValueChange = { mail = it },
-                        placeholder = {
-                            Text(
-                                text = stringResource(id = R.string.dialog_hint_mail),
-                                fontWeight = FontWeight.Bold,
-                                style = TextStyle(
-                                    color = Gray
-                                ),
-                                modifier = Modifier.wrapContentSize()
-                            )
-                        },
-                        singleLine = true,
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(weight = 1f)
                             .padding(all = 8.dp)
+
                     )
                 }
             }
