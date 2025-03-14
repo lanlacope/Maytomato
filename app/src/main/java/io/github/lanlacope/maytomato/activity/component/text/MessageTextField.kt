@@ -32,7 +32,8 @@ fun MessageTextField(
             value = textFieldValue,
             onValueChange = {
                 textFieldValue = it
-                onValueChange(it.text)},
+                onValueChange(it.text)
+            },
             placeholder = {
                 Text(
                     text = stringResource(id = R.string.dialog_hint_message),
