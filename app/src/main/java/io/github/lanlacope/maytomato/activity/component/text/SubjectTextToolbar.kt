@@ -9,9 +9,9 @@ import androidx.compose.ui.platform.LocalTextToolbar
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.getSelectedText
 import io.github.lanlacope.maytomato.R
-import io.github.lanlacope.maytomato.clazz.toDecimal
-import io.github.lanlacope.maytomato.clazz.toEntity
-import io.github.lanlacope.maytomato.clazz.toHexadecimal
+import io.github.lanlacope.maytomato.clazz.convertDecimalSelectedText
+import io.github.lanlacope.maytomato.clazz.convertEntitySelectedText
+import io.github.lanlacope.maytomato.clazz.convertHexadecimalSelectedText
 import io.github.lanlacope.rewheel.ui.text.toolbar.rememberDynamicTextToolbar
 import io.github.lanlacope.rewheel.util.insertText
 import io.github.lanlacope.rewheel.util.isNotSelectedAll
@@ -70,29 +70,19 @@ fun SubjectTextToolbar(
         if (value.isNotSelectedNone()) {
             textToolbar.addAction(
                 title = context.getString(R.string.toolbar_title_convert_decimal),
-                action = {
-                    val newValue = value.copy(text = value.text.toDecimal())
-                    onValueChange(newValue)
-                }
+                action = { onValueChange(value.convertDecimalSelectedText()) }
             )
 
             textToolbar.addAction(
                 title = context.getString(R.string.toolbar_title_convert_hexadecimal),
-                action = {
-                    val newValue = value.copy(text = value.text.toHexadecimal())
-                    onValueChange(newValue)
-                }
+                action = { onValueChange(value.convertHexadecimalSelectedText()) }
             )
 
             textToolbar.addAction(
                 title = context.getString(R.string.toolbar_title_convert_entity),
-                action = {
-                    val newValue = value.copy(text = value.text.toEntity())
-                    onValueChange(newValue)
-                }
+                action = { onValueChange(value.convertEntitySelectedText()) }
             )
         }
-
     }
 
     CompositionLocalProvider(
