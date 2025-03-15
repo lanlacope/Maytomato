@@ -36,9 +36,9 @@ fun MailTextField(
     ) {
         OutlinedTextField(
             value = textFieldValue,
-            onValueChange = {
-                textFieldValue = it
-                onValueChange(it.text)
+            onValueChange = { newValue ->
+                textFieldValue = if (!newValue.selection.collapsed) newValue else newValue.copy(selection = TextRange(0, newValue.text.length))
+                onValueChange(newValue.text)
             },
             placeholder = {
                 Text(
