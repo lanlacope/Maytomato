@@ -36,7 +36,7 @@ import io.github.lanlacope.rewheel.ui.dialog.GrowDialog
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.component.text.MessageTextField
 import io.github.lanlacope.maytomato.activity.rememberCopipeSelectResult
-import io.github.lanlacope.maytomato.clazz.forChmateEscape
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun MushroomDialog() {
@@ -117,7 +117,7 @@ fun MushroomDialog() {
                 BoxButton(
                     onClick = {
                         val intent = Intent().apply {
-                            putExtra(Simeji.REPLACE_KEY, text.forChmateEscape())
+                            putExtra(Simeji.REPLACE_KEY, text.toChmateEscaped())
                         }
                         activity.setResult(Activity.RESULT_OK, intent)
                         activity.finish()
@@ -140,4 +140,44 @@ fun MushroomDialog() {
 
 private object Simeji {
     const val REPLACE_KEY = "replace_key"
+}
+
+/*
+ * chmateで文字化けする文字の一覧（抜けあり）
+ */
+private val mojibakeList = persistentListOf(
+    0x000AD..0x000AD,
+    0x0034F..0x0034F,
+    0x0061C..0x0061C,
+    0x017B4..0x017B5,
+    0x0180B..0x0180F,
+    0x0200B..0x0200F,
+    0x0202A..0x0202E,
+    0x02060..0x0206F,
+    0x0FE00..0x0FE0F,
+    0x1D173..0x1D17A,
+    0xE0100..0xE01EF
+)
+
+private fun isMojibake(codePoint: Int): Boolean {
+    return mojibakeList.any { codePoint in it }
+}
+
+private fun String.toChmateEscaped(): String {
+    return buildString {
+        var index = 0
+        while (index < this@toChmateEscaped.length) {
+            val codePoint = this@toChmateEscaped.codePointAt(index)
+            appendForChmate(codePoint)
+            // サロゲートペアの場合は下位文字の分も進める
+            index += if (Character.isSupplementaryCodePoint(codePoint)) 2 else 1
+        }
+    }
+}
+
+private fun StringBuilder.appendForChmate(
+    codePoint: Int
+) {
+    if (isMojibake(codePoint)) append("&#").append(codePoint.toString(10)).append(";")
+    else appendCodePoint(codePoint)
 }

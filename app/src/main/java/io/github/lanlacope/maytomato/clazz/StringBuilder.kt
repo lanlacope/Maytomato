@@ -4,23 +4,6 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
 
 /*
- * ゼロ幅文字のList
- */
-private val zeroWidthList = persistentListOf(
-    0x000AD..0x000AD,
-    0x0034F..0x0034F,
-    0x0061C..0x0061C,
-    0x017B4..0x017B5,
-    0x0180B..0x0180F,
-    0x0200B..0x0200F,
-    0x0202A..0x0202E,
-    0x02060..0x0206F,
-    0x0FE00..0x0FE0F,
-    0x1D173..0x1D17A,
-    0xE0100..0xE01EF
-)
-
-/*
 * 実体参照の変換Map
 */
 private val htmlEntityMap = persistentMapOf(
@@ -290,19 +273,6 @@ private val htmlEntityMap = persistentMapOf(
     0x02AEB to "Vbar", 0x02AEC to "Not", 0x02AED to "bNot", 0x02AEE to "rnmid", 0x02AEF to "cirmid",
     0x02AF0 to "midcir", 0x02AF1 to "topcir", 0x02AF2 to "nhpar", 0x02AF3 to "parsim", 0x02AFD to "parsl",
 )
-
-private fun isZeroWidth(codePoint: Int): Boolean {
-    return zeroWidthList.any { codePoint in it }
-}
-
-fun StringBuilder.appendForChmate(
-    codePoint: Int
-) {
-    if (isZeroWidth(codePoint)) append("&#").append(codePoint.toString(10)).append(";")
-    else appendCodePoint(codePoint)
-}
-
-
 
 /*
  * コードポイントを、可能なら数値文字参照に変換してappend
