@@ -1,6 +1,5 @@
 package io.github.lanlacope.maytomato.clazz
 
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentMapOf
 
 /*
