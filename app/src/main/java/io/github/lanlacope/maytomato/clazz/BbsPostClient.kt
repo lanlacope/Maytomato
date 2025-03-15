@@ -226,12 +226,6 @@ private data class PostResult(
                 ?.replace(Regex("""<br\s*/?>""", RegexOption.IGNORE_CASE), "\n")
                 ?.replace(Regex("""<[^<>]*?>""", RegexOption.DOT_MATCHES_ALL), "") ?: ""
 
-            println("---")
-            println(title)
-            println(text)
-            println("---")
-
-
             return when {
                 response.contains(Regex("""<!--\s*2ch_X:true\s*-->""", RegexOption.IGNORE_CASE)) -> PostResult(title, text, true)
                 response.contains(Regex("""<!--\s*2ch_X:error\s*-->""", RegexOption.IGNORE_CASE)) -> PostResult(title, text, false)
