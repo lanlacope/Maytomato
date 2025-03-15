@@ -131,7 +131,7 @@ private fun Intent.parseDefaultMessage(): Pair<String, String> {
         },
         buildString { // 本文
             val anchor = this@parseDefaultMessage.getStringExtra(Intent.EXTRA_TEXT) ?: ""
-            if (anchor.isNotEmpty()) appendLine(anchor)
+            if (anchor.isNotEmpty()) append(anchor)
             if (res.isNotEmpty()) append(res)
         }
     )
