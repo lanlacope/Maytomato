@@ -22,7 +22,7 @@ fun MailTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var textFieldValue by remember(value) { mutableStateOf(TextFieldValue(text = value)) }
+    var textFieldValue by remember { mutableStateOf(TextFieldValue(text = value)) }
 
     MailTextToolbar(
         value = textFieldValue,
