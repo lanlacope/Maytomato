@@ -295,6 +295,14 @@ private fun isZeroWidth(codePoint: Int): Boolean {
     return zeroWidthList.any { codePoint in it }
 }
 
+fun StringBuilder.appendForChmate(
+    codePoint: Int
+) {
+    if (isZeroWidth(codePoint)) append("&#").append(codePoint.toString(10)).append(";")
+    else appendCodePoint(codePoint)
+}
+
+
 
 /*
  * コードポイントを、可能なら数値文字参照に変換してappend

@@ -1,5 +1,17 @@
 package io.github.lanlacope.maytomato.clazz
 
+fun String.forChmateEscape(): String {
+    return buildString {
+        var index = 0
+        while (index < this@forChmateEscape.length) {
+            val codePoint = this@forChmateEscape.codePointAt(index)
+            appendForChmate(codePoint)
+            // サロゲートペアの場合は下位文字の分も進める
+            index += if (Character.isSupplementaryCodePoint(codePoint)) 2 else 1
+        }
+    }
+}
+
 fun String.toDecimal(): String {
     return buildString {
         var index = 0

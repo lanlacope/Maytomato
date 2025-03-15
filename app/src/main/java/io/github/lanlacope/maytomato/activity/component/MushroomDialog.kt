@@ -13,17 +13,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -32,34 +26,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.lanlacope.rewheel.composeable.ui.click.BoxButton
-import io.github.lanlacope.rewheel.ui.action.option.CompactOptionCheckBox
-import io.github.lanlacope.rewheel.ui.busy.manu.BusyManu
-import io.github.lanlacope.rewheel.ui.busy.option.texts
-import io.github.lanlacope.rewheel.ui.button.layout.ManuButton
 import io.github.lanlacope.rewheel.ui.dialog.GrowDialog
-import io.github.lanlacope.rewheel.util.collection.toggle
 import io.github.lanlacope.maytomato.R
+import io.github.lanlacope.maytomato.activity.component.text.MessageTextField
 import io.github.lanlacope.maytomato.activity.rememberCopipeSelectResult
-import io.github.lanlacope.maytomato.clazz.ConvertMode
-import io.github.lanlacope.maytomato.clazz.ConvertNumber
-import io.github.lanlacope.maytomato.clazz.ConvertOption
-import io.github.lanlacope.maytomato.clazz.rememberStringConverter
+import io.github.lanlacope.maytomato.clazz.forChmateEscape
 
 @Composable
 fun MushroomDialog() {
 
     val context = LocalContext.current
     val activity = context as Activity
-    val stringConverter = rememberStringConverter()
 
     GrowDialog(
         expanded = true,
@@ -72,93 +55,9 @@ fun MushroomDialog() {
             val focusRequester = remember { FocusRequester() }
             var text by rememberSaveable { mutableStateOf("") }
 
-            var selectedMode by remember { mutableStateOf(ConvertMode.MOJIBAKE) }
-            var modeManuShown by remember { mutableStateOf(false) }
-            val modes = remember {
-                mutableStateMapOf(
-                    ConvertMode.ALL to context.getString(R.string.manu_text_mode_all),
-                    ConvertMode.SKIP_BR to context.getString(R.string.manu_text_mode_slip_br),
-                    ConvertMode.MOJIBAKE to context.getString(R.string.manu_text_mode_mojibake),
-                    ConvertMode.REMOVE to context.getString(R.string.manu_text_mode_remove)
-                )
-            }
-
-            var selectedNumber by remember { mutableIntStateOf(ConvertNumber.DEC) }
-            var numberManuShown by remember { mutableStateOf(false) }
-            val numbers = remember {
-                mutableStateMapOf(
-                    ConvertNumber.DEC to context.getString(R.string.manu_text_number_decimal),
-                    ConvertNumber.HEX to context.getString(R.string.manu_text_number_hexadecima)
-                )
-            }
-
-            val selectedOptions = remember { mutableStateListOf<String>() }
-
-            LaunchedEffect(Unit) {
-                focusRequester.requestFocus()
-            }
-
-            Row {
-                ManuButton(
-                    text = modes[selectedMode]!!,
-                    onClick = { modeManuShown = true }
-                ) {
-                    BusyManu(
-                        expanded = modeManuShown,
-                        onDismissRequest = { modeManuShown = false }
-                    ) {
-                        texts(
-                            options = modes,
-                            onClick = {
-                                selectedMode = it
-                                modeManuShown = false
-                            }
-                        )
-                    }
-                }
-
-                ManuButton(
-                    text = numbers[selectedNumber]!!,
-                    onClick = { numberManuShown = true }
-                ) {
-                    BusyManu(
-                        expanded = numberManuShown,
-                        onDismissRequest = { numberManuShown = false }
-                    ) {
-                        texts(
-                            options = numbers,
-                            onClick = {
-                                selectedNumber = it
-                                numberManuShown = false
-                            }
-                        )
-                    }
-                }
-            }
-
-            CompactOptionCheckBox(
-                text = stringResource(id = R.string.manu_text_option_entity),
-                checked = selectedOptions.contains(ConvertOption.ENTITY),
-                onClick = {
-                    selectedOptions.toggle(ConvertOption.ENTITY)
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            OutlinedTextField(
+            MessageTextField(
                 value = text,
                 onValueChange = { text = it },
-                placeholder = {
-                    Text(
-                        text = stringResource(id = R.string.dialog_hint_message),
-                        fontWeight = FontWeight.Bold,
-                        style = TextStyle(
-                            color = Gray
-                        ),
-                        modifier = Modifier.wrapContentSize()
-                    )
-                },
-                minLines = 3,
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(weight = 1f, fill = false)
@@ -217,15 +116,8 @@ fun MushroomDialog() {
 
                 BoxButton(
                     onClick = {
-                        val output =
-                            stringConverter.startConvert(
-                                rawText = text,
-                                mode = selectedMode,
-                                number = selectedNumber,
-                                options = selectedOptions
-                            )
                         val intent = Intent().apply {
-                            putExtra(Simeji.REPLACE_KEY, output)
+                            putExtra(Simeji.REPLACE_KEY, text.forChmateEscape())
                         }
                         activity.setResult(Activity.RESULT_OK, intent)
                         activity.finish()

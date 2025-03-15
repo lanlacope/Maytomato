@@ -13,14 +13,6 @@
     <string name="dialog_hint_message">テキストを入力</string>
     <string name="dialog_positive_convert">変換</string>
     <string name="dialog_positive_post">書き込む</string>
-
-    <string name="manu_text_mode_all">全て変換</string>
-    <string name="manu_text_mode_slip_br">改行以外変換</string>
-    <string name="manu_text_mode_mojibake">文字化け対策で変換</string>
-    <string name="manu_text_mode_remove">文字化け対策で削除</string>
-    <string name="manu_text_number_decimal">10進数に変換</string>
-    <string name="manu_text_number_hexadecima">16進数に変換</string>
-    <string name="manu_text_option_entity">実体参照に変換</string>
     
     <!-- Toolbar -->
     <string name="toolbar_title_copy">コピー</string>
