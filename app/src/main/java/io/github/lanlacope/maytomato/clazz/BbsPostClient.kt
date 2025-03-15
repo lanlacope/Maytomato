@@ -3,6 +3,7 @@ package io.github.lanlacope.maytomato.clazz
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
@@ -19,6 +20,7 @@ import java.util.zip.GZIPInputStream
 import java.util.zip.Inflater
 import java.util.zip.InflaterInputStream
 
+private const val TAG = "BbsPostClient"
 
 @Suppress("unused")
 @Composable
@@ -97,12 +99,9 @@ class BbsPostClient(
 
             val responseCode = connection.responseCode
 
-            /*
             connection.headerFields.forEach { (key, values) ->
-                Log.d("PostingProcess", "$key: ${values.joinToString(", ")}")
+                Log.d(TAG, "$key: ${values.joinToString(", ")}")
             }
-
-             */
 
             if (connection.getCookie().isNotEmpty()) {
                 cookieManager.updateCookie(bbsSetting.domain, connection.getCookie())
@@ -117,7 +116,8 @@ class BbsPostClient(
                     }
 
                 val responce = inputStream.bufferedReader(encodeChar).use { it.readText() }
-                println(responce)
+
+                Log.d(TAG, responce)
 
                 val result = PostResult.parse(responce)
 
@@ -204,47 +204,45 @@ class BbsPostClient(
             } ?: ""
         }.removeSuffix("; ")
     }
+}
 
-    private data class PostResult(
-        val title: String,
-        val text: String,
-        val isSuccess: Boolean
-    ) {
-        companion object {
-            fun parse(response: String): PostResult {
-                val matcher = Regex(
-                    """<title>(.*?)</title>.*?<body>(.*?)</body>""",
-                    setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL)
-                ).find(response)
+private data class PostResult(
+    val title: String,
+    val text: String,
+    val isSuccess: Boolean
+) {
+    companion object {
+        fun parse(response: String): PostResult {
+            val matcher = Regex(
+                """.*?<title>(.*?)</title>(.*)""",
+                setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL)
+            ).find(response)
 
-                val title = matcher?.groups?.get(1)?.value?.replace(
-                    Regex(
-                        """<br>""",
-                        RegexOption.IGNORE_CASE
-                    ), "\n"
-                )?.replace(Regex("""<[^<>]*>""", RegexOption.DOT_MATCHES_ALL), "") ?: ""
+            val title = matcher?.groups?.get(1)?.value
+                ?.replace(Regex("""<br\s*/?>""", RegexOption.IGNORE_CASE), "\n")
+                ?.replace(Regex("""<[^<>]*?>""", RegexOption.DOT_MATCHES_ALL), "") ?: ""
 
-                val text = matcher?.groups?.get(2)?.value?.replace(
-                    Regex(
-                        """<br>""",
-                        RegexOption.IGNORE_CASE
-                    ), "\n"
-                )?.replace(Regex("""<[^<>]*>""", RegexOption.DOT_MATCHES_ALL), "") ?: ""
+            val text = matcher?.groups?.get(2)?.value!!
+                ?.replace(Regex("""<br\s*/?>""", RegexOption.IGNORE_CASE), "\n")
+                ?.replace(Regex("""<[^<>]*?>""", RegexOption.DOT_MATCHES_ALL), "") ?: ""
+
+            println("---")
+            println(title)
+            println(text)
+            println("---")
 
 
-                return when {
-                    response.contains(Regex("""<!--\s*2ch_X:true\s*-->""", RegexOption.IGNORE_CASE)) -> PostResult(title, text, true)
-                    response.contains(Regex("""<!--\s*2ch_X:error\s*-->""", RegexOption.IGNORE_CASE)) -> PostResult(title, text, false)
-                    title.contains(
-                        Regex("ERORR", RegexOption.IGNORE_CASE)
-                    ) -> PostResult(title, text, false)
+            return when {
+                response.contains(Regex("""<!--\s*2ch_X:true\s*-->""", RegexOption.IGNORE_CASE)) -> PostResult(title, text, true)
+                response.contains(Regex("""<!--\s*2ch_X:error\s*-->""", RegexOption.IGNORE_CASE)) -> PostResult(title, text, false)
+                title.contains(Regex("[えエ][らラ]ー|[EＥｅ][RＲｒ][RＲｒ][OＯｏ][RＲｒ]", RegexOption.IGNORE_CASE)
+                ) -> PostResult(title, text, false)
 
-                    title.contains(
-                        Regex("""書き[込こ]み(ました|完了|成功|OK|ＯＫ)""")
-                    ) -> PostResult(title, text, true)
+                title.contains(
+                    Regex("""書き[込こ]み(ました|完了|成功|[OＯｏ][KｋＫ])""", RegexOption.IGNORE_CASE)
+                ) -> PostResult(title, text, true)
 
-                    else -> PostResult(title, text, false)
-                }
+                else -> PostResult(title, text, false)
             }
         }
     }
