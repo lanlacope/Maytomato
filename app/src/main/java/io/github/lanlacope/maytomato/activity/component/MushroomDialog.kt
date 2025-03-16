@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +28,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.lanlacope.rewheel.composeable.ui.click.BoxButton
@@ -36,6 +37,8 @@ import io.github.lanlacope.rewheel.ui.dialog.GrowDialog
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.component.text.MessageTextField
 import io.github.lanlacope.maytomato.activity.rememberCopipeSelectResult
+import io.github.lanlacope.maytomato.clazz.isSelectedPrefix
+import io.github.lanlacope.rewheel.util.insertText
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -53,7 +56,7 @@ fun MushroomDialog() {
             Spacer(modifier = Modifier.height(8.dp))
 
             val focusRequester = remember { FocusRequester() }
-            var text by rememberSaveable { mutableStateOf("") }
+            var text by remember { mutableStateOf(TextFieldValue("")) }
 
             MessageTextField(
                 value = text,
@@ -71,8 +74,11 @@ fun MushroomDialog() {
                 modifier = Modifier.height(50.dp)
             ) {
                 val copipeSelectResult = rememberCopipeSelectResult { copipe ->
-                    // いい感じに改行
-                    text = if (text.isEmpty() || text.last() == '\n') "$text$copipe" else "$text\n$copipe"
+                    text = if (text.isSelectedPrefix()) {
+                        text.insertText(AnnotatedString("copipe\n"))
+                    } else {
+                        text.insertText(AnnotatedString("\n$copipe\n"))
+                    }
                 }
 
                 BoxButton(
@@ -117,7 +123,7 @@ fun MushroomDialog() {
                 BoxButton(
                     onClick = {
                         val intent = Intent().apply {
-                            putExtra(Simeji.REPLACE_KEY, text.toChmateEscaped())
+                            putExtra(Simeji.REPLACE_KEY, text.text.toChmateEscaped())
                         }
                         activity.setResult(Activity.RESULT_OK, intent)
                         activity.finish()
@@ -145,7 +151,7 @@ private object Simeji {
 /*
  * chmateで文字化けする文字の一覧（抜けあり）
  */
-private val mojibakeList = persistentListOf(
+private val zeroWidthList = persistentListOf(
     0x000AD..0x000AD,
     0x0034F..0x0034F,
     0x0061C..0x0061C,
@@ -160,7 +166,7 @@ private val mojibakeList = persistentListOf(
 )
 
 private fun isMojibake(codePoint: Int): Boolean {
-    return mojibakeList.any { codePoint in it }
+    return zeroWidthList.any { codePoint in it }
 }
 
 private fun String.toChmateEscaped(): String {

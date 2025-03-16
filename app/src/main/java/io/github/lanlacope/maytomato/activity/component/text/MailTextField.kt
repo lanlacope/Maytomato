@@ -4,10 +4,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.res.stringResource
@@ -19,26 +15,24 @@ import io.github.lanlacope.maytomato.R
 
 @Composable
 fun MailTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var textFieldValue by remember {
-        mutableStateOf(TextFieldValue(text = value, selection = TextRange(value.length)))
-    }
-
     MailTextToolbar(
-        value = textFieldValue,
-        onValueChange = {
-            textFieldValue = it
-            onValueChange(it.text)
-        }
+        value = value,
+        onValueChange = onValueChange
     ) {
         OutlinedTextField(
-            value = textFieldValue,
-            onValueChange = { newValue ->
-                textFieldValue = if (!newValue.selection.collapsed) newValue else newValue.copy(selection = TextRange(0, newValue.text.length))
-                onValueChange(newValue.text)
+            value = value,
+            onValueChange = {
+                // 全体選択させる
+                val newValue = if (value.selection.collapsed && !it.selection.collapsed) {
+                    it.copy(selection = TextRange(0, it.text.length))
+                } else {
+                    it
+                }
+                onValueChange(newValue)
             },
             placeholder = {
                 Text(

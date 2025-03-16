@@ -33,6 +33,9 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import io.github.lanlacope.rewheel.composeable.ui.click.BoxButton
 import io.github.lanlacope.rewheel.ui.button.combined.CombinedBoxButton
@@ -50,7 +53,11 @@ import io.github.lanlacope.maytomato.activity.component.text.NameTextField
 import io.github.lanlacope.maytomato.activity.component.text.SubjectTextField
 import io.github.lanlacope.maytomato.activity.rememberCopipeSelectResult
 import io.github.lanlacope.maytomato.clazz.BoardSetting
+import io.github.lanlacope.maytomato.clazz.appendText
+import io.github.lanlacope.maytomato.clazz.isBreakLast
+import io.github.lanlacope.maytomato.clazz.isSelectedPrefix
 import io.github.lanlacope.maytomato.clazz.rememberBbsPostClient
+import io.github.lanlacope.rewheel.util.insertText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -78,28 +85,45 @@ fun WriteDialog(
             val subjectFocusRequester = remember { FocusRequester() }
             val messageFocusRequester = remember { FocusRequester() }
 
-            var name by rememberCacheable(key = "${bbsInfo.bbs}_mame"){ mutableStateOf("") }
-            var mail by rememberCacheable(key = "${bbsInfo.bbs}_mail") { mutableStateOf("") }
-            var subject by rememberCacheable(key = "${bbsInfo.bbs}_subject") { mutableStateOf("") }
-            var message by rememberCacheable(key = "${bbsInfo.bbs}_${bbsInfo.key}_message") { mutableStateOf("") }
+            var cashedName by rememberCacheable(key = "${bbsInfo.bbs}_name"){ mutableStateOf("") }
+            var cashedMail by rememberCacheable(key = "${bbsInfo.bbs}_mail") { mutableStateOf("") }
+            var cashedSubject by rememberCacheable(key = "${bbsInfo.bbs}_subject") { mutableStateOf("") }
+            var cashedMessage by rememberCacheable(key = "${bbsInfo.bbs}_${bbsInfo.key}_message") { mutableStateOf("") }
+
+            var name by remember { mutableStateOf(TextFieldValue(cashedName)) }
+            var mail by remember { mutableStateOf(TextFieldValue(cashedMail)) }
+            var subject by remember { mutableStateOf(TextFieldValue(cashedSubject)) }
+            var message by remember { mutableStateOf(TextFieldValue(cashedMessage)) }
+
+            // キャッシュに反映
+            LaunchedEffect(name.text, mail.text, subject.text, message.text) {
+                cashedName = name.text
+                cashedMail = mail.text
+                cashedSubject = subject.text
+                cashedMessage = message.text
+            }
 
             LaunchedEffect(Unit) {
                 // いい感じに改行して追加
-                if (defaultSubject.isNotEmpty()) {
-                    subject = defaultSubject
-                }
                 if (bbsInfo.key.isNullOrEmpty()) {
-                    if (defaultMessage.isNotEmpty()) message = defaultMessage
+                    if (defaultSubject.isNotEmpty()) subject = TextFieldValue(text = defaultSubject)
+                    if (defaultMessage.isNotEmpty()) message =TextFieldValue(text = defaultSubject)
                 }
                 else {
                     if (defaultMessage.isNotEmpty()) {
-                        message = if (message.isEmpty() || message.last() == '\n') {
-                            "$message$defaultMessage"
+                        message = if (message.text.isEmpty() || message.text.isBreakLast()) {
+                            message.appendText(defaultMessage)
                         } else {
-                            "$message\n$defaultMessage"
+                            message.appendText("\n$defaultMessage")
                         }
                     }
                 }
+
+                // カーソルを最後に
+                name = name.copy(selection = TextRange(name.text.length))
+                mail = mail.copy(selection = TextRange(mail.text.length))
+                subject = subject.copy(selection = TextRange(subject.text.length))
+                message = message.copy(selection = TextRange(message.text.length))
 
                 // いい感じにフォーカス
                 if (bbsInfo.key.isNullOrEmpty()) {
@@ -163,8 +187,11 @@ fun WriteDialog(
                 modifier = Modifier.height(50.dp)
             ) {
                 val copipeSelectResult = rememberCopipeSelectResult { copipe ->
-                    // いい感じに改行
-                    message = if (message.isEmpty() || message.last() == '\n') "$message$copipe" else "$message\n$copipe"
+                    message = if (message.isSelectedPrefix()) {
+                        message.insertText(AnnotatedString("copipe\n"))
+                    } else {
+                        message.insertText(AnnotatedString("\n$copipe\n"))
+                    }
                 }
 
                 BoxButton(
@@ -214,10 +241,10 @@ fun WriteDialog(
                     scope.launch {
                         waitingDialogShown = true
                         bbsPoster.sendPost(
-                            name = name,
-                            mail = mail,
-                            subject = subject,
-                            message = message,
+                            name = name.text,
+                            mail = mail.text,
+                            subject = subject.text,
+                            message = message.text,
                             onSucces = { resNumber ->
                                 if (!waitingDialogShown) return@sendPost
                                 scope.launch(Dispatchers.Main) {
@@ -235,8 +262,10 @@ fun WriteDialog(
                                             Toast.LENGTH_SHORT
                                         ).show()
                                     }
-                                    subject = ""
-                                    message = ""
+                                    // キャッシュを削除
+                                    cashedSubject = ""
+                                    cashedMessage = ""
+
                                     waitingDialogShown = false
                                     activity.setResult(Activity.RESULT_OK)
                                     activity.finish()

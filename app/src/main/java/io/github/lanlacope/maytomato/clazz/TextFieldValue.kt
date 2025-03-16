@@ -39,3 +39,17 @@ fun TextFieldValue.convertEntitySelectedText(): TextFieldValue {
     val newCursor = getTextBeforeSelection().length + convertedText.length
     return this.copy(annotatedString = newText, selection = TextRange(newCursor, newCursor))
 }
+
+fun TextFieldValue.isSelectedPrefix(): Boolean {
+    val breakPositions = text.indices.filter { i -> text[i] == '\n' }.map { it + 1 }
+    return selection.start == 0 || selection.start in breakPositions
+}
+
+fun TextFieldValue.appendText(text: String): TextFieldValue {
+    val newtext = buildAnnotatedString {
+        append(this@appendText.text)
+        append(text)
+    }
+    return this.copy(annotatedString = newtext)
+
+}

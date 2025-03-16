@@ -35,3 +35,7 @@ fun String.toEntity(): String {
         }
     }
 }
+
+fun String.isBreakLast(): Boolean {
+    return last() == '\n'
+}

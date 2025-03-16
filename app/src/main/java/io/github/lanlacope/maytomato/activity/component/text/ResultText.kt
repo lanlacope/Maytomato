@@ -27,21 +27,18 @@ fun ResultText(
             value = textFieldValue,
             onValueChange = { newValue ->
 
-                val urlResults = Patterns.WEB_URL.toRegex().findAll(textFieldValue.text)
+                val urlResults = Patterns.WEB_URL.toRegex().findAll(newValue.text)
 
-                if (!newValue.selection.collapsed) {
-                    val matchedUrl = urlResults.find { result ->
+                if (textFieldValue.selection.collapsed && !newValue.selection.collapsed) {
+                    urlResults.firstOrNull { result ->
                         newValue.selection.start in result.range && newValue.selection.end in result.range
-                    }
-
-                    if (matchedUrl != null) {
-                        // URL全体を選択するように調整
-                        val urlSelection =
-                            TextRange(matchedUrl.range.first, matchedUrl.range.last + 1)
-                        textFieldValue = newValue.copy(selection = urlSelection)
+                    }?.range?.let { range ->
+                        // URL全体を選択
+                        textFieldValue = newValue.copy(selection = TextRange(range.first, range.last + 1))
                         return@SelectableText
                     }
                 }
+
                 textFieldValue = newValue
             },
             modifier = modifier
