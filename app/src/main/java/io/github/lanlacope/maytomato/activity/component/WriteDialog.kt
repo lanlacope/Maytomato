@@ -107,7 +107,7 @@ fun WriteDialog(
                 // いい感じに改行して追加
                 if (bbsInfo.key.isNullOrEmpty()) {
                     if (defaultSubject.isNotEmpty()) subject = TextFieldValue(text = defaultSubject)
-                    if (defaultMessage.isNotEmpty()) message =TextFieldValue(text = defaultSubject)
+                    if (defaultMessage.isNotEmpty()) message =TextFieldValue(text = defaultMessage)
                 }
                 else {
                     if (defaultMessage.isNotEmpty()) {
@@ -188,7 +188,7 @@ fun WriteDialog(
             ) {
                 val copipeSelectResult = rememberCopipeSelectResult { copipe ->
                     message = if (message.isSelectedPrefix()) {
-                        message.insertText(AnnotatedString("copipe\n"))
+                        message.insertText(AnnotatedString("$copipe\n"))
                     } else {
                         message.insertText(AnnotatedString("\n$copipe\n"))
                     }

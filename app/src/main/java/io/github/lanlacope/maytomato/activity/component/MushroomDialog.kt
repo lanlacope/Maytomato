@@ -75,7 +75,7 @@ fun MushroomDialog() {
             ) {
                 val copipeSelectResult = rememberCopipeSelectResult { copipe ->
                     text = if (text.isSelectedPrefix()) {
-                        text.insertText(AnnotatedString("copipe\n"))
+                        text.insertText(AnnotatedString("$copipe\n"))
                     } else {
                         text.insertText(AnnotatedString("\n$copipe\n"))
                     }
