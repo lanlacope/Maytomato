@@ -222,9 +222,7 @@ private data class PostResult(
                 ?.replace(Regex("""<br\s*/?>""", RegexOption.IGNORE_CASE), "\n")
                 ?.replace(Regex("""<[^<>]*?>""", RegexOption.DOT_MATCHES_ALL), "") ?: ""
 
-            val text = matcher?.groups?.get(2)?.value
-                ?.replace(Regex("""<br\s*/?>""", RegexOption.IGNORE_CASE), "\n")
-                ?.replace(Regex("""<[^<>]*?>""", RegexOption.DOT_MATCHES_ALL), "") ?: ""
+            val text = matcher?.groups?.get(2)?.value ?: ""
 
             return when {
                 response.contains(Regex("""<!--\s*2ch_X:true\s*-->""", RegexOption.IGNORE_CASE)) -> PostResult(title, text, true)
