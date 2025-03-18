@@ -1,6 +1,5 @@
 package io.github.lanlacope.maytomato.activity.component.text
 
-import android.util.Patterns
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
