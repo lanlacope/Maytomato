@@ -11,9 +11,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import io.github.lanlacope.maytomato.clazz.AppTheme
-import io.github.lanlacope.maytomato.clazz.ThemeManager
+import io.github.lanlacope.maytomato.clazz.rememberThemeManager
 import kotlinx.coroutines.runBlocking
 
 private val LightColorScheme = lightColorScheme(
@@ -45,7 +44,7 @@ fun MaytomatoTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    val themeManager = ThemeManager(LocalContext.current)
+    val themeManager = rememberThemeManager()
 
     var theme by remember { mutableStateOf(AppTheme.SYSTEM) }
 
