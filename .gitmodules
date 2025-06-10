@@ -1,0 +1,3 @@
+[submodule "libs/android-rewheel"]
+	path = libs/android-rewheel
+	url = https://github.com/lanlacope/android-rewheel.git
