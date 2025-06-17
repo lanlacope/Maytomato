@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import io.github.lanlacope.rewheel.util.json.forEach
-import io.github.lanlacope.rewheel.util.json.keyList
+import io.github.lanlacope.rewheel.util.json.toKeyList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONException
@@ -32,9 +32,9 @@ class BoardManager(context: Context) {
 
         val boardList = emptyList<BoardSetting>().toMutableList()
 
-        boardObject.forEach { domain: String, data: JSONObject ->
+        boardObject.forEach { domain, data ->
             boardList.add(
-                BoardSetting.fromJSONObject(domain, data)
+                BoardSetting.fromJSONObject(domain, data as JSONObject)
             )
         }
         return@withContext boardList
@@ -52,7 +52,7 @@ class BoardManager(context: Context) {
             JSONObject()
         }
 
-        if (boardObject.keyList().contains(domain)) {
+        if (boardObject.toKeyList().contains(domain)) {
             return@withContext Result.failure(Exception())
         }
 

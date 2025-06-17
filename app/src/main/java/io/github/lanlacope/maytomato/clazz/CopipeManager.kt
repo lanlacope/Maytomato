@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import io.github.lanlacope.rewheel.util.json.forEach
-import io.github.lanlacope.rewheel.util.json.keyList
+import io.github.lanlacope.rewheel.util.json.toKeyList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONException
@@ -32,8 +32,8 @@ class CopipeManager(context: Context) {
 
         val copipeList = emptyList<CopipeData>().toMutableList()
 
-        copipeObject.forEach { text: String, data: JSONObject ->
-            val title = data.optString(CopipeJson.TITLE)
+        copipeObject.forEach { text, data ->
+            val title = (data as JSONObject).optString(CopipeJson.TITLE)
             copipeList.add(CopipeData(title, text))
         }
         return@withContext copipeList
@@ -49,7 +49,7 @@ class CopipeManager(context: Context) {
             JSONObject()
         }
 
-        if (copipeObject.keyList().contains(text)) {
+        if (copipeObject.toKeyList().contains(text)) {
             return@withContext Result.failure(Exception())
         }
 
@@ -74,7 +74,7 @@ class CopipeManager(context: Context) {
         }
 
         if (text != lastText) {
-            if (copipeObject.keyList().contains(text)) {
+            if (copipeObject.toKeyList().contains(text)) {
                 return@withContext Result.failure(Exception())
             }
         }
@@ -112,8 +112,8 @@ class CopipeManager(context: Context) {
 
         val aaList = emptyList<CopipeData>().toMutableList()
 
-        aaObject.forEach { text: String, data: JSONObject ->
-            val title = data.optString(CopipeJson.TITLE)
+        aaObject.forEach { text, data ->
+            val title = (data as JSONObject).optString(CopipeJson.TITLE)
             aaList.add(CopipeData(title, text))
         }
         return@withContext aaList
@@ -129,7 +129,7 @@ class CopipeManager(context: Context) {
             JSONObject()
         }
 
-        if (aaObject.keyList().contains(text)) {
+        if (aaObject.toKeyList().contains(text)) {
             return@withContext Result.failure(Exception())
         }
 
@@ -154,7 +154,7 @@ class CopipeManager(context: Context) {
         }
 
         if (text != lastText) {
-            if (aaObject.keyList().contains(text)) {
+            if (aaObject.toKeyList().contains(text)) {
                 return@withContext Result.failure(Exception())
             }
         }
@@ -191,8 +191,8 @@ class CopipeManager(context: Context) {
 
         val commandList = emptyList<CopipeData>().toMutableList()
 
-        commandObject.forEach { text: String, data: JSONObject ->
-            val title = data.optString(CopipeJson.TITLE)
+        commandObject.forEach { text, data ->
+            val title = (data as JSONObject).optString(CopipeJson.TITLE)
             commandList.add(CopipeData(title, text))
         }
         return@withContext commandList
@@ -208,7 +208,7 @@ class CopipeManager(context: Context) {
             JSONObject()
         }
 
-        if (commandObject.keyList().contains(text)) {
+        if (commandObject.toKeyList().contains(text)) {
             return@withContext Result.failure(Exception())
         }
 
@@ -233,7 +233,7 @@ class CopipeManager(context: Context) {
         }
 
         if (text != lastText) {
-            if (commandObject.keyList().contains(text)) {
+            if (commandObject.toKeyList().contains(text)) {
                 return@withContext Result.failure(Exception())
             }
         }
