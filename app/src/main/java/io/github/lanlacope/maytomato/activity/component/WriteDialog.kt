@@ -274,7 +274,7 @@ fun WriteDialog(
                                         ).show()
                                     }
                                     // キャッシュを削除
-                                    if (defaultSubject.isNotEmpty()) cashedSubject = ""
+                                    if (bbsInfo.key.isNullOrEmpty()) cashedSubject = ""
                                     cashedMessage = ""
 
                                     waitingDialogShown = false
