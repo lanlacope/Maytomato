@@ -12,8 +12,8 @@ android {
         applicationId = "io.github.lanlacope.maytomato"
         minSdk = 21
         targetSdk = 35
-        versionCode = 2002002
-        versionName = "2.2.2"
+        versionCode = 2003000
+        versionName = "2.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
