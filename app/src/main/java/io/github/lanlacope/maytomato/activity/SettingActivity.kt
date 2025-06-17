@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import io.github.lanlacope.maytomato.activity.component.SettingAbout
 import io.github.lanlacope.maytomato.activity.component.SettingBoard
 import io.github.lanlacope.maytomato.activity.component.SettingCopipe
+import io.github.lanlacope.maytomato.activity.component.SettingImage
 import io.github.lanlacope.maytomato.activity.component.SettingRoot
 import io.github.lanlacope.maytomato.ui.theme.MaytomatoTheme
 
@@ -37,13 +38,14 @@ class SettingActivity : ComponentActivity() {
 }
 
 enum class SettingNavi {
-    ROOT, COPIPE, BOARD, ABOUT;
+    ROOT, COPIPE, BOARD, IMAGE, ABOUT;
 
     override fun toString(): String {
         return when (this) {
             ROOT -> "Root"
             COPIPE -> "Copipe"
             BOARD -> "Board"
+            IMAGE -> "Image"
             ABOUT -> "About"
         }
     }
@@ -68,6 +70,7 @@ fun SettingView(path: SettingNavi = SettingNavi.ROOT) {
         composable(SettingNavi.ROOT.toString()) { SettingRoot(navController) }
         composable(SettingNavi.COPIPE.toString()) { SettingCopipe() }
         composable(SettingNavi.BOARD.toString()) { SettingBoard() }
+        composable(SettingNavi.IMAGE.toString()) { SettingImage() }
         composable(SettingNavi.ABOUT.toString()) { SettingAbout() }
     }
 }

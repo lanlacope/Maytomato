@@ -150,7 +150,7 @@ private fun createNewThreadMessage(url: String, title: String, res: String): Pai
             val (prefixMain, number, suffixMain) = numberMatchResult.destructured
             "${prefix}${prefixMain}${number.toInt() + 1}${suffixMain}${suffix}"
         } else if (title.isNotEmpty()) {
-            "${prefix}${main} ★1${suffix}"
+            "${prefix}${main} ★2${suffix}"
         } else {
             ""
         }
@@ -160,11 +160,9 @@ private fun createNewThreadMessage(url: String, title: String, res: String): Pai
         val resMatchResult = Regex("""([\s\S]*?)(^.*前スレ.*$)([\s\S]*)""",  RegexOption.MULTILINE).find(cutRes)
 
         val newRes = if (resMatchResult != null) {
-            println("matched")
             val (prefixRes, preThread, suffixRes) = resMatchResult.destructured
             "${prefixRes}${preThread}\n${title}\n${url}${suffixRes}"
         } else if (res.isNotEmpty()) {
-            println("unmatched")
             if (cutRes.isNotEmpty()) "$cutRes\n\n※前スレ\n${title}\n${url}"
             else "※前スレ\n${title}\n${url}"
         } else {

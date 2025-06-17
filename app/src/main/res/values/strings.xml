@@ -48,6 +48,7 @@
     <string name="dialog_title_command_add">コマンド追加</string>
     <string name="dialog_title_command_edit">コマンド編集</string>
     <string name="dialog_title_domain_add">ドメイン追加</string>
+    <string name="dialog_title_image_url_edit">URL編集</string>"
 
     <string name="confirm_text_copipe_remove">このコピペを削除しますか？</string>
     <string name="confirm_text_aa_remove">このAAを削除しますか？</string>
@@ -81,6 +82,8 @@
     <string name="hint_board_domain">使用するドメイン(前方一致)</string>
     <string name="hint_board_ua">使用するUserAgent</string>
 
+    <string name="hint_image_url">使用するURL</string>
+
     <!-- Setting -->
     <string name="setting_theme">アプリテーマ</string>
     <string name="setting_theme_value_system">システムのテーマに従う</string>
@@ -102,6 +105,9 @@
 
     <string name="setting_board_edit_success">変更を適用しました</string>
     <string name="setting_board_edit_failed">変更を適用できませんでした</string>
+
+    <string name="setting_image">画像設定</string>
+    <string name="setting_image_url">使用するURL</string>"
 
     <string name="setting_about">このアプリについて</string>
     <string name="setting_about_licence">ライセンス</string>

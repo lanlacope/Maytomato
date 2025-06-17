@@ -57,9 +57,11 @@ import io.github.lanlacope.maytomato.clazz.appendText
 import io.github.lanlacope.maytomato.clazz.isBreakLast
 import io.github.lanlacope.maytomato.clazz.isSelectedPrefix
 import io.github.lanlacope.maytomato.clazz.rememberBbsPostClient
+import io.github.lanlacope.maytomato.clazz.rememberImageConfigManager
 import io.github.lanlacope.rewheel.util.insertText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun WriteDialog(
@@ -209,13 +211,22 @@ fun WriteDialog(
                     )
                 }
 
+                val imageConfigManager = rememberImageConfigManager()
+                val imageUrl = runBlocking {
+                    imageConfigManager.getUrl()
+                }
+
                 BoxButton(
                     contentAlignment = Alignment.Center,
                     onClick = {
                         val intent = Intent().apply {
                             action = Intent.ACTION_VIEW
-                            addCategory(Intent.CATEGORY_DEFAULT)
-                            data = Uri.parse("https://imgur.com/upload")
+                            addCategory(Intent.CATEGORY_BROWSABLE)
+                            data = if (imageUrl.isEmpty()) {
+                                Uri.parse("https://imgur.com/upload")
+                            } else {
+                                Uri.parse(imageUrl)
+                            }
                         }
                         activity.startActivity(intent)
                     },
@@ -263,7 +274,7 @@ fun WriteDialog(
                                         ).show()
                                     }
                                     // キャッシュを削除
-                                    cashedSubject = ""
+                                    if (defaultSubject.isNotEmpty()) cashedSubject = ""
                                     cashedMessage = ""
 
                                     waitingDialogShown = false

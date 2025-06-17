@@ -9,8 +9,11 @@ private const val COPIPE_LIST_FILE_NAME = "copipe_list.json"
 private const val AA_LIST_FILE_NAME = "aa_list.json"
 private const val COMMAND_LIST_FILE_NAME = "command_list.json"
 
-private const val board_DIR_NAME = "board"
+private const val BOARD_DIR_NAME = "board"
 private const val BOARD_LIST_FILE_NAME = "board_list.json"
+
+private const val IMAGE_DIR_NAME = "image"
+private const val IMAGE_CONFIG_FILE_NAME = "image_config.json"
 
 
 private fun Context.getAppDir(): File {
@@ -48,7 +51,7 @@ fun Context.getCommandListFile(): File {
 }
 
 private fun Context.getBoardDir(): File {
-    val folder = File(getAppDir(), board_DIR_NAME)
+    val folder = File(getAppDir(), BOARD_DIR_NAME)
     if (!folder.exists()) {
         folder.mkdirs()
     }
@@ -69,10 +72,24 @@ fun Context.getBoardListFile(): File {
     return file
 }
 
+private fun Context.getImageDir(): File {
+    val folder = File(getAppDir(), IMAGE_DIR_NAME)
+    if (!folder.exists()) {
+        folder.mkdirs()
+    }
+    return folder
+}
+
+fun Context.getImageConfigFile(): File {
+    val file = File(getImageDir(), IMAGE_CONFIG_FILE_NAME)
+    file.createNewFile()
+    return file
+}
+
 /* 古いバージョンのディレクトリ */
 
 private fun Context.getPreBoardDir(): File {
-    val folder = File(getExternalFilesDir(null), board_DIR_NAME)
+    val folder = File(getExternalFilesDir(null), BOARD_DIR_NAME)
     return folder
 }
 

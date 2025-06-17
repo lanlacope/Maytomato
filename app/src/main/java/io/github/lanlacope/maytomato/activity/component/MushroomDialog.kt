@@ -38,8 +38,10 @@ import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.component.text.MessageTextField
 import io.github.lanlacope.maytomato.activity.rememberCopipeSelectResult
 import io.github.lanlacope.maytomato.clazz.isSelectedPrefix
+import io.github.lanlacope.maytomato.clazz.rememberImageConfigManager
 import io.github.lanlacope.rewheel.util.insertText
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun MushroomDialog() {
@@ -96,13 +98,22 @@ fun MushroomDialog() {
                     )
                 }
 
+                val imageConfigManager = rememberImageConfigManager()
+                val imageUrl = runBlocking {
+                    imageConfigManager.getUrl()
+                }
+
                 BoxButton(
                     contentAlignment = Alignment.Center,
                     onClick = {
                         val intent = Intent().apply {
                             action = Intent.ACTION_VIEW
-                            addCategory(Intent.CATEGORY_DEFAULT)
-                            data = Uri.parse("https://imgur.com/upload")
+                            addCategory(Intent.CATEGORY_BROWSABLE)
+                            data = if (imageUrl.isEmpty()) {
+                                Uri.parse("https://imgur.com/upload")
+                            } else {
+                                Uri.parse(imageUrl)
+                            }
                         }
                         activity.startActivity(intent)
                     },
