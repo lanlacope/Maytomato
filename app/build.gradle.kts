@@ -12,14 +12,14 @@ kotlin {
 
 android {
     namespace = "io.github.lanlacope.maytomato"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "io.github.lanlacope.maytomato"
         minSdk = 23
         targetSdk = 35
-        versionCode = 2003000
-        versionName = "2.3.0"
+        versionCode = 2003001
+        versionName = "2.3.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
