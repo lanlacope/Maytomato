@@ -62,6 +62,7 @@ import io.github.lanlacope.rewheel.util.insertText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import androidx.core.net.toUri
 
 @Composable
 fun WriteDialog(
@@ -223,9 +224,9 @@ fun WriteDialog(
                             action = Intent.ACTION_VIEW
                             addCategory(Intent.CATEGORY_BROWSABLE)
                             data = if (imageUrl.isEmpty()) {
-                                Uri.parse("https://imgur.com/upload")
+                                "https://imgur.com/upload".toUri()
                             } else {
-                                Uri.parse(imageUrl)
+                                imageUrl.toUri()
                             }
                         }
                         activity.startActivity(intent)

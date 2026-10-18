@@ -47,15 +47,16 @@ class BbsPostClient(
     ) = withContext(Dispatchers.IO) {
 
         val cookieManager = CookieManager(context)
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
         val encodeStr = "shift_jis"
-            val encodeChar = Charset.forName(encodeStr)
-            val requestURL = if (bbsSetting.forceClearHttps) {
-                "https://${bbsInfo.domain}/test/bbs.cgi"
-            } else {
-                "${bbsInfo.protocol}${bbsInfo.domain}/test/bbs.cgi"
-            }
+        val encodeChar = Charset.forName(encodeStr)
+        val requestURL = if (bbsSetting.forceClearHttps) {
+            "https://${bbsInfo.domain}/test/bbs.cgi"
+        } else {
+            "${bbsInfo.protocol}${bbsInfo.domain}/test/bbs.cgi"
+        }
 
 
         val cockie = cookieManager.getCookie(bbsSetting.domain)
@@ -90,7 +91,10 @@ class BbsPostClient(
             // モバイル通信を強制
             if (bbsSetting.forceMobileCommunication) {
                 if (!connectivityManager.bindMobileCommunication()) {
-                    onFailed(context.getString(R.string.dialog_failed_title_connection), context.getString(R.string.dialog_failed_text_mobile))
+                    onFailed(
+                        context.getString(R.string.dialog_failed_title_connection),
+                        context.getString(R.string.dialog_failed_text_mobile)
+                    )
                     return@withContext
                 }
             }
@@ -124,16 +128,21 @@ class BbsPostClient(
                 if (result.isSuccess) {
                     val resNum = connection.getHeaderField("X-ResNum")?.toIntOrNull()
                     onSucces(resNum)
-                }
-                else {
+                } else {
                     onFailed(result.title, result.text)
                 }
             } else {
-                onFailed(context.getString(R.string.dialog_failed_title_connection), responseCode.toString())
+                onFailed(
+                    context.getString(R.string.dialog_failed_title_connection),
+                    responseCode.toString()
+                )
             }
 
-        } catch (e: SocketTimeoutException){
-            onFailed(context.getString(R.string.dialog_failed_title_connection), context.getString(R.string.dialog_failed_text_timeout))
+        } catch (e: SocketTimeoutException) {
+            onFailed(
+                context.getString(R.string.dialog_failed_title_connection),
+                context.getString(R.string.dialog_failed_text_timeout)
+            )
         } catch (e: Exception) {
             onFailed(context.getString(R.string.dialog_failed_title_unknown), "$e : ${e.message}")
         } finally {
@@ -151,7 +160,12 @@ class BbsPostClient(
         }
     }
 
-    private fun createByteCode(name: String, mail: String, subject: String, message: String): ByteArray {
+    private fun createByteCode(
+        name: String,
+        mail: String,
+        subject: String,
+        message: String
+    ): ByteArray {
         val currentTime = (System.currentTimeMillis() / 1000L).toString()
         val nameJis = name.urlEncodeWithJis()
         val mailJis = mail.urlEncodeWithJis()
@@ -176,14 +190,13 @@ class BbsPostClient(
     private fun String.urlEncodeWithJis(): String {
         return buildString {
             this@urlEncodeWithJis.forEach { c ->
-                val bytes = c.toString().toByteArray(Charset.forName("Shift_JIS"))
-                val encodedChar = if (String(bytes, Charset.forName("Shift_JIS")) == c.toString()) {
-                    URLEncoder.encode(c.toString(), "Shift_JIS")
-                } else {
-                    // 文字化けしたら文字を10進数の数値参照に置き換える
-                    URLEncoder.encode("&#${c.code};", "Shift_JIS")
-                }
-                append(encodedChar)
+                val charText = c.toString()
+                val jisText = String(
+                    charText.toByteArray(Charset.forName("Shift_JIS")),
+                    Charset.forName("Shift_JIS")
+                )
+                val textToEncode = if (jisText == charText) charText else "&#${c.code};"
+                append(URLEncoder.encode(textToEncode, "Shift_JIS"))
             }
         }.replace("+", "%20")
     }
