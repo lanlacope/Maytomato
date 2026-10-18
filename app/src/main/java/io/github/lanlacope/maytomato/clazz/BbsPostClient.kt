@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import io.github.lanlacope.maytomato.R
 import io.github.lanlacope.maytomato.activity.BbsInfo
+import io.github.lanlacope.rewheel.util.SHIFT_JIS
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
@@ -189,17 +190,24 @@ class BbsPostClient(
 
     private fun String.urlEncodeWithJis(): String {
         return buildString {
-            this@urlEncodeWithJis.forEach { c ->
-                val charText = c.toString()
-                val jisText = String(
-                    charText.toByteArray(Charset.forName("Shift_JIS")),
-                    Charset.forName("Shift_JIS")
-                )
-                val textToEncode = if (jisText == charText) charText else "&#${c.code};"
-                append(URLEncoder.encode(textToEncode, "Shift_JIS"))
+            var index = 0
+            while (index < this@urlEncodeWithJis.length) {
+                val codePoint = this@urlEncodeWithJis.codePointAt(index)
+                val text = String(Character.toChars(codePoint))
+                val encodedText = if (Charsets.SHIFT_JIS.newEncoder().canEncode(text)) {
+                    text
+                } else {
+                    "&#$codePoint;"
+                }
+
+                append(URLEncoder.encode(encodedText, Charsets.SHIFT_JIS.name()))
+
+                // サロゲートペアの場合は下位文字の分も進める
+                index += if (Character.isSupplementaryCodePoint(codePoint)) 2 else 1
             }
         }.replace("+", "%20")
     }
+
 
     private fun HttpURLConnection.getCookie(): String {
         val headers = this.headerFields
