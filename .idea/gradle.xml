@@ -4,16 +4,31 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT">
+            <builds>
+              <build path="$PROJECT_DIR$/libs/android-rewheel" name="android-rewheel">
+                <projects>
+                  <project path="$PROJECT_DIR$/libs/android-rewheel" />
+                  <project path="$PROJECT_DIR$/libs/android-rewheel/army-knife" />
+                  <project path="$PROJECT_DIR$/libs/android-rewheel/example" />
+                </projects>
+              </build>
+            </builds>
+          </compositeBuild>
+        </compositeConfiguration>
         <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
+        <option name="gradleJvm" value="jbr-21 (2)" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/libs/android-rewheel" />
+            <option value="$PROJECT_DIR$/libs/android-rewheel/army-knife" />
+            <option value="$PROJECT_DIR$/libs/android-rewheel/example" />
           </set>
         </option>
-        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

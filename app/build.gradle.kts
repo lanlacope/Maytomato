@@ -4,13 +4,19 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8
+    }
+}
+
 android {
     namespace = "io.github.lanlacope.maytomato"
     compileSdk = 35
 
     defaultConfig {
         applicationId = "io.github.lanlacope.maytomato"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 35
         versionCode = 2003000
         versionName = "2.3.0"
@@ -29,13 +35,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
@@ -61,9 +60,7 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
 
-    implementation(libs.lanlacope.rewheel) {
-        isChanging = true
-    }
+    implementation(libs.lanlacope.rewheel)
 }
 
 configurations.all {
