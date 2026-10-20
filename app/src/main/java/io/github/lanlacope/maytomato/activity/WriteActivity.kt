@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ComposeFoundationFlags
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
@@ -22,6 +24,7 @@ import kotlinx.coroutines.runBlocking
 
 class WriteActivity : ComponentActivity() {
 
+    @OptIn(ExperimentalFoundationApi::class)
     @SuppressLint("UnsafeIntentLaunch")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +68,7 @@ class WriteActivity : ComponentActivity() {
         if (boardSetting != null) {
 
             if (url.isThread() || url.isBoard()) {
+                ComposeFoundationFlags.isNewContextMenuEnabled = false
                 val (title, res) = originIntent.parseDefaultMessage()
                 setContent {
                     MaytomatoTheme {
